@@ -16,9 +16,9 @@ This package was created based from Example B1 in the GEANT-4 examples guide (ht
 ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
 
 ## Build 
-The program is tested and supported on `zev.uchicago.edu`. `Geant4.10`, configured with Qt viewer, is used and the source code can be found on zev via `/find_source_directory!!!/geant4.10.02.p01`.
+The program is tested and supported on `zev.uchicago.edu`. Geant4.10.03, configured with Qt viewer, is used and the source code can be found on `zev` via `/usr/local/geant41031/`.
  
-To install on `zev`, to make life easier, first add some environmental variables to your `.bashrc` file:
+To install on `zev`, and making life easier, first add some environmental variables to your `.bashrc` file:
 ```
 # env variables
 export CG4=<path/to/source/directory>/ChicagoCCDSim
