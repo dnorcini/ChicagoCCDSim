@@ -34,7 +34,7 @@ $ cmake -DGeant4_DIR=/usr/local/geant41031/lib64/Geant4-10.3.1/ $CG4
 $ make 
 ```
 ## Run
-The Qt GUI can be entered with the command `./ChicagoCCDSim` in the build directory. Individual user commands can be entered interactively on the GUI command line. To run in batch mode for long-statistics runs, the basic command `./ComptonSim -m batch.mac` can be used. 
+The Qt GUI can be entered with the command `./ChicagoCCDSim` in the build directory. Individual user commands can be entered interactively on the GUI command line. To run in batch mode for long-statistics runs, the basic command `./ChicagoCCDSim -m batch.mac` can be used. 
 
 .... add info about loops and geometry messengers
 
