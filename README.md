@@ -1,6 +1,8 @@
 # Chicago CCD GEANT4 simulation
 
-Nick Corso (ncorso@uchicago.edu), Danielle Norcini (dnorcini@kicp.uchicago.edu), May 2020
+<!-- Nick Corso (ncorso@uchicago.edu)-->
+<!-- Danielle Norcini (dnorcini@kicp.uchicago.edu)-->
+May 2020
 
 ## Overview
 This program models energy depositions from various particle types in a silicon CCD. Using GEANT-4, a particle physics simulation based on C++ and the ROOT framework, the Chicago CCD Chamber geometry represented includes:
