@@ -15,14 +15,21 @@ This package was created based from Example B1 in the GEANT-4 examples guide (ht
 ## Build 
 The program is tested and supported on `zev.uchicago.edu`. `Geant4.10`, configured with Qt viewer, is used and the source code can be found on zev via `/find_source_directory!!!/geant4.10.02.p01`.
  
-To install on `zev`, complete the following steps (this assumes a working GitHub account):
+To install on `zev`, to make life easier, first add some environmental variables to your `.bashrc` file:
 ```
-$ cd ~
+# env variables
+export CG4=<path/to/source/directory>/ChicagoCCDSim
+export CG4_build=<path/to/source/directory>/ChicagoCCDSim_build
+```
+
+Then complete the following steps (this assumes a working GitHub account):
+```
+$ mkdir <path/to/source/directory>/ChicagoCCDSim
+$ mkdir <path/to/build/directory>/ChicagoCCDSim_build
+$ cd $CG4
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
-$ cd ~
-$ mkdir ChicagoCCDSim-build
-$ cd ChicagoCCDSim build
-$ cmake -DGeant4_DIR=/find_build_directory!!!/geant4.10.02.p01-build/lib64/Geant4-10.2.1 ~/ChicagoCCDSim 
+$ cd $CG4_build
+$ cmake -DGeant4_DIR=/usr/local/geant41031/lib64/Geant4-10.3.1/ $CG4
 $ make 
 ```
 ## Run
