@@ -10,7 +10,8 @@ This program models energy depositions from various particle types in a silicon 
 
 The goal of the program is generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
 
-This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). Currently operating in single-threaded mode, the program makes use of G4GeomtryMessengers class to change the values of parameters upon runtime within looped macros. It is important to note that currently the simulation only exports information about the energy deposition in the so called 'sensitive detectors', e.g. the scintillator material and HPGe crystal. Individual photons are not tracked. Furthermore, PMTs and the scintillator properities itself are not modeled, as this adds unncessary complication for our purposes. Only gamma-ray physics within the FTFP_BERT physics list is utilized.   
+This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). 
+ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
 
 ## Build 
 The program is tested and supported on `zev.uchicago.edu`. `Geant4.10`, configured with Qt viewer, is used and the source code can be found on zev via `/find_source_directory!!!/geant4.10.02.p01`.
