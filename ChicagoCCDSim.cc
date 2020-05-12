@@ -1,94 +1,104 @@
-// ChicagoCCDSim.cc
-// main() program of ChicagoCCDSim
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+// $Id: skipper.cc 86065 2014-11-07 08:51:15Z gcosmo $
+//
+/// \file skipper.cc
+/// \brief Main program of the skipper program
 
-// includes
-//detector construction and physics processes
 #include "SkipperDetectorConstruction.hh"
 #include "SkipperActionInitialization.hh"
 
-//multithreaded run manager toolkit
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
 #else
 #include "G4RunManager.hh"
 #endif
 
-//user interfaces
 #include "G4UImanager.hh"
-#include "G4UIcommand.hh"
-
-//visualization
-#include "G4VisExecutive.hh"
-#include "G4UIExecutive.hh"
-
-//utils
-#include "G4SystemOfUnits.hh"
-#include "Randomize.hh"
-
-//physics lists
 #include "G4SystemOfUnits.hh"
 #include "QBBC.hh"
 #include "LBE.hh"
+
 #include "PSPhysListFactory.hh"
 #include "PSPhysicsList.hh"
-#include "DAMICPhysicsList.hh"
+//#include "DAMICPhysicsList.hh"
+#include "DAMICPhysicsListLivermore.hh"
 #include "defines.hh"
 
-// define namespace
-namespace {
-  void PrintUsage() {
-    G4cerr << "Usage: " << G4endl;
-    G4cerr << "ChicagoCCDSim [-m macro] [-u UIsession] [-t nThreads]" << G4endl;
-    G4cerr << "\tnote: -t option is only for multi-threaded mode." << G4endl;
-  }
-}
+#include "G4VisExecutive.hh"
+#include "G4UIExecutive.hh"
+
+#include "Randomize.hh"
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 int main(int argc,char** argv)
 {
-  if (argc > 7) {
-    PrintUsage();
-    return 1;
-  }
-
-  // define UI session if no macro given
+  // Detect interactive mode (if no arguments) and define UI session
+  //
   G4UIExecutive* ui = 0;
   if ( argc == 1 ) {
     ui = new G4UIExecutive(argc, argv);
   }
 
-  // choose the Random engine
+  // Choose the Random engine
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
   
-  // construct the default run manager
+  // Construct the default run manager
+  //
 #ifdef G4MULTITHREADED
   G4MTRunManager* runManager = new G4MTRunManager;
 #else
   G4RunManager* runManager = new G4RunManager;
 #endif
 
-  // set mandatory initialization classes
-  //initialize detector construction
+  // Set mandatory initialization classes
+  //
+  // Detector construction
   SkipperDetectorConstruction* detectorConstruction = new SkipperDetectorConstruction();
   runManager->SetUserInitialization(detectorConstruction);
 
-  //initialize physics processes
-  //G4VModularPhysicsList* physicsList = new QBBC;
-  //G4VModularPhysicsList* physicsList = new LBE;
-  DAMICPhysicsList* physicsList = new DAMICPhysicsList;
-  //physicsList->SetVerboseLevel(1);
+  // Physics list
+//  G4VModularPhysicsList* physicsList = new QBBC;
+//  G4VModularPhysicsList* physicsList = new LBE;
+//  DAMICPhysicsList* physicsList = new DAMICPhysicsList;
+  DAMICPhysicsListLivermore* physicsList = new DAMICPhysicsListLivermore;
+//  physicsList->SetVerboseLevel(1);
   runManager->SetUserInitialization(physicsList);
-    
-  //initialize primary generator
-  runManager->SetUserInitialization(new SkipperActionInitialization(detectorConstruction));
-  
-  //initialize visualization
-  G4VisManager* visManager = new G4VisExecutive;
-  visManager->Initialize();
 
-  //get pointer to the User Interface manager
+  // User action initialization
+  SkipperActionInitialization* actionInit = new SkipperActionInitialization(detectorConstruction);
+  runManager->SetUserInitialization(actionInit);
+  
+
+  // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
-  //process macro or start UI session
+  // Process macro or start UI session
+  //
   if ( ! ui ) { 
     // batch mode
     G4String command = "/control/execute ";
@@ -96,18 +106,28 @@ int main(int argc,char** argv)
     UImanager->ApplyCommand(command+fileName);
   }
   else { 
+  // Initialize visualization
+  //
+  G4VisManager* visManager = new G4VisExecutive;
+  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
+  // G4VisManager* visManager = new G4VisExecutive("Quiet");
+  visManager->Initialize();
     // interactive mode
     UImanager->ApplyCommand("/control/execute init_vis.mac");
     ui->SessionStart();
     delete ui;
+ delete visManager;
   }
 
   // Job termination
   // Free the store: user actions, physics_list and detector_description are
   // owned and deleted by the run manager, so they should not be deleted 
   // in the main() program !
-  delete visManager;
+  
   delete runManager;
+  delete detectorConstruction;
+  delete actionInit;
+  return 0;
 }
 
-
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo.....
