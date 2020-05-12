@@ -30,7 +30,14 @@ The Qt GUI can be entered with the command `./ChicagoCCDSim` in the build direct
 
 .... add info about loops and geometry messengers
 
+## Physics lists
+- ...
+
+## Particle generators
+- ...
+
 ## To Do: Improvements
+- create millicharged particle generator
 - ...
 
 ## Notes
