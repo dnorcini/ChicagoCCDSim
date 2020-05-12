@@ -18,7 +18,7 @@
 /run/printProgress 0
 #/analysis/verbose 2
 #
-/analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Co.root
+/analysis/setFileName /data/dnorcini/output/singlerun.root
 
 /gps/pos/type Point
 /gps/pos/centre 0 -86 0 mm
@@ -35,7 +35,7 @@
 #/gps/ang/mintheta 0 rad
 #/gps/ang/maxtheta 0.052 rad
 
-/run/beamOn 10000000
+/run/beamOn 100
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point
