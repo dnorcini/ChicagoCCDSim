@@ -48,9 +48,7 @@
 
 SkipperEventAction::SkipperEventAction(SkipperRunAction* runAction)
 : G4UserEventAction(),
-  fRunAction(runAction),
-  fEdep(0.),
-  fIntHit(0.)
+  fRunAction(runAction)
 {} 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -63,8 +61,6 @@ SkipperEventAction::~SkipperEventAction()
 void SkipperEventAction::BeginOfEventAction(const G4Event* event)
 { 
   SetGammaSource(false);
-  fEdep = 0.;
-  fIntHit = 0.;
 
   G4int EventID = event->GetEventID();
   G4PrimaryVertex* primVert = event->GetPrimaryVertex();
@@ -105,7 +101,7 @@ void SkipperEventAction::BeginOfEventAction(const G4Event* event)
   fRunAction->pdgPrim.push_back(primPart->GetPDGcode());
   fRunAction->chargePrim.push_back(G4int(primPart->GetCharge()));
   fRunAction->volidPrim.push_back(volid);
-  fRunAction->energyPrim.push_back(primPart->GetKineticEnergy());
+  fRunAction->energyPrim.push_back(primPart->GetKineticEnergy() / eV);
   fRunAction->posxPrim.push_back(primVert->GetX0());
   fRunAction->posyPrim.push_back(primVert->GetY0());
   fRunAction->poszPrim.push_back(primVert->GetZ0());

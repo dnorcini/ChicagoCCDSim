@@ -8,6 +8,7 @@
 #include "G4UIcmdWithoutParameter.hh"
 */
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithoutParameter.hh"
 #include "G4SystemOfUnits.hh"
 
 SkipperPrimaryMessenger::SkipperPrimaryMessenger(SkipperPrimaryGeneratorAction* Prim, SkipperDetectorConstruction* Det)
@@ -20,10 +21,13 @@ SkipperDetector(Det)
   GammaSourceCmd = new G4UIcmdWithABool("/compton/setGammaSource",this);
   GammaSourceCmd->SetGuidance("Set whether the the source is pure gamma or ion.");
 
+  DelGeomCmd = new G4UIcmdWithoutParameter("/compton/deleteGeometry",this);
+  DelGeomCmd->SetGuidance("Delete geometry for comparison.");
 }
 
 SkipperPrimaryMessenger::~SkipperPrimaryMessenger()
 {
+  delete DelGeomCmd;
   delete GammaSourceCmd;
   delete ComptonDir;
 }
@@ -33,6 +37,9 @@ void SkipperPrimaryMessenger::SetNewValue(G4UIcommand* command,G4String newValue
   if( command == GammaSourceCmd )
     {
       SkipperPrimaryGenerator->SetGammaSource(GammaSourceCmd->GetNewBoolValue(newValue));
+    }
+  if( command == DelGeomCmd )
+    {
       SkipperDetector->ToggleGeometry();
     }
 }

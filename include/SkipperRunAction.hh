@@ -32,7 +32,7 @@
 #define SkipperRunAction_h 1
 
 #include "G4UserRunAction.hh"
-#include "G4Parameter.hh"
+//#include "G4Parameter.hh"
 #include "globals.hh"
 #include "G4GeneralParticleSource.hh"
 
@@ -67,10 +67,6 @@ class SkipperRunAction : public G4UserRunAction
     virtual void BeginOfRunAction(const G4Run*);
     virtual void   EndOfRunAction(const G4Run*);
 
-    void AddEdep (G4double edep); 
-    void AddIntHit (G4int hit);
-    void AddEvHit (G4int hit);
-
     //RunInfo Vectors
 
     volumeVals runInfoVals;
@@ -104,10 +100,6 @@ class SkipperRunAction : public G4UserRunAction
     std::vector<G4double> Edep;
     std::vector<G4double> time;
   private:
-    G4Parameter<G4double> fEdep;
-    G4Parameter<G4double> fEdep2;
-    G4Parameter<G4int> fIntHit;
-    G4Parameter<G4int> fEvHit;
     SkipperDetectorConstruction* fDetectorConstruction;
     SkipperPrimaryGeneratorAction* fPrimGen;
     G4int runinfo, eventout, ccdout, oldinfo;

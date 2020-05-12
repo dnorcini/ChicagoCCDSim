@@ -37,7 +37,6 @@
 #include "G4RunManager.hh"
 #include "G4Run.hh"
 #include "G4GeneralParticleSource.hh"
-#include "G4ParameterManager.hh"
 #include "G4GeometryManager.hh"
 #include "G4LogicalVolumeStore.hh"
 #include "G4LogicalVolume.hh"
@@ -50,10 +49,6 @@
 
 SkipperRunAction::SkipperRunAction(SkipperDetectorConstruction *skipperDetector, SkipperPrimaryGeneratorAction* primGenAction)
 : G4UserRunAction(),
-  fEdep("Edep",0.),
-  fEdep2("Edep2",0.),
-  fIntHit("IntHit",0.),
-  fEvHit("EvHit",0.),
   fDetectorConstruction(skipperDetector),
   fPrimGen(primGenAction)
 {
@@ -118,7 +113,7 @@ SkipperRunAction::SkipperRunAction(SkipperDetectorConstruction *skipperDetector,
   analysisManager->CreateNtupleDColumn(ccdout, "Edep", Edep); // total energy deposited
   analysisManager->CreateNtupleDColumn(ccdout, "time", time); // time wrt to event trigger time
   analysisManager->FinishNtuple(ccdout); 
-
+/*
   // 
   // OldInfo Tree
   //
@@ -138,12 +133,7 @@ SkipperRunAction::SkipperRunAction(SkipperDetectorConstruction *skipperDetector,
   analysisManager->CreateNtupleIColumn(oldinfo, "PrimaryName");
   analysisManager->CreateNtupleIColumn(oldinfo, "GammaSource");
   analysisManager->FinishNtuple(oldinfo);
-
-  G4ParameterManager* parameterManager = G4ParameterManager::Instance();
-  parameterManager->RegisterParameter(fEdep);
-  parameterManager->RegisterParameter(fEdep2);
-  parameterManager->RegisterParameter(fIntHit);
-  parameterManager->RegisterParameter(fEvHit);
+*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -161,9 +151,6 @@ void SkipperRunAction::BeginOfRunAction(const G4Run*)
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
 
   // reset parameters to their initial values
-  G4ParameterManager* parameterManager = G4ParameterManager::Instance();
-  parameterManager->Reset();
-
   G4AnalysisManager* analysisManager =G4AnalysisManager::Instance();
   analysisManager->OpenFile();
 
@@ -180,8 +167,6 @@ void SkipperRunAction::EndOfRunAction(const G4Run* run)
   if (nEvts == 0) return;
 
   // Merge parameters 
-  G4ParameterManager* parameterManager = G4ParameterManager::Instance();
-  parameterManager->Merge();
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   //
@@ -210,7 +195,7 @@ void SkipperRunAction::EndOfRunAction(const G4Run* run)
   G4String atNum = ns.str();
 
   G4String primaryIon = atMass + "a" + atNum + "z";
-  G4String simulatedVolume = "Basement_Chamber";
+  G4String simulatedVolume = "World";
 
   //
   // Fill RunInfo
@@ -253,21 +238,6 @@ void SkipperRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* phy
   };
 }
 
-void SkipperRunAction::AddEdep(G4double edep)
-{
-  fEdep  += edep;
-  fEdep2 += edep*edep;
-}
-
-void SkipperRunAction::AddIntHit(G4int hit)
-{
-  fIntHit += hit;
-}
-
-void SkipperRunAction::AddEvHit(G4int hit)
-{
-  fEvHit += hit;
-}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

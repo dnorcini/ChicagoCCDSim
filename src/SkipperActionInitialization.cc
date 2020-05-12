@@ -38,29 +38,34 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SkipperActionInitialization::SkipperActionInitialization(SkipperDetectorConstruction* detectConstruct)
- : G4VUserActionInitialization()
+ : G4VUserActionInitialization(),
+        detectorConstruction(detectConstruct)
+
 {
-  detectorConstruction = detectConstruct;
-  primGenAction = new SkipperPrimaryGeneratorAction(detectorConstruction); 
+ // detectorConstruction = detectConstruct;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 SkipperActionInitialization::~SkipperActionInitialization()
-{}
+{
+delete detectorConstruction;
+//delete primGenAction;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void SkipperActionInitialization::BuildForMaster() const
 {
-  SkipperRunAction* runAction = new SkipperRunAction(detectorConstruction, primGenAction);
-  SetUserAction(runAction);
+//  SkipperRunAction* runAction = new SkipperRunAction(detectorConstruction, primGenAction);
+//  SetUserAction(runAction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void SkipperActionInitialization::Build() const
 {
+  SkipperPrimaryGeneratorAction* primGenAction = new SkipperPrimaryGeneratorAction(detectorConstruction);
   SetUserAction(primGenAction);
 
   SkipperRunAction* runAction = new SkipperRunAction(detectorConstruction, primGenAction);

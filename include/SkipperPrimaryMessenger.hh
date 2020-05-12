@@ -9,6 +9,7 @@ class SkipperDetectorConstruction;
 class G4UIdirectory;
 class G4UIcommand;
 class G4UIcmdWithABool;
+class G4UIcmdWithoutParameter;
 
 class SkipperPrimaryMessenger: public G4UImessenger
 {
@@ -24,6 +25,7 @@ class SkipperPrimaryMessenger: public G4UImessenger
 
     G4UIdirectory* ComptonDir;
     G4UIcmdWithABool* GammaSourceCmd;
+    G4UIcmdWithoutParameter* DelGeomCmd;
 };
 
 #endif

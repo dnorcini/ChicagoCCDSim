@@ -87,7 +87,7 @@ void SkipperSteppingAction::UserSteppingAction(const G4Step* step)
     G4ThreeVector worldPosition = step->GetPreStepPoint()->GetPosition();
     G4ThreeVector localPosition = theTouchable->GetHistory()->GetTopTransform().TransformPoint(worldPosition);
 
-
+/*
     G4int trackid = track->GetTrackID();
     G4int parentid = track->GetParentID();
     G4int ProcessCreatorType = 0;
@@ -100,10 +100,10 @@ void SkipperSteppingAction::UserSteppingAction(const G4Step* step)
     G4ParticleDefinition* ionPart = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetPrimaryVertex()->GetPrimary()->GetG4code();
     G4int primName = ionPart->GetAtomicNumber()*1000 + ionPart->GetAtomicMass();
     G4int gamma = int(fEventAction->GetGammaSource());
-
+*/
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
+/*
     analysisManager->FillNtupleDColumn(3, 0, (localPosition.getX()/um+45000)); //XCoord
     analysisManager->FillNtupleDColumn(3, 1, (localPosition.getY()/um+7500)); //YCoord
     analysisManager->FillNtupleDColumn(3, 2, (localPosition.getZ()/um+337.5)); //ZCoord
@@ -118,7 +118,7 @@ void SkipperSteppingAction::UserSteppingAction(const G4Step* step)
     analysisManager->FillNtupleIColumn(3, 11, primName); //PrimaryName
     analysisManager->FillNtupleIColumn(3, 12, gamma); //GammaSource
     analysisManager->AddNtupleRow(3);
-
+*/
     fRunAction->pdgCCD.push_back(track->GetParticleDefinition()->GetPDGEncoding());
     fRunAction->trackid.push_back(track->GetTrackID());
     fRunAction->parentid.push_back(track->GetParentID());

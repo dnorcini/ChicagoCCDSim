@@ -138,6 +138,10 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicChamber = new G4LogicalVolume(solidChamber, Steel, "Chamber");
   physChamber = new G4PVPlacement(0,G4ThreeVector(), logicChamber, "Chamber", logicWorld, false, 0, checkOverlaps);
 
+  G4Region* steelRegion = new G4Region("SteelRegion");
+  logicChamber->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicChamber);
+
 //
 //  Flanges
 //
@@ -173,6 +177,21 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0,0,103.93*mm), logicSmallTube, "SmallTube", logicWorld, false, 1, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0,0,151.97*mm), logicSmallCap, "SmallCap", logicWorld, false, 1, checkOverlaps));
 
+  G4Region* steelRegion2 = new G4Region("SteelRegion2");
+  logicFullFlange->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicFullFlange);               
+  logicSmallTubeFlange->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicSmallTubeFlange); 
+  logicLargeTubeFlange->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicLargeTubeFlange); 
+  logicLargeTube->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicLargeTube); 
+  logicSmallTube->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicSmallTube); 
+  logicSmallCap->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicSmallCap); 
+  logicFrontFlange->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicFrontFlange);               
 
 //
 // Flex Cable
@@ -185,14 +204,14 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   solidFlex = new G4SubtractionSolid("Flex", solidFlex, solidFlexHole2, 0, G4ThreeVector(-60.61*mm,17.35*mm,0));
   solidFlex = new G4SubtractionSolid("Flex", solidFlex, solidFlexHole2, 0, G4ThreeVector(-60.61*mm,-17.35*mm,0));
   G4LogicalVolume* logicFlex = new G4LogicalVolume(solidFlex, Kap, "Flex");
-  new G4PVPlacement(rotXNeg,G4ThreeVector(-26.361*mm, -12.2175*mm, 0), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
+  physFlex = new G4PVPlacement(rotXNeg,G4ThreeVector(-26.361*mm, -12.2175*mm, 0), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Silicon Backing of CCD
 //
   G4Box* solidSiBacking = new G4Box("SiBacking", 53.5051*mm, 18.9992*mm, 0.3375*mm);
   G4LogicalVolume* logicSiBacking = new G4LogicalVolume(solidSiBacking, Si, "SiBacking");
-  new G4PVPlacement(rotXNeg,G4ThreeVector(-12.3271*mm, -11.7275*mm, 0), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
+  physSiBacking = new G4PVPlacement(rotXNeg,G4ThreeVector(-12.3271*mm, -11.7275*mm, 0), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Base of CCD
@@ -208,7 +227,7 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBase, solidSkipperBaseGroove2, 0, G4ThreeVector(0, 0, 0.2015*mm));
   solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBase, solidSkipperBaseGroove3, 0, G4ThreeVector(0, 0, -1.0805*mm));
   G4LogicalVolume* logicSkipperBase = new G4LogicalVolume(solidSkipperBase, Cu, "SkipperBase");
-  new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-11.43*mm,0), logicSkipperBase, "SkipperBase", logicWorld, false, 0, checkOverlaps);
+  physSkipperBase = new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-11.43*mm,0), logicSkipperBase, "SkipperBase", logicWorld, false, 0, checkOverlaps);
 
 
 //
@@ -230,6 +249,10 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   physSmallColdHead = new G4PVPlacement(rotY, G4ThreeVector(83.8949*mm,0,0), logicSmallColdHead, "SmallColdHead", logicWorld, false, 0, checkOverlaps);
   physLargeColdHead = new G4PVPlacement(rotY, G4ThreeVector(165.8099*mm,0,0), logicLargeColdHead, "LargeColdHead", logicWorld, false, 0, checkOverlaps);
 
+  logicSmallColdHead->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicSmallColdHead);               
+  logicLargeColdHead->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicLargeColdHead); 
 
 //
 //  Detailed CCD Model
@@ -240,8 +263,8 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   //  
   ActiveVecs.push_back(G4ThreeVector(-6.614*mm, -12.4055*mm, 0));
         
-  G4Box* solidActive = new G4Box("Active", 45000*um, 7500*um, 337.5*um);
-  G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "Active");
+  G4Box* solidActive = new G4Box("CCDSensor", 45000*um, 7500*um, 337.5*um);
+  G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "CCDSensor");
 
   G4Region* actRegion = new G4Region("ActiveRegion");
   logicActive->SetRegion(actRegion);
@@ -260,7 +283,7 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicDead = new G4LogicalVolume(solidDead, Si, "Dead");
 
   for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
-    ActivePVs.push_back(new G4PVPlacement(rotXNeg, ActiveVecs[i], logicActive, "Active", logicWorld, false, i, checkOverlaps));
+    ActivePVs.push_back(new G4PVPlacement(rotXNeg, ActiveVecs[i], logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
  
     G4double ActX = ActiveVecs[i].getX();
     G4double ActY = ActiveVecs[i].getY();
@@ -290,8 +313,16 @@ void SkipperDetectorConstruction::ToggleGeometry()
   logicWorld->RemoveDaughter(physMount);
   logicWorld->RemoveDaughter(physSmallColdHead);
   logicWorld->RemoveDaughter(physLargeColdHead);
+  logicWorld->RemoveDaughter(physFlex);
+  logicWorld->RemoveDaughter(physSiBacking);
+  logicWorld->RemoveDaughter(physSkipperBase);
   for (unsigned int i=0; i < flangePhys.size(); i++) {
     logicWorld->RemoveDaughter(flangePhys[i]);
+  };
+  for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
+    logicWorld->RemoveDaughter(GetteringPVs[i]);
+    logicWorld->RemoveDaughter(DeadTopPVs[i]);
+    logicWorld->RemoveDaughter(DeadBottomPVs[i]);
   };
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }

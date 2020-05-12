@@ -49,9 +49,6 @@ class SkipperEventAction : public G4UserEventAction
     virtual void BeginOfEventAction(const G4Event* event);
     virtual void EndOfEventAction(const G4Event* event);
 
-    void AddEdep(G4double edep) { fEdep += edep/keV; }
-    void AddIntHit(G4int hit) { fIntHit += hit; }
-
     void SetGammaSource(G4bool source) {gammaSource = source;}
     G4bool GetGammaSource() {return gammaSource;}
 
@@ -60,8 +57,6 @@ class SkipperEventAction : public G4UserEventAction
   private:
     SkipperRunAction* fRunAction;
     G4bool gammaSource;
-    G4double     fEdep;
-    G4int fIntHit;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

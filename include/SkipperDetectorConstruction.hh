@@ -87,6 +87,9 @@ class SkipperDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physMount;
     G4VPhysicalVolume* physSmallColdHead;
     G4VPhysicalVolume* physLargeColdHead;
+    G4VPhysicalVolume* physFlex;
+    G4VPhysicalVolume* physSiBacking;
+    G4VPhysicalVolume* physSkipperBase;
 
     G4Material *Si;
     G4Material *Cu;

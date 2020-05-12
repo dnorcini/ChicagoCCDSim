@@ -73,6 +73,7 @@ void SkipperPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     if (randGen <= 0.8551) {gammaEn = 122.06065*keV;}
     else if (randGen > 0.8551 && randGen <= 0.9622) {gammaEn = 136.47356*keV;}
     else if (randGen > 0.9622) {gammaEn = 14.41295*keV;};
+
     G4SPSEneDistribution* eneDist = fParticleSource->GetCurrentSource()->GetEneDist();
     eneDist->SetEnergyDisType("Mono");
     eneDist->SetMonoEnergy(gammaEn);

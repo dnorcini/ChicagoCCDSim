@@ -35,7 +35,6 @@
 
 class SkipperDetectorConstruction;
 class SkipperPrimaryGeneratorAction;
-class SkipperRunAction;
 /// Action initialization class.
 
 class SkipperActionInitialization : public G4VUserActionInitialization
@@ -48,7 +47,7 @@ class SkipperActionInitialization : public G4VUserActionInitialization
     virtual void Build() const;
   private:
     SkipperDetectorConstruction* detectorConstruction;
-    SkipperPrimaryGeneratorAction* primGenAction;
+//    SkipperPrimaryGeneratorAction* primGenAction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
