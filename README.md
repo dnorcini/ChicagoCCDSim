@@ -30,9 +30,10 @@ $ make -j<number of processors on your computer>
 ## Build 
 The program is tested and supported on `zev.uchicago.edu` using Geant4.10.03, configured with Qt viewer. The G4 source code can be found on `zev` via `/usr/local/geant41031/`.
  
-To install ChicagoCCDSim on your `zev` account, and making life easier, first add some environmental variables to your `.bashrc` file:
+To install ChicagoCCDSim on your `zev` account, and making life easier, first source the geant build and add some environmental variables to your `.bashrc` file:
 ```
-# env variables
+# geant4
+source /usr/local/geant41031/bin/geant4.sh
 export CG4=<path/to/source/directory>/ChicagoCCDSim
 export CG4_BUILD=<path/to/build/directory>/ChicagoCCDSim_build
 export CG4_OUTPUT=<path/to/output/directory>/ChicagoCCDSim_output
@@ -46,7 +47,7 @@ $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
 $ cd $CG4_BUILD
-$ cmake -DGeant4_DIR=//usr/local/geant41031/lib64/Geant4-10.3.1 $CG4
+$ cmake -DCMAKE_BUILD_TYPE=Release -DGEANT4_BUILD_MULTITHREADED=ON -DGeant4_DIR=//usr/local/geant41031/lib64/Geant4-10.3.1 $CG4 
 $ make -j<number of processors on your computer> 
 ```
 ## Run
