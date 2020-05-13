@@ -15,11 +15,8 @@
 #include "QBBC.hh"
 #include "LBE.hh"
 
-#include "PSPhysListFactory.hh"
-#include "PSPhysicsList.hh"
 //#include "DAMICPhysicsList.hh"
 #include "DAMICPhysicsListLivermore.hh"
-#include "defines.hh"
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
