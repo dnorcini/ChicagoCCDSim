@@ -15,14 +15,21 @@ The goal of the program is generate models for various particle interactions in 
 This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). 
 ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
 
+## Dependencies
+- cmake (http://www.cmake.org/): sufficiently new version for other dependencies (>= 3 recommended)
+- Geant4 (http://geant4.cern.ch): known to compile with versions 4.10.03 (cmake flags: -DGEANT4_INSTALL_DATA=ON)
+- ROOT (http://root.cern.ch): known to work with versions 5.34/18
+- For visualization, it's also useful to have some of Geant4's optional graphics dependencies installed (see Geant4's install guides), e.g. QT and OpenGL libraries (cmake flags: -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON)
+
 ## Build 
-The program is tested and supported on `zev.uchicago.edu`. `Geant4.10`, configured with Qt viewer, is used and the source code can be found on zev via `/find_source_directory!!!/geant4.10.02.p01`.
+The program is tested and supported on `zev.uchicago.edu`. Geant4.10.03, configured with Qt viewer, is used and the source code can be found on `zev` via `/usr/local/geant41031/`.
  
-To install on `zev`, to make life easier, first add some environmental variables to your `.bashrc` file:
+To install on `zev`, and making life easier, first add some environmental variables to your `.bashrc` file:
 ```
 # env variables
 export CG4=<path/to/source/directory>/ChicagoCCDSim
-export CG4_build=<path/to/source/directory>/ChicagoCCDSim_build
+export CG4_BUILD=<path/to/build/directory>/ChicagoCCDSim_build
+export CG4_OUTPUT=<path/to/output/directory>/ChicagoCCDSim_output
 ```
 
 Then complete the following steps (this assumes a working GitHub account):
@@ -32,13 +39,20 @@ $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
 $ cd $CG4_build
-$ cmake -DGeant4_DIR=/usr/local/geant41031/lib64/Geant4-10.3.1/ $CG4
-$ make 
+$ cmake -DCMAKE_INSTALL_PREFIX $CG4_BUILD -DGEANT4_DIR=$CG4 -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
+$ make -j<number of processors on your computer> 
 ```
 ## Run
-The Qt GUI can be entered with the command `./ChicagoCCDSim` in the build directory. Individual user commands can be entered interactively on the GUI command line. To run in batch mode for long-statistics runs, the basic command `./ChicagoCCDSim -m batch.mac` can be used. 
+The QT GUI can be entered with the command `./ChicagoCCDSim` in the build directory (what default macro does it run??). To run a select macro, use `./ChicagoCCDSim <macro_file.mac>`. See the `mac/` directory for example macros. 
 
 .... add info about loops and geometry messengers
+
+## Output
+The simulation output is a ROOT TTree. The branches of the TTree (named "???") ...
+
+Output branches include:
+- Prim (class ParticleEvent): event primary particles
+- ... update
 
 ## Physics lists
 - ...
