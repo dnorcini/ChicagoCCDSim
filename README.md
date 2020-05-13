@@ -5,12 +5,18 @@
 May 2020
 
 ## Overview
-This program models energy depositions from various particle types in a silicon CCD. Using GEANT-4, a particle physics simulation based on C++ and the ROOT framework, the Chicago CCD Chamber geometry represented includes:
+This program models energy depositions from various particle types in a silicon CCD using GEANT-4, a particle physics simulation based on C++ and the ROOT framework. Currently the Chicago CCD chamber (basement) geometry represented in the package includes:
 
-- add all chamber, CCD geo details here...
-- ...
+- vacuum chamber (at coordintes (0,0,0))
+- chamber flanges
+- Kapton flex cable
+- cold head mount
+- cold head
+- CCD backing
+- CCD base
+- detaild 1kx6k skipper CCD model (active, getting, and dead layers)
 
-The goal of the program is generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
+The goal of the program is to generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
 
 This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). 
 ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
