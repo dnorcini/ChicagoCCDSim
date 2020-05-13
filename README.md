@@ -45,7 +45,7 @@ $ mkdir <path/to/source/directory>/ChicagoCCDSim
 $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
-$ cd $CG4_build
+$ cd $CG4_BUILD
 $ cmake -DGEANT4_DIR=$CG4
 $ make -j<number of processors on your computer> 
 ```
