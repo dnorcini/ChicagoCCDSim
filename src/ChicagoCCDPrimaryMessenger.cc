@@ -1,6 +1,9 @@
-#include "SkipperPrimaryMessenger.hh"
-#include "SkipperPrimaryGeneratorAction.hh"
-#include "SkipperDetectorConstruction.hh"
+// ChicagoCCDPrimaryMessenger.cc
+// implementation of ChicagoCCDPrimaryMessenger class
+
+#include "ChicagoCCDPrimaryMessenger.hh"
+#include "ChicagoCCDPrimaryGeneratorAction.hh"
+#include "ChicagoCCDDetectorConstruction.hh"
 
 #include "G4UIdirectory.hh"
 /*
@@ -11,9 +14,9 @@
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4SystemOfUnits.hh"
 
-SkipperPrimaryMessenger::SkipperPrimaryMessenger(SkipperPrimaryGeneratorAction* Prim, SkipperDetectorConstruction* Det)
-:SkipperPrimaryGenerator(Prim),
-SkipperDetector(Det)
+ChicagoCCDPrimaryMessenger::ChicagoCCDPrimaryMessenger(ChicagoCCDPrimaryGeneratorAction* Prim, ChicagoCCDDetectorConstruction* Det)
+:ChicagoCCDPrimaryGenerator(Prim),
+ChicagoCCDDetector(Det)
 {
   ComptonDir = new G4UIdirectory("/compton/");
   ComptonDir->SetGuidance("Commands for Compton test.");
@@ -25,21 +28,21 @@ SkipperDetector(Det)
   DelGeomCmd->SetGuidance("Delete geometry for comparison.");
 }
 
-SkipperPrimaryMessenger::~SkipperPrimaryMessenger()
+ChicagoCCDPrimaryMessenger::~ChicagoCCDPrimaryMessenger()
 {
   delete DelGeomCmd;
   delete GammaSourceCmd;
   delete ComptonDir;
 }
 
-void SkipperPrimaryMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
+void ChicagoCCDPrimaryMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
   if( command == GammaSourceCmd )
     {
-      SkipperPrimaryGenerator->SetGammaSource(GammaSourceCmd->GetNewBoolValue(newValue));
+      ChicagoCCDPrimaryGenerator->SetGammaSource(GammaSourceCmd->GetNewBoolValue(newValue));
     }
   if( command == DelGeomCmd )
     {
-      SkipperDetector->ToggleGeometry();
+      ChicagoCCDDetector->ToggleGeometry();
     }
 }

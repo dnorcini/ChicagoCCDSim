@@ -1,38 +1,11 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-// $Id: SkipperRunAction.cc 93886 2015-11-03 08:28:26Z gcosmo $
-//
-/// \file SkipperRunAction.cc
-/// \brief Implementation of the SkipperRunAction class
+// ChicagoCCDRunAction.cc
+// implementation of the ChicagoCCDRunAction class
 
-#include "SkipperRunAction.hh"
-#include "SkipperPrimaryGeneratorAction.hh"
-#include "SkipperDetectorConstruction.hh"
-#include "SkipperAnalysis.hh"
-//#include "SkipperRun.hh"
+#include "ChicagoCCDRunAction.hh"
+#include "ChicagoCCDPrimaryGeneratorAction.hh"
+#include "ChicagoCCDDetectorConstruction.hh"
+#include "ChicagoCCDAnalysis.hh"
+//#include "ChicagoCCDRun.hh"
 
 #include "G4RunManager.hh"
 #include "G4Run.hh"
@@ -47,7 +20,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SkipperRunAction::SkipperRunAction(SkipperDetectorConstruction *skipperDetector, SkipperPrimaryGeneratorAction* primGenAction)
+ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipperDetector, ChicagoCCDPrimaryGeneratorAction* primGenAction)
 : G4UserRunAction(),
   fDetectorConstruction(skipperDetector),
   fPrimGen(primGenAction)
@@ -138,14 +111,14 @@ SkipperRunAction::SkipperRunAction(SkipperDetectorConstruction *skipperDetector,
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SkipperRunAction::~SkipperRunAction()
+ChicagoCCDRunAction::~ChicagoCCDRunAction()
 {
   delete G4AnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void SkipperRunAction::BeginOfRunAction(const G4Run*)
+void ChicagoCCDRunAction::BeginOfRunAction(const G4Run*)
 { 
   // inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
@@ -161,7 +134,7 @@ void SkipperRunAction::BeginOfRunAction(const G4Run*)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void SkipperRunAction::EndOfRunAction(const G4Run* run)
+void ChicagoCCDRunAction::EndOfRunAction(const G4Run* run)
 {
   G4int nEvts = run->GetNumberOfEvent();
   if (nEvts == 0) return;
@@ -215,7 +188,7 @@ void SkipperRunAction::EndOfRunAction(const G4Run* run)
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void SkipperRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* physVol) {
+void ChicagoCCDRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* physVol) {
   G4LogicalVolume* logVol = physVol->GetLogicalVolume();
   G4VSolid* solVol = logVol->GetSolid();
   volVals.concatedVolumeNames += physVol->GetName() + ";"; 

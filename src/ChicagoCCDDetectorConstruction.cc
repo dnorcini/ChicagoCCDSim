@@ -1,36 +1,7 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-// $Id: SkipperDetectorConstruction.cc 94307 2015-11-11 13:42:46Z gcosmo $
-//
-/// \file SkipperDetectorConstruction.cc
-/// \brief Implementation of the SkipperDetectorConstruction class
+// ChicagoCCDDetectorConstruction.cc
+// implementation of the ChicagoCCDDetectorConstruction class
 
-#include "SkipperDetectorConstruction.hh"
-
-#include "defines.hh"
+#include "ChicagoCCDDetectorConstruction.hh"
 
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
@@ -59,7 +30,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SkipperDetectorConstruction::SkipperDetectorConstruction()
+ChicagoCCDDetectorConstruction::ChicagoCCDDetectorConstruction()
 : G4VUserDetectorConstruction()
 {
   ConstructMaterials();
@@ -67,12 +38,12 @@ SkipperDetectorConstruction::SkipperDetectorConstruction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SkipperDetectorConstruction::~SkipperDetectorConstruction()
+ChicagoCCDDetectorConstruction::~ChicagoCCDDetectorConstruction()
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void SkipperDetectorConstruction::ConstructMaterials() {
+void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   G4NistManager* nist = G4NistManager::Instance();
   Si = nist->FindOrBuildMaterial("G4_Si");
   Cu = nist->FindOrBuildMaterial("G4_Cu");
@@ -85,12 +56,12 @@ void SkipperDetectorConstruction::ConstructMaterials() {
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
 
-G4VPhysicalVolume* SkipperDetectorConstruction::Construct()
+G4VPhysicalVolume* ChicagoCCDDetectorConstruction::Construct()
 {
   return ConstructWorld();
 }
 
-G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
+G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 {  
   // Get nist material manager
   G4GeometryManager::GetInstance()->OpenGeometry();
@@ -217,17 +188,17 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
 //  Base of CCD
 //
 
-  G4Box* solidSkipperBaseSketch = new G4Box("SkipperBaseSketch", 73.025*mm, 34.925*mm, 1.905*mm);
-  G4Box* solidSkipperBaseGroove1a = new G4Box("SkipperBaseGroove1a", 65.405*mm, 27.305*mm, 0.636*mm);
-  G4Box* solidSkipperBaseGroove1b = new G4Box("SkipperBaseGroove1b", 3.82*mm, 15.24*mm, 0.636*mm);
-  G4Box* solidSkipperBaseGroove2 = new G4Box("SkipperBaseGroove2", 55.753*mm, 21.1582*mm, 0.4555*mm);
-  G4Box* solidSkipperBaseGroove3 = new G4Box("SkipperBaseGroove3", 50.038*mm, 14.986*mm, 0.8365*mm);
-  G4SubtractionSolid* solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBaseSketch, solidSkipperBaseGroove1a, 0, G4ThreeVector(0,0,1.271*mm));
-  solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBase, solidSkipperBaseGroove1b, 0, G4ThreeVector(69.215*mm, 0, 1.271*mm));
-  solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBase, solidSkipperBaseGroove2, 0, G4ThreeVector(0, 0, 0.2015*mm));
-  solidSkipperBase = new G4SubtractionSolid("SkipperBase", solidSkipperBase, solidSkipperBaseGroove3, 0, G4ThreeVector(0, 0, -1.0805*mm));
-  G4LogicalVolume* logicSkipperBase = new G4LogicalVolume(solidSkipperBase, Cu, "SkipperBase");
-  physSkipperBase = new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-11.43*mm,0), logicSkipperBase, "SkipperBase", logicWorld, false, 0, checkOverlaps);
+  G4Box* solidChicagoCCDBaseSketch = new G4Box("ChicagoCCDBaseSketch", 73.025*mm, 34.925*mm, 1.905*mm);
+  G4Box* solidChicagoCCDBaseGroove1a = new G4Box("ChicagoCCDBaseGroove1a", 65.405*mm, 27.305*mm, 0.636*mm);
+  G4Box* solidChicagoCCDBaseGroove1b = new G4Box("ChicagoCCDBaseGroove1b", 3.82*mm, 15.24*mm, 0.636*mm);
+  G4Box* solidChicagoCCDBaseGroove2 = new G4Box("ChicagoCCDBaseGroove2", 55.753*mm, 21.1582*mm, 0.4555*mm);
+  G4Box* solidChicagoCCDBaseGroove3 = new G4Box("ChicagoCCDBaseGroove3", 50.038*mm, 14.986*mm, 0.8365*mm);
+  G4SubtractionSolid* solidChicagoCCDBase = new G4SubtractionSolid("ChicagoCCDBase", solidChicagoCCDBaseSketch, solidChicagoCCDBaseGroove1a, 0, G4ThreeVector(0,0,1.271*mm));
+  solidChicagoCCDBase = new G4SubtractionSolid("ChicagoCCDBase", solidChicagoCCDBase, solidChicagoCCDBaseGroove1b, 0, G4ThreeVector(69.215*mm, 0, 1.271*mm));
+  solidChicagoCCDBase = new G4SubtractionSolid("ChicagoCCDBase", solidChicagoCCDBase, solidChicagoCCDBaseGroove2, 0, G4ThreeVector(0, 0, 0.2015*mm));
+  solidChicagoCCDBase = new G4SubtractionSolid("ChicagoCCDBase", solidChicagoCCDBase, solidChicagoCCDBaseGroove3, 0, G4ThreeVector(0, 0, -1.0805*mm));
+  G4LogicalVolume* logicChicagoCCDBase = new G4LogicalVolume(solidChicagoCCDBase, Cu, "ChicagoCCDBase");
+  physChicagoCCDBase = new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-11.43*mm,0), logicChicagoCCDBase, "ChicagoCCDBase", logicWorld, false, 0, checkOverlaps);
 
 
 //
@@ -307,7 +278,7 @@ G4VPhysicalVolume* SkipperDetectorConstruction::ConstructWorld()
   return physWorld;
 }
 
-void SkipperDetectorConstruction::ToggleGeometry()
+void ChicagoCCDDetectorConstruction::ToggleGeometry()
 {
   logicWorld->RemoveDaughter(physChamber);
   logicWorld->RemoveDaughter(physMount);
@@ -315,7 +286,7 @@ void SkipperDetectorConstruction::ToggleGeometry()
   logicWorld->RemoveDaughter(physLargeColdHead);
   logicWorld->RemoveDaughter(physFlex);
   logicWorld->RemoveDaughter(physSiBacking);
-  logicWorld->RemoveDaughter(physSkipperBase);
+  logicWorld->RemoveDaughter(physChicagoCCDBase);
   for (unsigned int i=0; i < flangePhys.size(); i++) {
     logicWorld->RemoveDaughter(flangePhys[i]);
   };
@@ -329,7 +300,7 @@ void SkipperDetectorConstruction::ToggleGeometry()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4int SkipperDetectorConstruction::GetCCDNum(G4VPhysicalVolume *volume) {
+G4int ChicagoCCDDetectorConstruction::GetCCDNum(G4VPhysicalVolume *volume) {
   for (int i=0; i < number_of_CCDs; i++) {
     if (volume == ActivePVs.at(i)) return i+1;
   }

@@ -2,7 +2,7 @@
 
 #include "DAMICVolumeCoordinateStore.hh"
 #include "DAMICParticleSource.hh"
-#include "SkipperAnalysis.hh"
+#include "ChicagoCCDAnalysis.hh"
 
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
