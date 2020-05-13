@@ -50,6 +50,9 @@ $ cd $CG4_BUILD
 $ cmake -DCMAKE_BUILD_TYPE=Release -DGEANT4_BUILD_MULTITHREADED=ON -DGeant4_DIR=//usr/local/geant41031/lib64/Geant4-10.3.1 $CG4 
 $ make -j<number of processors on your computer> 
 ```
+
+Note: if you do not compile with the multithreaded flag, you can still run the simulation in singlethreaded mode, as long as your run macro does not indicate multiple threads.
+
 ## Run
 The QT GUI can be entered with the command `./ChicagoCCDSim` in the build directory (what default macro does it run??). To run a select macro, use `./ChicagoCCDSim <macro_file.mac>`. See the `mac/` directory for example macros. 
 
