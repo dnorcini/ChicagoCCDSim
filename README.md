@@ -5,18 +5,7 @@
 May 2020
 
 ## Overview
-This program models energy depositions from various particle types in a silicon CCD using GEANT-4, a particle physics simulation based on C++ and the ROOT framework. Currently the Chicago CCD chamber (basement) geometry represented in the package includes:
-
-- vacuum chamber (at coordintes (0,0,0))
-- chamber flanges
-- Kapton flex cable
-- cold head mount
-- cold head
-- CCD backing
-- CCD base
-- detaild 1kx6k skipper CCD model (active, getting, and dead layers)
-
-The goal of the program is to generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
+This program models energy depositions from various particle types in a silicon CCD using GEANT-4, a particle physics simulation based on C++ and the ROOT framework. Using detailed models of the CCD and the vacuum chamber it resides in, the program is used to generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
 
 This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). 
 ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
@@ -71,8 +60,23 @@ Output branches include:
 - Prim (class ParticleEvent): event primary particles
 - ... update
 
+## Geometry
+Currently the Chicago CCD chamber (basement) geometry represented in the package includes:
+
+- vacuum chamber (at coordintes (0,0,0))
+- chamber flanges
+- Kapton flex cable
+- cold head mount
+- cold head
+- CCD backing
+- CCD base
+- detailed 1kx6k skipper CCD model (active, getting, and dead layers)
+
+Note: the coordinate system implemented uses the following representations: x (left/right), y (front/back), and z (top/bottom). This is in contrast to the typical GEANT4 coordinates where z represents the (left/right) or the direction of a particle beam in an accelerator. 
+
 ## Physics lists
-- ...
+- DAMICPhysListLivermore 
+- ... add details
 
 ## Particle generators
 - ...
