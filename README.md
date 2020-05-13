@@ -22,17 +22,18 @@ ADD: details about single vs multi threaded, if using special classes like geome
 - For visualization, it's also useful to have some of Geant4's optional graphics dependencies installed (see Geant4's install guides), e.g. QT and OpenGL libraries (cmake flags: -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON)
 
 ## Build 
-The program is tested and supported on `zev.uchicago.edu`. Geant4.10.03, configured with Qt viewer, is used and the source code can be found on `zev` via `/usr/local/geant41031/`.
+The program is tested and supported on `zev.uchicago.edu` using Geant4.10.03, configured with Qt viewer. The G4 source code can be found on `zev` via `/usr/local/geant41031/`.
  
-To install on `zev`, and making life easier, first add some environmental variables to your `.bashrc` file:
+To install ChicagoCCDSim on your `zev` account, and making life easier, first add some environmental variables to your `.bashrc` file:
 ```
 # env variables
 export CG4=<path/to/source/directory>/ChicagoCCDSim
 export CG4_BUILD=<path/to/build/directory>/ChicagoCCDSim_build
 export CG4_OUTPUT=<path/to/output/directory>/ChicagoCCDSim_output
 ```
+The output directory should be located in a place with adequate disk space (e.g. `/data/` on `zev`), while both the source and build paths can live in the `/home/` space.
 
-Then complete the following steps (this assumes a working GitHub account):
+Complete the following steps to compile ChicagoCCDSim (this assumes a working GitHub account):
 ```
 $ mkdir <path/to/source/directory>/ChicagoCCDSim
 $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
