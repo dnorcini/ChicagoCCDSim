@@ -1,5 +1,6 @@
 #include <cmath>
 
+#include "DAMICVolumeCoordinateStore.hh"
 #include "DAMICParticleSource.hh"
 #include "ChicagoCCDAnalysis.hh"
 
