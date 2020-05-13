@@ -83,6 +83,9 @@ Note: the coordinate system implemented uses the following representations: x (l
 
 ## To Do: Improvements
 - create millicharged particle generator
+- implement Bischel low energy model
+- new upstairs chamber geometry
+- run config files
 - ...
 
 ## Notes
