@@ -21,6 +21,12 @@ ADD: details about single vs multi threaded, if using special classes like geome
 - ROOT (http://root.cern.ch): known to work with versions 5.34/18
 - For visualization, it's also useful to have some of Geant4's optional graphics dependencies installed (see Geant4's install guides), e.g. QT and OpenGL libraries (cmake flags: -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON)
 
+To build Geant4 with the above configurations, use the following cmake flags in the build directory:
+```
+$ cmake -DCMAKE_INSTALL_PREFIX=<absolute/path/to/geant_build_dir> <path/to/geant_source_dir> -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
+$ make -j<number of processors on your computer> 
+```
+
 ## Build 
 The program is tested and supported on `zev.uchicago.edu` using Geant4.10.03, configured with Qt viewer. The G4 source code can be found on `zev` via `/usr/local/geant41031/`.
  
@@ -40,7 +46,7 @@ $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
 $ cd $CG4_build
-$ cmake -DCMAKE_INSTALL_PREFIX $CG4_BUILD -DGEANT4_DIR=$CG4 -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
+$ cmake -DGEANT4_DIR=$CG4
 $ make -j<number of processors on your computer> 
 ```
 ## Run
