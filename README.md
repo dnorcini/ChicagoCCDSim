@@ -1,7 +1,9 @@
 # Chicago CCD GEANT4 simulation
 
 Nick Corso (ncorso@uchicago.edu)
+
 Danielle Norcini (dnorcini@kicp.uchicago.edu)
+
 May 2020
 
 ## Overview
