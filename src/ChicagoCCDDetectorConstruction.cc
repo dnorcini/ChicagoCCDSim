@@ -303,7 +303,7 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4int ChicagoCCDDetectorConstruction::GetCCDNum(G4VPhysicalVolume *volume) {
-  for (int i=0; i < number_of_CCDs; i++) {
+  for (int i=0; i < GetTotCCDs(); i++) {
     if (volume == ActivePVs.at(i)) return i+1;
   }
   return -1;
