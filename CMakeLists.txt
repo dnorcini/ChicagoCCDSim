@@ -51,9 +51,9 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #-------------------------------
 
 ######## locate ROOT install, headers, includes
-#include(FindROOT.cmake)
-#include_directories(${ROOT_INCLUDE_DIR})
-#link_directories(${ROOT_LIBRARY_DIR})
+include(FindROOT.cmake)
+include_directories(${ROOT_INCLUDE_DIR})
+link_directories(${ROOT_LIBRARY_DIR})
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
