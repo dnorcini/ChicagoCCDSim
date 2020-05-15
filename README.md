@@ -27,6 +27,8 @@ The program is tested and supported on `zev.uchicago.edu` using Geant4.10.03, co
  
 To install ChicagoCCDSim on your `zev` account, and making life easier, first source the geant build and add some environmental variables to your `.bashrc` file:
 ```
+# .bashrc
+
 # geant4
 source /usr/local/geant41031/bin/geant4.sh
 export CG4=<path/to/source/directory>/ChicagoCCDSim
