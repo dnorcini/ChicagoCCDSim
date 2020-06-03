@@ -8,17 +8,20 @@ May 2020
 This program models energy depositions from various particle types in a silicon CCD using GEANT-4, a particle physics simulation based on C++ and the ROOT framework. Using detailed models of the CCD and the vacuum chamber it resides in, the program is used to generate models for various particle interactions in silicon, which can be compared to theoretical predictions. This is especially essential for low-energy events (sub-keV) that Skipper CCDs have access to, which are currently not well-modeled or measured. 
 
 This package was created based from Example B1 in the GEANT-4 examples guide (http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/ExampleB1.html). 
+
 ADD: details about single vs multi threaded, if using special classes like geometry messengers, sensitive detector volues, photon tracking, ....
 
 ## Dependencies
 - cmake (http://www.cmake.org/): sufficiently new version for other dependencies (>= 3 recommended)
-- Geant4 (http://geant4.cern.ch): known to compile with versions 4.10.03 (cmake flags: -DGEANT4_INSTALL_DATA=ON)
+- GEANT-4 (http://geant4.cern.ch): known to compile with versions 4.10.03 (cmake flags: -DGEANT4_INSTALL_DATA=ON)
 - ROOT (http://root.cern.ch): known to work with versions 5.34/18
-- For visualization, it's also useful to have some of Geant4's optional graphics dependencies installed (see Geant4's install guides), e.g. QT and OpenGL libraries (cmake flags: -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON)
+- Qt (https://www.qt.io/download-qt-installer): for visualization (cmake flags: -DGEANT4_USE_QT=ON)
+- OpenGL (https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL): for visualization (cmake flags: -DGEANT4_USE_OPENGL_X11=ON)
+- GDML (http://lcgapp.cern.ch/project/simu/framework/GDML/): geometry description format based on XML (cmake flags: -DGEANT4_USE_GDML=ON)
 
 To build Geant4 with the above configurations, use the following cmake flags in the build directory:
 ```
-$ cmake -DCMAKE_INSTALL_PREFIX=<absolute/path/to/geant_build_dir> <path/to/geant_source_dir> -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
+$ cmake -DCMAKE_INSTALL_PREFIX=<absolute/path/to/geant_build_dir> <path/to/geant_source_dir> -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_GDML=ON  -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
 $ make -j<number of processors on your computer> 
 ```
 
