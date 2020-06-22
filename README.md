@@ -42,10 +42,9 @@ The output directory should be located in a place with adequate disk space (e.g.
 
 Complete the following steps to compile ChicagoCCDSim (this assumes a working GitHub account):
 ```
-$ mkdir <path/to/source/directory>/ChicagoCCDSim
-$ mkdir <path/to/build/directory>/ChicagoCCDSim_build
-$ cd $CG4
+$ cd <path/to/source/directory>/
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
+$ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4_BUILD
 $ cmake -DCMAKE_BUILD_TYPE=Release -DGEANT4_BUILD_MULTITHREADED=ON -DGeant4_DIR=//usr/local/geant41031/lib64/Geant4-10.3.1 $CG4 
 $ make -j<number of processors on your computer> 
