@@ -42,7 +42,7 @@ The output directory should be located in a place with adequate disk space (e.g.
 
 Complete the following steps to compile ChicagoCCDSim (this assumes a working GitHub account):
 ```
-$ cd <path/to/source/directory>/
+$ cd <path/to/source/directory>
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
 $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4_BUILD
