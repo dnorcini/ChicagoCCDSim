@@ -76,9 +76,11 @@ file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/mac")
 file(COPY "mac" DESTINATION "${CMAKE_BINARY_DIR}")
 
 set(SCRIPTS
-  ChicagoCCDSim.mac
   init_vis.mac
   vis.mac
+  singlerun.mac
+  test.mac
+  test_full.mac
   )
 
 #################

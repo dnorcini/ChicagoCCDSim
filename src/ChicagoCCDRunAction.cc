@@ -5,7 +5,6 @@
 #include "ChicagoCCDPrimaryGeneratorAction.hh"
 #include "ChicagoCCDDetectorConstruction.hh"
 #include "ChicagoCCDAnalysis.hh"
-//#include "ChicagoCCDRun.hh"
 
 #include "G4RunManager.hh"
 #include "G4Run.hh"
@@ -16,6 +15,10 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "Randomize.hh"
+#include "G4MTHepRandom.hh"
+
+#include <ctime>
 #include <vector>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -25,10 +28,12 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   fDetectorConstruction(skipperDetector),
   fPrimGen(primGenAction)
 {
+  // Create output trees
+  // N.B. many columns are vectors. These must be passed in by reference from the start. So when we update the rows, we fill the vector values and the row update will automatically put in the values
   G4RunManager::GetRunManager()->SetPrintProgress(1);
   G4AnalysisManager* analysisManager =G4AnalysisManager::Instance();
-  G4cout << "Using " << analysisManager->GetType() << G4endl;
   analysisManager->SetVerboseLevel(3);
+
   // 
   // RunInfo Tree
   //
@@ -55,6 +60,7 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   eventout = analysisManager->CreateNtuple("EventOut","EventOut");
   analysisManager->CreateNtupleIColumn(eventout, "EventID"); // event ID #
   analysisManager->CreateNtupleIColumn(eventout, "pdg", pdgPrim); // pdg code of primary particle
+  analysisManager->CreateNtupleIColumn(eventout, "primaryid", primaryid); // track ID of primary
   analysisManager->CreateNtupleIColumn(eventout, "charge", chargePrim); // charge of ''
   analysisManager->CreateNtupleIColumn(eventout, "volid", volidPrim); // volume where particle is generated
   analysisManager->CreateNtupleDColumn(eventout, "energy", energyPrim); // kinetic energy of primary particle
@@ -75,7 +81,8 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   analysisManager->CreateNtupleIColumn(ccdout, "EventID"); // event ID #
   analysisManager->CreateNtupleIColumn(ccdout, "pdg", pdgCCD); // pdg code for particle hitting CCD
   analysisManager->CreateNtupleIColumn(ccdout, "trackid", trackid); // track ID number
-  analysisManager->CreateNtupleIColumn(ccdout, "parentid", parentid); // track id of mother particle
+  analysisManager->CreateNtupleIColumn(ccdout, "parentid", parentid); // track ID of mother particle
+  analysisManager->CreateNtupleIColumn(ccdout, "primaryid", primaryidCCD); // track ID of primary
   analysisManager->CreateNtupleIColumn(ccdout, "CCDid", CCDid); // ID # of CCD
   analysisManager->CreateNtupleDColumn(ccdout, "posx", posxCCD); //
   analysisManager->CreateNtupleDColumn(ccdout, "posy", posyCCD); // Edep-weighted avg position per pixel
@@ -86,27 +93,6 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   analysisManager->CreateNtupleDColumn(ccdout, "Edep", Edep); // total energy deposited
   analysisManager->CreateNtupleDColumn(ccdout, "time", time); // time wrt to event trigger time
   analysisManager->FinishNtuple(ccdout); 
-/*
-  // 
-  // OldInfo Tree
-  //
-
-  oldinfo = analysisManager->CreateNtuple("Output","Output Info");
-  analysisManager->CreateNtupleDColumn(oldinfo, "XCoord");
-  analysisManager->CreateNtupleDColumn(oldinfo, "YCoord");
-  analysisManager->CreateNtupleDColumn(oldinfo, "ZCoord");
-  analysisManager->CreateNtupleDColumn(oldinfo, "TopBot");
-  analysisManager->CreateNtupleDColumn(oldinfo, "EnergyDeposit");
-  analysisManager->CreateNtupleIColumn(oldinfo, "PartIDElec");
-  analysisManager->CreateNtupleIColumn(oldinfo, "IDPrim");
-  analysisManager->CreateNtupleIColumn(oldinfo, "ProcessNum1");
-  analysisManager->CreateNtupleIColumn(oldinfo, "ProcessNum2");
-  analysisManager->CreateNtupleIColumn(oldinfo, "CCDNum");
-  analysisManager->CreateNtupleIColumn(oldinfo, "ParentIDElec");
-  analysisManager->CreateNtupleIColumn(oldinfo, "PrimaryName");
-  analysisManager->CreateNtupleIColumn(oldinfo, "GammaSource");
-  analysisManager->FinishNtuple(oldinfo);
-*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -129,7 +115,6 @@ void ChicagoCCDRunAction::BeginOfRunAction(const G4Run*)
 
   runInfoVals.concatedVolumeNames = ";";
   BuildVolList(runInfoVals, fDetectorConstruction->GetPhysWorld()); 
-  G4cout << "convatedVolumeNames = " << runInfoVals.concatedVolumeNames << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -150,22 +135,15 @@ void ChicagoCCDRunAction::EndOfRunAction(const G4Run* run)
 
   G4int Seed = G4RunManager::GetRunManager()->GetRandomNumberStore();
 
-//  G4cout << "concatedVolumeNames" << runInfoVals.concatedVolumeNames << G4endl;
-//  G4cout << "volumeNameID" << runInfoVals.volumeNameID << G4endl;
-//  G4cout << "volumeMass" << runInfoVals.volumeMass << G4endl;
-//  G4cout << "volumeDensity" << runInfoVals.volumeDensity << G4endl;
-//  G4cout << "volumeVolume" << runInfoVals.volumeVolume << G4endl;
-//  G4cout << "volumeSurface" << runInfoVals.volumeSurface << G4endl;
-
   G4ParticleDefinition* partDef = fPrimGen->fParticleSource->GetCurrentSource()->GetParticleDefinition(); 
   G4String primaryParticle = partDef->GetParticleName();
 
-  std::ostringstream ms;
-  ms << partDef->GetAtomicMass();
-  G4String atMass = ms.str();
-  std::ostringstream ns;
-  ns << partDef->GetAtomicNumber();
-  G4String atNum = ns.str();
+  std::ostringstream massstr;
+  massstr << partDef->GetAtomicMass();
+  G4String atMass = massstr.str();
+  std::ostringstream numstr;
+  numstr << partDef->GetAtomicNumber();
+  G4String atNum = numstr.str();
 
   G4String primaryIon = atMass + "a" + atNum + "z";
   G4String simulatedVolume = "World";
@@ -189,6 +167,7 @@ void ChicagoCCDRunAction::EndOfRunAction(const G4Run* run)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ChicagoCCDRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* physVol) {
+  // The RunInfo output requires a bunch of information about the geometry of the simulation. This function starts with one physical volume and iterates through it and its descendents to construct a list of their names and corresponding vectors of their properties. Input the world volume to get every piece of geometry
   G4LogicalVolume* logVol = physVol->GetLogicalVolume();
   G4VSolid* solVol = logVol->GetSolid();
   volVals.concatedVolumeNames += physVol->GetName() + ";"; 

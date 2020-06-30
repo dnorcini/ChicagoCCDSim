@@ -6,33 +6,24 @@
 #include "ChicagoCCDDetectorConstruction.hh"
 
 #include "G4UIdirectory.hh"
-/*
-#include "G4UIcmdWithADoubleAndUnit.hh"
-#include "G4UIcmdWithoutParameter.hh"
-*/
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4SystemOfUnits.hh"
 
-ChicagoCCDPrimaryMessenger::ChicagoCCDPrimaryMessenger(ChicagoCCDPrimaryGeneratorAction* Prim, ChicagoCCDDetectorConstruction* Det)
-:ChicagoCCDPrimaryGenerator(Prim),
-ChicagoCCDDetector(Det)
+ChicagoCCDPrimaryMessenger::ChicagoCCDPrimaryMessenger(ChicagoCCDPrimaryGeneratorAction* Prim)
+:ChicagoCCDPrimaryGenerator(Prim)
 {
-  ComptonDir = new G4UIdirectory("/compton/");
-  ComptonDir->SetGuidance("Commands for Compton test.");
+  CommandDir = new G4UIdirectory("/ChicagoPrimaryGen/");
+  CommandDir->SetGuidance("Commands for Chicago Sim Primary Generator.");
 
-  GammaSourceCmd = new G4UIcmdWithABool("/compton/setGammaSource",this);
+  GammaSourceCmd = new G4UIcmdWithABool("/ChicagoPrimaryGen/setGammaSource",this);
   GammaSourceCmd->SetGuidance("Set whether the the source is pure gamma or ion.");
-
-  DelGeomCmd = new G4UIcmdWithoutParameter("/compton/deleteGeometry",this);
-  DelGeomCmd->SetGuidance("Delete geometry for comparison.");
 }
 
 ChicagoCCDPrimaryMessenger::~ChicagoCCDPrimaryMessenger()
 {
-  delete DelGeomCmd;
   delete GammaSourceCmd;
-  delete ComptonDir;
+  delete CommandDir;
 }
 
 void ChicagoCCDPrimaryMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
@@ -40,9 +31,5 @@ void ChicagoCCDPrimaryMessenger::SetNewValue(G4UIcommand* command,G4String newVa
   if( command == GammaSourceCmd )
     {
       ChicagoCCDPrimaryGenerator->SetGammaSource(GammaSourceCmd->GetNewBoolValue(newValue));
-    }
-  if( command == DelGeomCmd )
-    {
-      ChicagoCCDDetector->ToggleGeometry();
     }
 }

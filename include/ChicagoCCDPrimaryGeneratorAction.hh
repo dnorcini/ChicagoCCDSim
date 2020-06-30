@@ -6,12 +6,10 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4GeneralParticleSource.hh"
-#include "DAMICParticleSource.hh"
 #include "globals.hh"
 #include "ChicagoCCDPrimaryMessenger.hh"
 
 class G4GeneralParticleSource;
-class DAMICParticleSource;
 class ChicagoCCDDetectorConstruction;
 class G4Event;
 
@@ -23,7 +21,7 @@ class G4Event;
 class ChicagoCCDPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
-    ChicagoCCDPrimaryGeneratorAction(ChicagoCCDDetectorConstruction* detectorConstruction);    
+    ChicagoCCDPrimaryGeneratorAction();    
     virtual ~ChicagoCCDPrimaryGeneratorAction();
 
     // method from the base class
@@ -32,14 +30,10 @@ class ChicagoCCDPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     void SetGammaSource(G4bool state) {gammaSource = state;};
     G4bool GetGammaSource() const {return gammaSource;};
 
-    const DAMICParticleSource* GetParticleGun() const {return fDAMICSource;};
-
     G4GeneralParticleSource* fParticleSource;
   private:
     G4bool gammaSource;
-    DAMICParticleSource* fDAMICSource;
     ChicagoCCDPrimaryMessenger* skipperPrimaryMessenger;
-    ChicagoCCDDetectorConstruction* fDetectorConstruction;
 };
 
 #endif

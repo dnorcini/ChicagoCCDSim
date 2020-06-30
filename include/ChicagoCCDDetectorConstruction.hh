@@ -4,12 +4,17 @@
 #ifndef ChicagoCCDDetectorConstruction_h
 #define ChicagoCCDDetectorConstruction_h 1
 
+#include "ChicagoCCDDetectorMessenger.hh"
+
 #include "G4VUserDetectorConstruction.hh"
 #include "G4ThreeVector.hh"
+#include "G4RotationMatrix.hh"
+#include "G4tgbRotationMatrix.hh"
 #include "globals.hh"
 #include "G4NistManager.hh"
 
 #include <vector>
+#include <utility>
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
@@ -31,25 +36,25 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     
     G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; };
 
-    G4Material* GetRadioSource() const {return radioSource;};
-
     G4VPhysicalVolume* GetPhysWorld() const {return physWorld;};
 
-    void SetRadioSource(G4Material *source) {radioSource = source;};
     void ConstructMaterials();
 
     int GetCCDNum(G4VPhysicalVolume *volume);
     int GetTotCCDs() {return ActivePVs.size();};
+    std::vector<G4ThreeVector> GetActiveDims() const {return ActiveDims;};
 
   protected:
+    ChicagoCCDDetectorMessenger* skipperDetectorMessenger;
+
     G4LogicalVolume*  fScoringVolume;
 
-    G4Material *radioSource;
     G4LogicalVolume* logicWorld;
     G4VPhysicalVolume* physWorld;
     G4VPhysicalVolume* ConstructWorld();
 
-    std::vector<G4ThreeVector> ActiveVecs;
+    std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
+    std::vector<G4ThreeVector> ActiveDims;
     std::vector<G4VPhysicalVolume*> ActivePVs;
     std::vector<G4VPhysicalVolume*> GetteringPVs;
     std::vector<G4VPhysicalVolume*> DeadTopPVs;
@@ -57,12 +62,13 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     std::vector<G4VPhysicalVolume*> flangePhys;
     G4VPhysicalVolume* physChamber;
-    G4VPhysicalVolume* physMount;
+    G4VPhysicalVolume* physPuck;
     G4VPhysicalVolume* physSmallColdHead;
     G4VPhysicalVolume* physLargeColdHead;
     G4VPhysicalVolume* physFlex;
     G4VPhysicalVolume* physSiBacking;
-    G4VPhysicalVolume* physChicagoCCDBase;
+    G4VPhysicalVolume* physCopperBox;
+    G4VPhysicalVolume* physCopperFacePlate;
 
     G4Material *Si;
     G4Material *Cu;

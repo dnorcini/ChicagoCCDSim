@@ -8,6 +8,9 @@
 #include "G4SystemOfUnits.hh"
 #include "globals.hh"
 
+#include "G4PrimaryParticle.hh"
+#include "G4PrimaryVertex.hh"
+
 class ChicagoCCDRunAction;
 
 /// Event action class
@@ -30,6 +33,9 @@ class ChicagoCCDEventAction : public G4UserEventAction
   private:
     ChicagoCCDRunAction* fRunAction;
     G4bool gammaSource;
+    
+    G4PrimaryVertex* primVert;
+    G4PrimaryParticle* primPart;
 };
 
 #endif

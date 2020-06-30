@@ -48,6 +48,7 @@ class ChicagoCCDRunAction : public G4UserRunAction
 
     //EventOut Vectors
     std::vector<G4int> pdgPrim;
+    std::vector<G4int> primaryid;
     std::vector<G4int> chargePrim;
     std::vector<G4int> volidPrim;
     std::vector<G4double> energyPrim;
@@ -63,6 +64,7 @@ class ChicagoCCDRunAction : public G4UserRunAction
     std::vector<G4int> pdgCCD;
     std::vector<G4int> trackid;
     std::vector<G4int> parentid;
+    std::vector<G4int> primaryidCCD;
     std::vector<G4int> CCDid;
     std::vector<G4double> posxCCD;
     std::vector<G4double> posyCCD;

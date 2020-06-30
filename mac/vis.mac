@@ -107,22 +107,24 @@
 /vis/viewer/set/upVector 0 0 1
 /vis/viewer/set/viewpointThetaPhi 60 -120
 #
-/vis/geometry/set/colour Active 0 1 1 0 1
+/vis/geometry/set/colour CCDSensor 0 1 1 0 1
 /vis/geometry/set/colour Gettering 0 0 0 1 1
 /vis/geometry/set/colour Dead 0 1 0 0 1
-/vis/geometry/set/colour Flex 0 0.722 0.451 0.20 1
-/vis/geometry/set/colour Container 0 0.753 0.753 0.753 0.5
-/vis/geometry/set/colour FullCover 0 0.753 0.753 0.753 0.5
-/vis/geometry/set/colour SmallTubeCover 0 0.753 0.753 0.753 0.5
-/vis/geometry/set/colour LargeTubeCover 0 0.753 0.753 0.753 0.5
-/vis/geometry/set/colour LargeTube 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour Flex 0 1 0.749 0 1
+/vis/geometry/set/colour Chamber 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour FullFlange 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour SmallTubeFlange 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour NippleFlange 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour FrontFlange 0 0.753 0.753 0.753 0.5
+/vis/geometry/set/colour Nipple 0 0.753 0.753 0.753 0.5
 /vis/geometry/set/colour SmallTube 0 0.753 0.753 0.753 0.5
 /vis/geometry/set/colour SmallCap 0 0.753 0.753 0.753 0.5
-/vis/geometry/set/colour SiBacking 0 1 1 1 1
-/vis/geometry/set/colour SkipperBase 0 0.004 0.196 0.125 1
-/vis/geometry/set/colour Mount 0 0.722 0.451 0.20 1
-/vis/geometry/set/colour ColdHead 0 0 0 0 1
-/vis/geometry/set/colour RadioSource 0 1 0 0 1
+/vis/geometry/set/colour SiBacking 0 0.5843 0.6 0.6471 1
+/vis/geometry/set/colour CopperBox 0 0.722 0.451 0.20 1
+/vis/geometry/set/colour CopperFacePlate 0 0.722 0.451 0.20 1
+/vis/geometry/set/colour Puck 0 0.722 0.451 0.20 0.75
+/vis/geometry/set/colour SmallColdHead 0 1 1 1 0.75
+/vis/geometry/set/colour LargeColdHead 0 1 1 1 0.75
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings

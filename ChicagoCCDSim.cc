@@ -12,10 +12,7 @@
 
 #include "G4UImanager.hh"
 #include "G4SystemOfUnits.hh"
-#include "QBBC.hh"
-#include "LBE.hh"
 
-//#include "DAMICPhysicsList.hh"
 #include "DAMICPhysicsListLivermore.hh"
 
 #include "G4VisExecutive.hh"
@@ -36,7 +33,9 @@ int main(int argc,char** argv)
 
   // Choose the Random engine
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
-  
+  G4long seed = time(NULL);
+  G4Random::setTheSeed(seed);
+
   // Construct the default run manager
   //
 #ifdef G4MULTITHREADED
@@ -52,11 +51,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(detectorConstruction);
 
   // Physics list
-//  G4VModularPhysicsList* physicsList = new QBBC;
-//  G4VModularPhysicsList* physicsList = new LBE;
-//  DAMICPhysicsList* physicsList = new DAMICPhysicsList;
   DAMICPhysicsListLivermore* physicsList = new DAMICPhysicsListLivermore;
-//  physicsList->SetVerboseLevel(1);
   runManager->SetUserInitialization(physicsList);
 
   // User action initialization
@@ -95,8 +90,6 @@ int main(int argc,char** argv)
   // in the main() program !
   
   delete runManager;
-  delete detectorConstruction;
-  delete actionInit;
   return 0;
 }
 

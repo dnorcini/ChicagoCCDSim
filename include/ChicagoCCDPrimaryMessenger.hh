@@ -8,27 +8,23 @@
 #include "G4UImessenger.hh"
 
 class ChicagoCCDPrimaryGeneratorAction;
-class ChicagoCCDDetectorConstruction;
 class G4UIdirectory;
 class G4UIcommand;
 class G4UIcmdWithABool;
-class G4UIcmdWithoutParameter;
 
 class ChicagoCCDPrimaryMessenger: public G4UImessenger
 {
   public:
-    ChicagoCCDPrimaryMessenger(ChicagoCCDPrimaryGeneratorAction*, ChicagoCCDDetectorConstruction*);
+    ChicagoCCDPrimaryMessenger(ChicagoCCDPrimaryGeneratorAction*);
    ~ChicagoCCDPrimaryMessenger();
 
     void SetNewValue(G4UIcommand*, G4String);
 
   private:
     ChicagoCCDPrimaryGeneratorAction* ChicagoCCDPrimaryGenerator;
-    ChicagoCCDDetectorConstruction* ChicagoCCDDetector;
 
-    G4UIdirectory* ComptonDir;
+    G4UIdirectory* CommandDir;
     G4UIcmdWithABool* GammaSourceCmd;
-    G4UIcmdWithoutParameter* DelGeomCmd;
 };
 
 #endif

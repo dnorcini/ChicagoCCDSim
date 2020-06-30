@@ -7,7 +7,6 @@
 #include "G4VUserActionInitialization.hh"
 
 class ChicagoCCDDetectorConstruction;
-class ChicagoCCDPrimaryGeneratorAction;
 /// Action initialization class.
 
 class ChicagoCCDActionInitialization : public G4VUserActionInitialization
@@ -20,7 +19,6 @@ class ChicagoCCDActionInitialization : public G4VUserActionInitialization
     virtual void Build() const;
   private:
     ChicagoCCDDetectorConstruction* detectorConstruction;
-    //ChicagoCCDPrimaryGeneratorAction* primGenAction;
 };
 
 

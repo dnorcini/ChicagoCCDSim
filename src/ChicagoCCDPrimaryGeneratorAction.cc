@@ -2,7 +2,6 @@
 // implementation of the ChicagoCCDPrimaryGeneratorAction class
 
 #include "ChicagoCCDPrimaryGeneratorAction.hh"
-#include "DAMICParticleSource.hh"
 #include "ChicagoCCDDetectorConstruction.hh"
 
 #include "G4RunManager.hh"
@@ -17,14 +16,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-ChicagoCCDPrimaryGeneratorAction::ChicagoCCDPrimaryGeneratorAction(ChicagoCCDDetectorConstruction* detectorConstruction)
-: G4VUserPrimaryGeneratorAction(),
-  fDetectorConstruction(detectorConstruction)
+ChicagoCCDPrimaryGeneratorAction::ChicagoCCDPrimaryGeneratorAction()
+: G4VUserPrimaryGeneratorAction()
 {
   fParticleSource = new G4GeneralParticleSource();
-  skipperPrimaryMessenger = new ChicagoCCDPrimaryMessenger(this, fDetectorConstruction);
+  skipperPrimaryMessenger = new ChicagoCCDPrimaryMessenger(this);
   SetGammaSource(false);
-//  fDAMICSource = new DAMICParticleSource();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -33,13 +30,13 @@ ChicagoCCDPrimaryGeneratorAction::~ChicagoCCDPrimaryGeneratorAction()
 {
   delete fParticleSource;
   delete skipperPrimaryMessenger;
-//  delete fDAMICSource;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ChicagoCCDPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
+  // This is specific to the Compton project. GammaSource defines whether gammas of specific energies are used as the source rather than an ion
   if (GetGammaSource() == true) {
     G4double gammaEn;
     G4double randGen = G4UniformRand() * 1.0538;
