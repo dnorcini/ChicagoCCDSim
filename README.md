@@ -137,6 +137,20 @@ Note: the coordinate system implemented uses the following representations: x (l
 This simulation code uses Geant4's default General Particle Source code. The Geant4 User Manual offers useful information about its usage.
 - ...
 
+## Troubleshooting
+- Visualization depends on X11 forwarding over ssh. If running a macro with visualization and you receive the error
+```
+Unrecognized OpenGL version
+Unrecognized OpenGL version
+Segmentation fault (core dumped)
+```
+
+this means there is an issue with the forwarding On a Mac, this is handled by XQuartz and there can be an issue with the install. Try entering
+```
+$ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+```
+then exit/restart XQuartz.
+
 ## To Do: Improvements
 - create millicharged particle generator
 - implement Bischel low energy model
