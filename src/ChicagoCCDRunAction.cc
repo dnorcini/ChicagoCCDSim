@@ -44,10 +44,10 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   analysisManager->CreateNtupleIColumn(runinfo, "Seed"); // Initial Seed (-1 if from process time)
   analysisManager->CreateNtupleSColumn(runinfo, "concatedVolumeNames"); // Semicolon-separated volume name list
   analysisManager->CreateNtupleIColumn(runinfo, "volumeNameID", runInfoVals.volumeNameID); // ID for each volume in geom
-  analysisManager->CreateNtupleIColumn(runinfo, "volumeMass", runInfoVals.volumeMass); // mass for each volume in geom
-  analysisManager->CreateNtupleFColumn(runinfo, "volumeDensity", runInfoVals.volumeDensity); // density ''
-  analysisManager->CreateNtupleIColumn(runinfo, "volumeVolume", runInfoVals.volumeVolume); // volume ''
-  analysisManager->CreateNtupleIColumn(runinfo, "volumeSurface", runInfoVals.volumeSurface); // surface area ''
+  analysisManager->CreateNtupleDColumn(runinfo, "volumeMass", runInfoVals.volumeMass); // mass for each volume in geom
+  analysisManager->CreateNtupleDColumn(runinfo, "volumeDensity", runInfoVals.volumeDensity); // density ''
+  analysisManager->CreateNtupleDColumn(runinfo, "volumeVolume", runInfoVals.volumeVolume); // volume ''
+  analysisManager->CreateNtupleDColumn(runinfo, "volumeSurface", runInfoVals.volumeSurface); // surface area ''
   analysisManager->CreateNtupleSColumn(runinfo, "primaryParticle"); // primary simulated particle type
   analysisManager->CreateNtupleSColumn(runinfo, "primaryIon"); // simulated ion
   analysisManager->CreateNtupleSColumn(runinfo, "simulatedVolume"); // name of simulated volume

@@ -24,10 +24,10 @@ class ChicagoCCDPrimaryGeneratorAction;
 struct volumeVals {
   G4String concatedVolumeNames;
   std::vector<G4int> volumeNameID;
-  std::vector<G4int> volumeMass;
-  std::vector<G4float> volumeDensity;
-  std::vector<G4int> volumeVolume;
-  std::vector<G4int> volumeSurface;
+  std::vector<G4double> volumeMass;
+  std::vector<G4double> volumeDensity;
+  std::vector<G4double> volumeVolume;
+  std::vector<G4double> volumeSurface;
 };
 
 class ChicagoCCDRunAction : public G4UserRunAction
