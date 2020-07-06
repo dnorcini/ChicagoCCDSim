@@ -1,0 +1,27 @@
+# LOOPING MACRO TUTORIAL, WORKER
+#
+# Called upon by 'looping_guide_master.mac'. Follow instructions there
+#
+# Example 1: Isotropic monoenergetic gamma point source, located just outside of the chamber, varying energy:
+#
+#/gps/pos/type Point
+#/gps/pos/centre 0 -110 0 mm
+#
+#/gps/particle gamma
+#/gps/energy {energy} keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 1000
+#
+# Example 2: Isotropic monoenergetic point source, located just outside of the chamber, varying particle type:
+#
+#/gps/pos/type Point
+#/gps/pos/centre 0 -110 0 mm
+#
+#/gps/particle {particle}
+#/gps/energy {energy} keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 1000

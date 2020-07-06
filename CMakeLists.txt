@@ -81,6 +81,9 @@ set(SCRIPTS
   singlerun.mac
   test.mac
   test_full.mac
+  guide.mac
+  loop_guide_master.mac
+  loop_guide_worker.mac
   )
 
 #################

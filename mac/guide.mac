@@ -1,0 +1,107 @@
+# BASIC MACRO TUTORIAL
+# 
+# '#' is comment
+#
+# Can be run in batch, without graphic: $ ./ChicagoCCDSim guide.mac
+# or interactively: Idle> /control/execute guide.mac
+#
+# Change the default number of workers (in multi-threading mode) (default is 2)
+/run/numberOfThreads 30
+#
+# Initialize kernel
+/run/initialize
+#
+# Verbosity Levels
+/control/verbose 1
+/run/verbose 1
+/event/verbose 1
+/tracking/verbose 1
+/run/printProgress 1
+/analysis/verbose 1
+#
+# SUPPLY YOUR OWN OUTPUT FILE NAME HERE - Will make one file per thread named {filename} + '_t#.root' with '#' the thread number
+/analysis/setFileName /data/dnorcini/output/guide.root
+#
+#
+# ChicagoCCDSim generates primaries via Geant4's default General Particle Source (GPS) generator.
+# It'd be very constructive for you to look through the 10.3 User Manual Section 2.7 to familiarize
+# yourself with the commands for GPS. You can also find examples at:
+# http://hurel.hanyang.ac.kr/Geant4/Geant4_GPS/reat.space.qinetiq.com/gps/examples/examples.html
+# We've also built some examples below for you. Uncomment one of interest. If multiple are
+# uncommented, it will run all of them but their results will each overwrite the output file you
+# created. If you want to save the results of multiple simulations, you will need to specify
+# a new file name using the setFileName command above before each new simulation.
+#
+#
+# Isotropic monoenergetic gamma point source, located inside of the CCD:
+#
+#/gps/pos/type Point
+#/gps/pos/centre -6.614 -12.4055 0 mm
+#
+#/gps/particle gamma
+#/gps/energy 50 keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 100
+#
+#
+# Isotropic monoenergetic gamma point source, located just outside of the chamber:
+#
+#/gps/pos/type Point
+#/gps/pos/centre 0 -110 0 mm
+#
+#/gps/particle gamma
+#/gps/energy 150 keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 1000
+#
+#
+# Isotropic ion point source, located just outside of the chamber:
+#
+#/gps/pos/type Point
+#/gps/pos/centre 0 -110 0 mm
+#
+#/gps/particle ion
+#/gps/ion 27 57 0 0
+#/gps/energy 0 keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 1000
+#
+#
+# Cone (45 deg half angle) monoenergetic electron point source, located just outside of the chamber:
+#
+#/gps/pos/type Point
+#/gps/pos/centre 0 -110 0 mm
+#
+#/gps/particle e-
+#/gps/energy 150 keV
+#
+#/gps/ang/type iso
+#/gps/ang/rot1 1 0 0
+#/gps/ang/rot2 0 0 1
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 45 deg
+#
+#/run/beamOn 1000
+#
+#
+# Isotropic monoenergetic muon spherical surface source, located just outside of the chamber:
+#
+#/gps/pos/type Surface
+#/gps/pos/shape Sphere
+#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/radius 5 mm
+#
+#/gps/particle mu-
+#/gps/energy 150 keV
+#
+#/gps/ang/type iso
+#
+#/run/beamOn 1000
+#
+#

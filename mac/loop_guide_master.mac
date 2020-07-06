@@ -1,0 +1,24 @@
+# LOOPING MACRO TUTORIAL, MASTER
+#
+# If you would like to loop a simulation over many values for a particular parameter,
+# using the loop command is helpful. From a separate file, you can call upon a file
+# multiple times, iterating the value. The functionality is rather limited because
+# you have to use exactly the value that is passed in (no math can be performed),
+# and if you want to loop over more than one value you will have to create another
+# looping file in addition to this one.
+#
+# The number of threads must be declared here, otherwise there will be a crash.
+/run/numberOfThreads 30
+#
+# The examples below both call upon 'guide_loop_worker.mac', but use different
+# elements of it. Whichever example you uncomment here, uncomment the corresponding
+# one in there.
+#
+# If you want to make a loop that evenly iterates across values, you use
+# loop [macroFile] [counterName] [initialValue] [finalValue] [stepSize]:
+#/control/loop guide_loop_worker.mac energy 135. 150. 0.75
+#
+# Else, if you have a specific list of values that you want to iterate through, 
+# or these values are strings, use foreach [macroFile] [counterName] [valueList]
+# with valueList enclosed in double quotes:
+#/control/loop guide_loop_worker.mac particle "e- gamma mu-"
