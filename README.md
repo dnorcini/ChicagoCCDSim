@@ -55,11 +55,11 @@ $ make -j<number of processors on your computer>
 Note: if you do not compile with the multithreaded flag, you can still run the simulation in singlethreaded mode, as long as your run macro does not indicate multiple threads.
 
 ## Run
-The QT GUI can be entered with the command `./ChicagoCCDSim` in the build directory. By default, this will pull up the visualization window, which could just as well be called with `./ChicagoCCDSim mac/init_vis.mac`. To run a select macro, use `./ChicagoCCDSim <macro_file.mac>`. See the `mac/` directory for example macros. 
+The QT GUI can be entered with the command `./ChicagoCCDSim` in the build directory. By default, this will pull up the visualization window, which could just as well be called with `./ChicagoCCDSim mac/init_vis.mac`. To run a select macro, use `./ChicagoCCDSim <macro_file.mac>`. See the `mac/` directory for example macros. Specifically, those with 'guide' in their names will aim to teach the basics of macro construction, including basic commands and looping.
 
 For general simulation macros, the user should specify at a minimum the output file location (`/Analysis/setFileName`) and the number of events to be simulated (`/run/beamOn`). The commands are described in detail in the Geant4 User Manual's section on General Particle Source.
 
-.... add info about loops and geometry messengers
+Custom commands are designed by messenger files in the source code. If you need to modify the source code and alter the value from the command level, refer to the current messenger files. An instance of each one is created in the constructor of its corresponding class and deleted in the destructor of said class.
 
 ## Output
 The simulation will require an output file name to be specified in the macro. In Multithreaded mode, it will create a copy of this file for each thread. The file will contain three ROOT TTrees. See below for information about each TTree.
@@ -127,10 +127,10 @@ Currently the Chicago CCD chamber (basement) geometry represented in the package
 - CCD base
 - detailed 1kx6k skipper CCD model (active, gettering, and dead layers)
 
-Note: the coordinate system implemented uses the following representations: x (left/right), y (front/back), and z (top/bottom). This is in contrast to the typical GEANT4 coordinates where z represents the (left/right) or the direction of a particle beam in an accelerator. 
+Note: the coordinate system implemented uses the following representations: x (left/right), y (front/back), and z (bottom/top). This is in contrast to the typical GEANT4 coordinates where z represents the (left/right) or the direction of a particle beam in an accelerator. It is meant to take the perspective of an observer in front of the chamber.
 
 ## Physics lists
-- DAMICPhysListLivermore 
+- DAMICPhysListLivermore: This physics list is constructed by the DAMIC collaborators in France and designed to accurately suit the low energy analysis that we are performing with DAMIC.
 - ... add details
 
 ## Particle generators
