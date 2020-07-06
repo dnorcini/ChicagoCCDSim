@@ -140,7 +140,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicFrontFlange = new G4LogicalVolume(solidFrontFlange, Steel, "FrontFlange");
   flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,85.93*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-85.93*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,-85.93*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-85.93*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,85.93*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(85.93*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-85.93*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
