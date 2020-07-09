@@ -123,14 +123,14 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Flanges
 //
 
-  G4VSolid* solidFullFlange = new G4Tubs("FullFlange", 0, 76.2*mm, 9.73*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTubeFlange = new G4Tubs("SmallTubeFlange", 19.1*mm, 76.2*mm, 9.73*mm, 0, 2*M_PI);
-  G4VSolid* solidNippleFlange = new G4Tubs("NippleFlange", 51.16*mm, 76.2*mm, 9.73*mm, 0, 2*M_PI);
+  G4VSolid* solidFullFlange = new G4Tubs("FullFlange", 0, 76.2*mm, 10.5*mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTubeFlange = new G4Tubs("SmallTubeFlange", 19.1*mm, 76.2*mm, 10.5*mm, 0, 2*M_PI);
+  G4VSolid* solidNippleFlange = new G4Tubs("NippleFlange", 51.16*mm, 76.2*mm, 10.5*mm, 0, 2*M_PI);
   G4VSolid* solidNipple = new G4Tubs("Nipple", 48*mm, 51.16*mm, 85.55*mm, 0, 2*M_PI);
   G4VSolid* solidSmallTube = new G4Tubs("SmallTube", 18*mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
   G4VSolid* solidSmallCap = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
-  G4VSolid* solidFrontFlangeHole = new G4Tubs("FrontFlangeHole", 0, 50.8*mm, 8.79*mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -0.96*mm));
+  G4VSolid* solidFrontFlangeHole = new G4Tubs("FrontFlangeHole", 0, 50.8*mm, 8.6*mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -2.1*mm));
   G4LogicalVolume* logicFullFlange = new G4LogicalVolume(solidFullFlange, Steel, "FullFlange");
   G4LogicalVolume* logicSmallTubeFlange = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange");
   G4LogicalVolume* logicNippleFlange = new G4LogicalVolume(solidNippleFlange, Steel, "NippleFlange");
@@ -138,16 +138,16 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicSmallTube = new G4LogicalVolume(solidSmallTube, Steel, "SmallTube");
   G4LogicalVolume* logicSmallCap = new G4LogicalVolume(solidSmallCap, Steel, "SmallCap");
   G4LogicalVolume* logicFrontFlange = new G4LogicalVolume(solidFrontFlange, Steel, "FrontFlange");
-  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,85.93*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-85.93*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-85.93*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,85.93*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(85.93*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-85.93*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(218.11*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-218.11*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 3, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(237.57*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-237.57*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 5, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,86.7*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-86.7*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-86.7*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,86.7*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(86.7*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-86.7*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(215.8*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-215.8*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 3, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(236.8*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-236.8*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 5, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(161.75*mm,0,0), logicNipple, "RightNipple", logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-161.75*mm,0,0), logicNipple, "LeftNipple", logicWorld, false, 1, checkOverlaps));
 
@@ -238,9 +238,38 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   steelRegion2->AddRootLogicalVolume(logicLargeColdHead); 
 
 //
-//  Detailed CCD Model
+//  Detailed CCD Model - One of two possibilities:
+//  1. (Default) Include dead layer in front as part of detecting region, so that diffusion of this area can be considered so long as we artificially drop efficiency
+//  2. Dead layer in front is a separate volume, detection will only occur within the active layer, and assume full efficiency for this region
 //
 
+  //     
+  // Active Layer
+  //  
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -11.9055*mm, 0), rotXNegZNeg));
+  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
+
+  G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
+  G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "CCDSensor");
+
+  G4Region* actRegion = new G4Region("ActiveRegion");
+  logicActive->SetRegion(actRegion);
+  actRegion->AddRootLogicalVolume(logicActive);               
+
+  //
+  // Dead Shell
+  //
+  G4Box* solidDeadFull = new G4Box("DeadShell", ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ());
+  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
+  G4SubtractionSolid* solidDeadShell = new G4SubtractionSolid("DeadShell", solidDeadFull, solidActiveHole, 0, G4ThreeVector());
+  G4LogicalVolume* logicDeadShell = new G4LogicalVolume(solidDeadShell, Si, "Dead");
+
+  for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
+    ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
+    DeadTopPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
+  }
+
+/*
   //     
   // Active Layer
   //  
@@ -283,6 +312,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     DeadBottomPVs.push_back(new G4PVPlacement(rotXNeg, posDeadBottom, logicDead, "Dead_Bottom", logicWorld, false, i, checkOverlaps));
 
   }
+*/
   fScoringVolume = logicActive;
 
   //
@@ -305,9 +335,13 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
   for (unsigned int i=0; i < flangePhys.size(); i++) {
     logicWorld->RemoveDaughter(flangePhys[i]);
   };
-  for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
+  for (unsigned int i=0; i < GetteringPVs.size(); i++) {  
     logicWorld->RemoveDaughter(GetteringPVs[i]);
+  };
+  for (unsigned int i=0; i < DeadTopPVs.size(); i++) {  
     logicWorld->RemoveDaughter(DeadTopPVs[i]);
+  };
+  for (unsigned int i=0; i < DeadBottomPVs.size(); i++) {  
     logicWorld->RemoveDaughter(DeadBottomPVs[i]);
   };
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
