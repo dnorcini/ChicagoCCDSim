@@ -78,8 +78,8 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   G4Isotope* Fe56 = new G4Isotope("Fe56", 26, 56);
   G4Element* elFe = new G4Element("Fe", "Fe", 1);
   elFe->AddIsotope(Fe56, 100. * perCent);
-  G4Isotope* Ni58 = new G4Isotope("Ni58", 24, 58);
-  G4Isotope* Ni62 = new G4Isotope("Ni62", 24, 62);
+  G4Isotope* Ni58 = new G4Isotope("Ni58", 28, 58);
+  G4Isotope* Ni62 = new G4Isotope("Ni62", 28, 62);
   G4Element* elNi = new G4Element("Ni", "Ni", 2);
   elNi->AddIsotope(Ni58, 96. * perCent);
   elNi->AddIsotope(Ni62, 4. * perCent);
