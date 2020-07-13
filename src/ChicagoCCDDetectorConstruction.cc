@@ -51,10 +51,52 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Cu = nist->FindOrBuildMaterial("G4_Cu");
   Pb = nist->FindOrBuildMaterial("G4_Pb");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
-  std::vector<G4String> StEl {"Fe","Cr","Ni"};
-  std::vector<G4double> StElWt {.66,.17,.12};
+
+  //std::vector<G4String> StEl {"Fe","Cr","Ni"};
+  //std::vector<G4double> StElWt {.66,.17,.12};
   G4double StDens = 8*g/cm3;
-  Steel = nist->ConstructNewMaterial("Stainless-Steel",StEl,StElWt,StDens,true);
+  Steel = new G4Material("Stainless-Steel", StDens, 9);
+
+  G4Element* elC = nist->FindOrBuildElement("C", true);
+  G4Isotope* Si28 = new G4Isotope("Si28", 14, 28);
+  G4Element* elSi = new G4Element("Si", "Si", 1);
+  elSi->AddIsotope(Si28, 100. * perCent);
+  G4Isotope* P31 = new G4Isotope("P31", 15, 31);
+  G4Element* elP = new G4Element("P", "P", 1);
+  elP->AddIsotope(P31, 100. * perCent);
+  G4Isotope* S32 = new G4Isotope("S32", 16, 32);
+  G4Element* elS = new G4Element("S", "S", 1);
+  elS->AddIsotope(S32, 100. * perCent);
+  G4Isotope* Cr52 = new G4Isotope("Cr52", 24, 52);
+  G4Isotope* Cr50 = new G4Isotope("Cr50", 24, 50);
+  G4Element* elCr = new G4Element("Cr", "Cr", 2);
+  elCr->AddIsotope(Cr52, 85. * perCent);
+  elCr->AddIsotope(Cr50, 15. * perCent);
+  G4Isotope* Mn55 = new G4Isotope("Mn55", 25, 55);
+  G4Element* elMn = new G4Element("Mn", "Mn", 1);
+  elMn->AddIsotope(Mn55, 100. * perCent);
+  G4Isotope* Fe56 = new G4Isotope("Fe56", 26, 56);
+  G4Element* elFe = new G4Element("Fe", "Fe", 1);
+  elFe->AddIsotope(Fe56, 100. * perCent);
+  G4Isotope* Ni58 = new G4Isotope("Ni58", 24, 58);
+  G4Isotope* Ni62 = new G4Isotope("Ni62", 24, 62);
+  G4Element* elNi = new G4Element("Ni", "Ni", 2);
+  elNi->AddIsotope(Ni58, 96. * perCent);
+  elNi->AddIsotope(Ni62, 4. * perCent);
+  G4Isotope* Mo97 = new G4Isotope("Mo97", 42, 97);
+  G4Element* elMo = new G4Element("Mo", "Mo", 1);
+  elMo->AddIsotope(Mo97, 100. * perCent);
+
+  Steel->AddElement(elC, 0.0019);
+  Steel->AddElement(elSi, 0.010048);
+  Steel->AddElement(elP, 0.000413);
+  Steel->AddElement(elS, 0.00026);
+  Steel->AddElement(elCr, 0.181986);
+  Steel->AddElement(elMn, 0.010274);
+  Steel->AddElement(elFe, 0.666811);
+  Steel->AddElement(elNi, 0.113803);
+  Steel->AddElement(elMo, 0.014504);
+
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
 

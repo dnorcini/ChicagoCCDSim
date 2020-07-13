@@ -35,6 +35,7 @@ void ChicagoCCDEventAction::BeginOfEventAction(const G4Event* event)
 { 
   // Since the vectors used for the outputs were created by RunAction, we can't make them anew but we'll clear them at the beginning of each event
   fRunAction->pdgPrim.clear();
+  fRunAction->primaryid.clear();
   fRunAction->chargePrim.clear();
   fRunAction->volidPrim.clear();
   fRunAction->energyPrim.clear();
