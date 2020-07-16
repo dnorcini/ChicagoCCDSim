@@ -88,8 +88,8 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       fRunAction->posyPrim.push_back(primPosition.getY() / mm);
       fRunAction->poszPrim.push_back(primPosition.getZ() / mm);
       fRunAction->momxPrim.push_back(primMomentum.getX() / eV);
-      fRunAction->momxPrim.push_back(primMomentum.getX() / eV);
-      fRunAction->momxPrim.push_back(primMomentum.getX() / eV);
+      fRunAction->momyPrim.push_back(primMomentum.getY() / eV);
+      fRunAction->momzPrim.push_back(primMomentum.getZ() / eV);
       fRunAction->triggerTime.push_back(trigTime / s);
     }
     
