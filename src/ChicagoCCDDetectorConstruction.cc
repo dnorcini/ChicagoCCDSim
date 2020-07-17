@@ -55,47 +55,29 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   //std::vector<G4String> StEl {"Fe","Cr","Ni"};
   //std::vector<G4double> StElWt {.66,.17,.12};
   G4double StDens = 8*g/cm3;
-  Steel = new G4Material("Stainless-Steel", StDens, 9);
+  Steel = new G4Material("Stainless-Steel", StDens, 8);
 
   G4Element* elC = nist->FindOrBuildElement("C", true);
-  G4Isotope* Si28 = new G4Isotope("Si28", 14, 28);
-  G4Element* elSi = new G4Element("Si", "Si", 1);
-  elSi->AddIsotope(Si28, 100. * perCent);
+  G4Element* elSi = nist->FindOrBuildElement("Si", true);
   G4Isotope* P31 = new G4Isotope("P31", 15, 31);
   G4Element* elP = new G4Element("P", "P", 1);
   elP->AddIsotope(P31, 100. * perCent);
-  G4Isotope* S32 = new G4Isotope("S32", 16, 32);
-  G4Element* elS = new G4Element("S", "S", 1);
-  elS->AddIsotope(S32, 100. * perCent);
-  G4Isotope* Cr52 = new G4Isotope("Cr52", 24, 52);
-  G4Isotope* Cr50 = new G4Isotope("Cr50", 24, 50);
-  G4Element* elCr = new G4Element("Cr", "Cr", 2);
-  elCr->AddIsotope(Cr52, 85. * perCent);
-  elCr->AddIsotope(Cr50, 15. * perCent);
+  G4Element* elS = nist->FindOrBuildElement("S", true);
+  G4Element* elCr = nist->FindOrBuildElement("Cr", true);
   G4Isotope* Mn55 = new G4Isotope("Mn55", 25, 55);
   G4Element* elMn = new G4Element("Mn", "Mn", 1);
   elMn->AddIsotope(Mn55, 100. * perCent);
-  G4Isotope* Fe56 = new G4Isotope("Fe56", 26, 56);
-  G4Element* elFe = new G4Element("Fe", "Fe", 1);
-  elFe->AddIsotope(Fe56, 100. * perCent);
-  G4Isotope* Ni58 = new G4Isotope("Ni58", 28, 58);
-  G4Isotope* Ni62 = new G4Isotope("Ni62", 28, 62);
-  G4Element* elNi = new G4Element("Ni", "Ni", 2);
-  elNi->AddIsotope(Ni58, 96. * perCent);
-  elNi->AddIsotope(Ni62, 4. * perCent);
-  G4Isotope* Mo97 = new G4Isotope("Mo97", 42, 97);
-  G4Element* elMo = new G4Element("Mo", "Mo", 1);
-  elMo->AddIsotope(Mo97, 100. * perCent);
+  G4Element* elFe = nist->FindOrBuildElement("Fe", true);
+  G4Element* elNi = nist->FindOrBuildElement("Ni", true);
 
-  Steel->AddElement(elC, 0.0019);
-  Steel->AddElement(elSi, 0.010048);
-  Steel->AddElement(elP, 0.000413);
-  Steel->AddElement(elS, 0.00026);
-  Steel->AddElement(elCr, 0.181986);
-  Steel->AddElement(elMn, 0.010274);
-  Steel->AddElement(elFe, 0.666811);
-  Steel->AddElement(elNi, 0.113803);
-  Steel->AddElement(elMo, 0.014504);
+  Steel->AddElement(elC, 0.0004);
+  Steel->AddElement(elSi, 0.005);
+  Steel->AddElement(elP, 0.000225);
+  Steel->AddElement(elS, 0.00015);
+  Steel->AddElement(elCr, 0.19);
+  Steel->AddElement(elMn, 0.01);
+  Steel->AddElement(elFe, 0.701725);
+  Steel->AddElement(elNi, 0.0925);
 
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
@@ -165,14 +147,14 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Flanges
 //
 
-  G4VSolid* solidFullFlange = new G4Tubs("FullFlange", 0, 76.2*mm, 10.5*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTubeFlange = new G4Tubs("SmallTubeFlange", 19.1*mm, 76.2*mm, 10.5*mm, 0, 2*M_PI);
-  G4VSolid* solidNippleFlange = new G4Tubs("NippleFlange", 51.16*mm, 76.2*mm, 10.5*mm, 0, 2*M_PI);
+  G4VSolid* solidFullFlange = new G4Tubs("FullFlange", 0, 76.2*mm, 10.*mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTubeFlange = new G4Tubs("SmallTubeFlange", 19.1*mm, 76.2*mm, 10.*mm, 0, 2*M_PI);
+  G4VSolid* solidNippleFlange = new G4Tubs("NippleFlange", 51.16*mm, 76.2*mm, 10.*mm, 0, 2*M_PI);
   G4VSolid* solidNipple = new G4Tubs("Nipple", 48*mm, 51.16*mm, 85.55*mm, 0, 2*M_PI);
   G4VSolid* solidSmallTube = new G4Tubs("SmallTube", 18*mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
   G4VSolid* solidSmallCap = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
-  G4VSolid* solidFrontFlangeHole = new G4Tubs("FrontFlangeHole", 0, 50.8*mm, 8.6*mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -2.1*mm));
+  G4VSolid* solidFrontFlangeHole = new G4Tubs("FrontFlangeHole", 0, 50.8*mm, 9.21*mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -0.8*mm));
   G4LogicalVolume* logicFullFlange = new G4LogicalVolume(solidFullFlange, Steel, "FullFlange");
   G4LogicalVolume* logicSmallTubeFlange = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange");
   G4LogicalVolume* logicNippleFlange = new G4LogicalVolume(solidNippleFlange, Steel, "NippleFlange");
@@ -180,16 +162,16 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicSmallTube = new G4LogicalVolume(solidSmallTube, Steel, "SmallTube");
   G4LogicalVolume* logicSmallCap = new G4LogicalVolume(solidSmallCap, Steel, "SmallCap");
   G4LogicalVolume* logicFrontFlange = new G4LogicalVolume(solidFrontFlange, Steel, "FrontFlange");
-  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,86.7*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-86.7*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-86.7*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,86.7*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(86.7*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-86.7*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(215.8*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-215.8*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 3, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(236.8*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-236.8*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 5, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,86.2*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-86.2*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-86.2*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,86.2*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(86.2*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-86.2*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(217.3*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-217.3*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 3, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(237.3*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
+  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-237.3*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 5, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(161.75*mm,0,0), logicNipple, "RightNipple", logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-161.75*mm,0,0), logicNipple, "LeftNipple", logicWorld, false, 1, checkOverlaps));
 
@@ -285,6 +267,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  2. Dead layer in front is a separate volume, detection will only occur within the active layer, and assume full efficiency for this region
 //
 
+/*
   //     
   // Active Layer
   //  
@@ -310,8 +293,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
     DeadTopPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
   }
-
-/*
+*/
   //     
   // Active Layer
   //  
@@ -354,7 +336,6 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     DeadBottomPVs.push_back(new G4PVPlacement(rotXNeg, posDeadBottom, logicDead, "Dead_Bottom", logicWorld, false, i, checkOverlaps));
 
   }
-*/
   fScoringVolume = logicActive;
 
   //

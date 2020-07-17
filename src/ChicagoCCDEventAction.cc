@@ -50,6 +50,7 @@ void ChicagoCCDEventAction::BeginOfEventAction(const G4Event* event)
   fRunAction->pdgCCD.clear();
   fRunAction->trackid.clear();
   fRunAction->parentid.clear();
+  fRunAction->primaryidCCD.clear();
   fRunAction->CCDid.clear();
   fRunAction->posxCCD.clear();
   fRunAction->posyCCD.clear();
