@@ -59,6 +59,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<G4VPhysicalVolume*> GetteringPVs;
     std::vector<G4VPhysicalVolume*> DeadTopPVs;
     std::vector<G4VPhysicalVolume*> DeadBottomPVs;
+    std::vector<G4VPhysicalVolume*> DeadSidePVs;
 
     std::vector<G4VPhysicalVolume*> flangePhys;
     G4VPhysicalVolume* physChamber;

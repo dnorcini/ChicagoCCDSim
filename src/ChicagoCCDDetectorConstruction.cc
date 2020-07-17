@@ -52,8 +52,6 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Pb = nist->FindOrBuildMaterial("G4_Pb");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
 
-  //std::vector<G4String> StEl {"Fe","Cr","Ni"};
-  //std::vector<G4double> StElWt {.66,.17,.12};
   G4double StDens = 8*g/cm3;
   Steel = new G4Material("Stainless-Steel", StDens, 8);
 
@@ -291,7 +289,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 
   for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
     ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
-    DeadTopPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
+    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
   }
 */
   //     
@@ -299,6 +297,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //  
   ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -12.4055*mm, 0), rotXNegZNeg));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
+  std::vector<G4ThreeVector> DeadDims;
+  for (unsigned int i=0; i < ActiveDims.size(); i++) {
+    DeadDims.push_back(G4ThreeVector(ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()));
+  }
 
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
   G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "CCDSensor");
@@ -310,14 +312,19 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //
   // Gettering Layer
   //
-  G4Box* solidGet = new G4Box("Gettering", 47322*um, 8971*um, 0.5*um);
+  G4Box* solidGet = new G4Box("Gettering", DeadDims[0].getX(), DeadDims[0].getY(), 0.5*um);
   G4LogicalVolume* logicGet = new G4LogicalVolume(solidGet, Si, "Gettering");
 
   //
   // Dead Layers
   //
-  G4Box* solidDead = new G4Box("Dead", 47322*um, 8971*um, 1*um);
+  G4Box* solidDead = new G4Box("Dead", DeadDims[0].getX(), DeadDims[0].getY(), 1*um);
   G4LogicalVolume* logicDead = new G4LogicalVolume(solidDead, Si, "Dead");
+
+  G4Box* solidFullSideDead = new G4Box("FullSideDead", DeadDims[0].getX(), DeadDims[0].getY(), DeadDims[0].getZ());
+  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
+  G4SubtractionSolid* solidSideDead = new G4SubtractionSolid("SideDead", solidFullSideDead, solidActiveHole, 0, G4ThreeVector());
+  G4LogicalVolume* logicSideDead = new G4LogicalVolume(solidSideDead, Si, "SideDead");
 
   for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
     ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
@@ -327,13 +334,15 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     G4double ActZ = ActiveVecs[i].first.getZ();
 
     G4ThreeVector posGet = G4ThreeVector(ActX, ActY + 338*um, ActZ);
-    GetteringPVs.push_back(new G4PVPlacement(rotXNeg, posGet, logicGet, "Gettering", logicWorld, false, i, checkOverlaps));
+    GetteringPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posGet, logicGet, "Gettering", logicWorld, false, i, checkOverlaps));
 
     G4ThreeVector posDeadTop = G4ThreeVector(ActX, ActY - 338.5*um, ActZ);
-    DeadTopPVs.push_back(new G4PVPlacement(rotXNeg, posDeadTop, logicDead, "Dead_Top", logicWorld, false, i, checkOverlaps));
+    DeadTopPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadTop, logicDead, "Dead_Top", logicWorld, false, i, checkOverlaps));
 
     G4ThreeVector posDeadBottom = G4ThreeVector(ActX, ActY + 339.5*um, ActZ);
-    DeadBottomPVs.push_back(new G4PVPlacement(rotXNeg, posDeadBottom, logicDead, "Dead_Bottom", logicWorld, false, i, checkOverlaps));
+    DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom, logicDead, "Dead_Bottom", logicWorld, false, i, checkOverlaps));
+
+    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side", logicWorld, false, i, checkOverlaps));
 
   }
   fScoringVolume = logicActive;
@@ -366,6 +375,9 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
   };
   for (unsigned int i=0; i < DeadBottomPVs.size(); i++) {  
     logicWorld->RemoveDaughter(DeadBottomPVs[i]);
+  };
+  for (unsigned int i=0; i < DeadSidePVs.size(); i++) {  
+    logicWorld->RemoveDaughter(DeadSidePVs[i]);
   };
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }
