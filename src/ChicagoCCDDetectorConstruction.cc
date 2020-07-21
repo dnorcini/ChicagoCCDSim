@@ -265,11 +265,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  2. Dead layer in front is a separate volume, detection will only occur within the active layer, and assume full efficiency for this region
 //
 
-/*
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -11.9055*mm, 0), rotXNegZNeg));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -12.405*mm, 0), rotXNegZNeg));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
@@ -291,7 +290,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
     DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
   }
-*/
+/*
   //     
   // Active Layer
   //  
@@ -345,6 +344,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side", logicWorld, false, i, checkOverlaps));
 
   }
+*/
   fScoringVolume = logicActive;
 
   //
