@@ -127,7 +127,7 @@ Currently the Chicago CCD chamber (basement) geometry represented in the package
 - CCD base
 - detailed 1kx6k skipper CCD model (active, gettering, and dead layers)
 
-Note: the coordinate system implemented uses the following representations: x (left/right), y (front/back), and z (bottom/top). This is in contrast to the typical GEANT4 coordinates where z represents the (left/right) or the direction of a particle beam in an accelerator. It is meant to take the perspective of an observer in front of the chamber.
+Note: the coordinate system implemented uses the following representations: x (top/bottom), y (left/right), and z (back/front). As such, the observer would be observing the system from + -> - z.
 
 ## Physics lists
 - DAMICPhysListLivermore: This physics list is constructed by the DAMIC collaborators in France and designed to accurately suit the low energy analysis that we are performing with DAMIC.

@@ -113,7 +113,7 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
     fRunAction->CCDid.push_back(CCDNum);
     fRunAction->posxCCD.push_back((localPosition.getX() + CCDDim.getX())/mm);
     fRunAction->posyCCD.push_back((localPosition.getY() + CCDDim.getY())/mm);
-    fRunAction->poszCCD.push_back((localPosition.getZ() + CCDDim.getZ())/mm);
+    fRunAction->poszCCD.push_back((CCDDim.getZ())/mm - localPosition.getZ());
     fRunAction->gposxCCD.push_back(worldPosition.getX()/mm);
     fRunAction->gposyCCD.push_back(worldPosition.getY()/mm);
     fRunAction->gposzCCD.push_back(worldPosition.getZ()/mm);

@@ -130,10 +130,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //
 
   G4Box* solidBox = new G4Box("Box", 76.2*mm, 76.2*mm, 76.2*mm);
-  G4VSolid* hole = new G4Tubs("Hole", 0, 50.8*mm, 77*mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidChamber = new G4SubtractionSolid("Chamber", solidBox, hole);
-  solidChamber = new G4SubtractionSolid("Chamber", solidChamber, hole, rotX, G4ThreeVector());
-  solidChamber = new G4SubtractionSolid("Chamber", solidChamber, hole, rotY, G4ThreeVector());
+  G4VSolid* hole  = new G4Tubs("Hole", 0, 50.8*mm, 77*mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidChamber = new G4SubtractionSolid("Chamber", solidBox,     hole);
+  solidChamber                     = new G4SubtractionSolid("Chamber", solidChamber, hole, rotX, G4ThreeVector());
+  solidChamber                     = new G4SubtractionSolid("Chamber", solidChamber, hole, rotY, G4ThreeVector());
   G4LogicalVolume* logicChamber = new G4LogicalVolume(solidChamber, Steel, "Chamber");
   physChamber = new G4PVPlacement(0,G4ThreeVector(), logicChamber, "Chamber", logicWorld, false, 0, checkOverlaps);
 
@@ -145,33 +145,33 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Flanges
 //
 
-  G4VSolid* solidFullFlange = new G4Tubs("FullFlange", 0, 76.2*mm, 10.*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTubeFlange = new G4Tubs("SmallTubeFlange", 19.1*mm, 76.2*mm, 10.*mm, 0, 2*M_PI);
-  G4VSolid* solidNippleFlange = new G4Tubs("NippleFlange", 51.16*mm, 76.2*mm, 10.*mm, 0, 2*M_PI);
-  G4VSolid* solidNipple = new G4Tubs("Nipple", 48*mm, 51.16*mm, 85.55*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTube = new G4Tubs("SmallTube", 18*mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallCap = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
-  G4VSolid* solidFrontFlangeHole = new G4Tubs("FrontFlangeHole", 0, 50.8*mm, 9.21*mm, 0, 2*M_PI);
+  G4VSolid* solidFullFlange            = new G4Tubs("FullFlange"     ,  0      , 76.2 *mm, 10.  *mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTubeFlange       = new G4Tubs("SmallTubeFlange", 19.1 *mm, 76.2 *mm, 10.  *mm, 0, 2*M_PI);
+  G4VSolid* solidNippleFlange          = new G4Tubs("NippleFlange"   , 51.16*mm, 76.2 *mm, 10.  *mm, 0, 2*M_PI);
+  G4VSolid* solidNipple                = new G4Tubs("Nipple"         , 48   *mm, 51.16*mm, 85.55*mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTube             = new G4Tubs("SmallTube"      , 18   *mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
+  G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
+  G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole",  0      , 50.8 *mm,  9.21*mm, 0, 2*M_PI);
   G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -0.8*mm));
-  G4LogicalVolume* logicFullFlange = new G4LogicalVolume(solidFullFlange, Steel, "FullFlange");
+  G4LogicalVolume* logicFullFlange      = new G4LogicalVolume(solidFullFlange,      Steel, "FullFlange"     );
   G4LogicalVolume* logicSmallTubeFlange = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange");
-  G4LogicalVolume* logicNippleFlange = new G4LogicalVolume(solidNippleFlange, Steel, "NippleFlange");
-  G4LogicalVolume* logicNipple = new G4LogicalVolume(solidNipple, Steel, "Nipple");
-  G4LogicalVolume* logicSmallTube = new G4LogicalVolume(solidSmallTube, Steel, "SmallTube");
-  G4LogicalVolume* logicSmallCap = new G4LogicalVolume(solidSmallCap, Steel, "SmallCap");
-  G4LogicalVolume* logicFrontFlange = new G4LogicalVolume(solidFrontFlange, Steel, "FrontFlange");
-  flangePhys.push_back(new G4PVPlacement(rotX,G4ThreeVector(0,86.2*mm,0), logicFullFlange, "BackFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,-86.2*mm), logicFullFlange, "BottomRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotXNeg,G4ThreeVector(0,-86.2*mm,0), logicFrontFlange, "FrontFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0,G4ThreeVector(0, 0,86.2*mm), logicFullFlange, "TopRestFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(86.2*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-86.2*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(217.3*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-217.3*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 3, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(237.3*mm,0,0), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-237.3*mm,0,0), logicNippleFlange, "LeftNippleFlange", logicWorld, false, 5, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(161.75*mm,0,0), logicNipple, "RightNipple", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY,G4ThreeVector(-161.75*mm,0,0), logicNipple, "LeftNipple", logicWorld, false, 1, checkOverlaps));
+  G4LogicalVolume* logicNippleFlange    = new G4LogicalVolume(solidNippleFlange,    Steel, "NippleFlange"   );
+  G4LogicalVolume* logicNipple          = new G4LogicalVolume(solidNipple,          Steel, "Nipple"         );
+  G4LogicalVolume* logicSmallTube       = new G4LogicalVolume(solidSmallTube,       Steel, "SmallTube"      );
+  G4LogicalVolume* logicSmallCap        = new G4LogicalVolume(solidSmallCap,        Steel, "SmallCap"       );
+  G4LogicalVolume* logicFrontFlange     = new G4LogicalVolume(solidFrontFlange,     Steel, "FrontFlange"    );
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0     ,   0      ,-86.2*mm), logicFullFlange  , "BackFlange"       , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( 86.2*mm,   0      ,  0     ), logicFullFlange  , "BottomRestFlange" , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0     ,   0      , 86.2*mm), logicFrontFlange , "FrontFlange"      , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector(-86.2*mm,   0      ,  0     ), logicFullFlange  , "TopRestFlange"    , logicWorld, false, 2, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,  86.2 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , -86.2 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 217.3 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-217.3 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 3, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 237.3 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-237.3 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 5, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 161.75*mm,  0     ), logicNipple      , "RightNipple"      , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-161.75*mm,  0     ), logicNipple      , "LeftNipple"       , logicWorld, false, 1, checkOverlaps));
 
   G4Region* steelRegion2 = new G4Region("SteelRegion2");
   logicFullFlange->SetRegion(steelRegion);
@@ -193,66 +193,66 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 // Flex Cable
 //
 
-  G4Box* solidFlexSketch = new G4Box("FlexSketch", 75.89*mm, 20.82*mm, 0.1525*mm);
-  G4Box* solidFlexHole1 = new G4Box("FlexHole1", 52.71*mm, 11.3*mm, 0.16*mm);
-  G4Box* solidFlexHole2 = new G4Box("FlexHole2", 15.28*mm, 3.475*mm, 0.16*mm);
-  G4SubtractionSolid* solidFlex = new G4SubtractionSolid("Flex", solidFlexSketch, solidFlexHole1, 0, G4ThreeVector(23.18*mm,0,0)); 
-  solidFlex = new G4SubtractionSolid("Flex", solidFlex, solidFlexHole2, 0, G4ThreeVector(-60.61*mm,17.35*mm,0));
-  solidFlex = new G4SubtractionSolid("Flex", solidFlex, solidFlexHole2, 0, G4ThreeVector(-60.61*mm,-17.35*mm,0));
+  G4Box* solidFlexSketch = new G4Box("FlexSketch", 20.82 *mm,  75.89*mm,  0.1525*mm);
+  G4Box* solidFlexHole1  = new G4Box("FlexHole1",  11.3  *mm,  52.71*mm,  0.16  *mm);
+  G4Box* solidFlexHole2  = new G4Box("FlexHole2",   3.475*mm,  15.28*mm,  0.16  *mm);
+  G4SubtractionSolid* solidFlex = new G4SubtractionSolid("Flex", solidFlexSketch, solidFlexHole1, 0, G4ThreeVector(  0      , 23.18*mm, 0)); 
+  solidFlex                     = new G4SubtractionSolid("Flex", solidFlex      , solidFlexHole2, 0, G4ThreeVector( 17.35*mm,-60.61*mm, 0));
+  solidFlex                     = new G4SubtractionSolid("Flex", solidFlex      , solidFlexHole2, 0, G4ThreeVector(-17.35*mm,-60.61*mm, 0));
   G4LogicalVolume* logicFlex = new G4LogicalVolume(solidFlex, Kap, "Flex");
-  physFlex = new G4PVPlacement(rotXNeg,G4ThreeVector(-26.361*mm, -12.2175*mm, 0), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
+  physFlex = new G4PVPlacement(0,G4ThreeVector(0, -26.361*mm, 12.2175*mm), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Silicon Backing of CCD
 //
-  G4Box* solidSiBacking = new G4Box("SiBacking", 53.5051*mm, 18.9992*mm, 0.3375*mm);
+  G4Box* solidSiBacking = new G4Box("SiBacking", 18.9992*mm, 53.5051*mm, 0.3375*mm);
   G4LogicalVolume* logicSiBacking = new G4LogicalVolume(solidSiBacking, Si, "SiBacking");
-  physSiBacking = new G4PVPlacement(rotXNeg,G4ThreeVector(-12.3271*mm, -11.7275*mm, 0), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
+  physSiBacking = new G4PVPlacement(0, G4ThreeVector(0, -12.3271*mm, 11.7275*mm), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Copper Box of CCD
 //
 
-  G4Box* solidCopperBoxSketch = new G4Box("CopperBoxSketch", 73.025*mm, 34.925*mm, 1.905*mm);
-  G4Box* solidCopperBoxGroove1a = new G4Box("CopperBoxGroove1a", 65.405*mm, 27.305*mm, 0.636*mm);
-  G4Box* solidCopperBoxGroove1b = new G4Box("CopperBoxGroove1b", 3.82*mm, 15.24*mm, 0.636*mm);
-  G4Box* solidCopperBoxGroove2 = new G4Box("CopperBoxGroove2", 55.753*mm, 21.1582*mm, 0.4555*mm);
-  G4Box* solidCopperBoxGroove3 = new G4Box("CopperBoxGroove3", 50.038*mm, 14.986*mm, 0.8365*mm);
-  G4SubtractionSolid* solidCopperBox = new G4SubtractionSolid("CopperBox", solidCopperBoxSketch, solidCopperBoxGroove1a, 0, G4ThreeVector(0,0,1.271*mm));
-  solidCopperBox = new G4SubtractionSolid("CopperBox", solidCopperBox, solidCopperBoxGroove1b, 0, G4ThreeVector(69.215*mm, 0, 1.271*mm));
-  solidCopperBox = new G4SubtractionSolid("CopperBox", solidCopperBox, solidCopperBoxGroove2, 0, G4ThreeVector(0, 0, 0.2015*mm));
-  solidCopperBox = new G4SubtractionSolid("CopperBox", solidCopperBox, solidCopperBoxGroove3, 0, G4ThreeVector(0, 0, -1.0805*mm));
+  G4Box* solidCopperBoxSketch   = new G4Box("CopperBoxSketch",   34.925 *mm, 73.025*mm, 1.905 *mm);
+  G4Box* solidCopperBoxGroove1a = new G4Box("CopperBoxGroove1a", 27.305 *mm, 65.405*mm, 0.636 *mm);
+  G4Box* solidCopperBoxGroove1b = new G4Box("CopperBoxGroove1b", 15.24  *mm,  3.82 *mm, 0.636 *mm);
+  G4Box* solidCopperBoxGroove2  = new G4Box("CopperBoxGroove2",  21.1582*mm, 55.753*mm, 0.4555*mm);
+  G4Box* solidCopperBoxGroove3  = new G4Box("CopperBoxGroove3",  14.986 *mm, 50.038*mm, 0.8365*mm);
+  G4SubtractionSolid* solidCopperBox = new G4SubtractionSolid("CopperBox", solidCopperBoxSketch, solidCopperBoxGroove1a, 0, G4ThreeVector(0,  0       , 1.271 *mm));
+  solidCopperBox                     = new G4SubtractionSolid("CopperBox", solidCopperBox      , solidCopperBoxGroove1b, 0, G4ThreeVector(0,-69.215*mm, 1.271 *mm));
+  solidCopperBox                     = new G4SubtractionSolid("CopperBox", solidCopperBox      , solidCopperBoxGroove2 , 0, G4ThreeVector(0,  0       , 0.2015*mm));
+  solidCopperBox                     = new G4SubtractionSolid("CopperBox", solidCopperBox      , solidCopperBoxGroove3 , 0, G4ThreeVector(0,  0       ,-1.0805*mm));
   G4LogicalVolume* logicCopperBox = new G4LogicalVolume(solidCopperBox, Cu, "CopperBox");
-  physCopperBox = new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-11.43*mm,0), logicCopperBox, "CopperBox", logicWorld, false, 0, checkOverlaps);
+  physCopperBox = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, 11.43*mm), logicCopperBox, "CopperBox", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Copper Face Plate
 //
 
-  G4Box* solidCopperFacePlateFull = new G4Box("CopperFacePlateFull", 64.77*mm, 26.67*mm, 0.795*mm);
-  G4Box* solidCopperFaceHole = new G4Box("CopperFaceHole", 56.515*mm, 18.8*mm, 0.8*mm);
+  G4Box* solidCopperFacePlateFull = new G4Box("CopperFacePlateFull", 26.67*mm, 64.77 *mm, 0.795*mm);
+  G4Box* solidCopperFaceHole      = new G4Box("CopperFaceHole"     , 18.8 *mm, 56.515*mm, 0.8  *mm);
   G4SubtractionSolid* solidCopperFacePlate = new G4SubtractionSolid("CopperFacePlate", solidCopperFacePlateFull, solidCopperFaceHole, 0, G4ThreeVector());
   G4LogicalVolume* logicCopperFacePlate = new G4LogicalVolume(solidCopperFacePlate, Cu, "CopperFacePlate");
-  physCopperFacePlate = new G4PVPlacement(rotZXNeg, G4ThreeVector(-12.079*mm,-13.0105*mm,0), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
+  physCopperFacePlate = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, 13.0105*mm), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Puck Model
 //
 
-  G4Box* solidPuck = new G4Box("Puck", 5.08*mm, 9.525*mm, 9.525*mm);
+  G4Box* solidPuck = new G4Box("Puck", 9.525*mm, 5.08*mm, 9.525*mm);
   G4LogicalVolume* logicPuck = new G4LogicalVolume(solidPuck, Cu, "Puck");
-  physPuck = new G4PVPlacement(0, G4ThreeVector(55.866*mm,0,0), logicPuck, "Puck", logicWorld, false, 0, checkOverlaps);
+  physPuck = new G4PVPlacement(0, G4ThreeVector(0, 55.866*mm, 0), logicPuck, "Puck", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Cold Head
 //
 
-  G4VSolid* solidSmallColdHead = new G4Tubs("SmallColdHead", 0, 22.225*mm, 22.9489*mm, 0, 2*M_PI);
+  G4VSolid* solidSmallColdHead = new G4Tubs("SmallColdHead", 0, 22.225 *mm, 22.9489*mm, 0, 2*M_PI);
   G4VSolid* solidLargeColdHead = new G4Tubs("LargeColdHead", 0, 40.4622*mm, 58.9661*mm, 0, 2*M_PI);
   G4LogicalVolume* logicSmallColdHead = new G4LogicalVolume(solidSmallColdHead, Cu, "SmallColdHead");
   G4LogicalVolume* logicLargeColdHead = new G4LogicalVolume(solidLargeColdHead, Cu, "LargeColdHead");
-  physSmallColdHead = new G4PVPlacement(rotY, G4ThreeVector(83.8949*mm,0,0), logicSmallColdHead, "SmallColdHead", logicWorld, false, 0, checkOverlaps);
-  physLargeColdHead = new G4PVPlacement(rotY, G4ThreeVector(165.8099*mm,0,0), logicLargeColdHead, "LargeColdHead", logicWorld, false, 0, checkOverlaps);
+  physSmallColdHead = new G4PVPlacement(rotX, G4ThreeVector(0, 83.8949*mm,0), logicSmallColdHead, "SmallColdHead", logicWorld, false, 0, checkOverlaps);
+  physLargeColdHead = new G4PVPlacement(rotX, G4ThreeVector(0,165.8099*mm,0), logicLargeColdHead, "LargeColdHead", logicWorld, false, 0, checkOverlaps);
 
   logicSmallColdHead->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicSmallColdHead);               
@@ -268,7 +268,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -12.405*mm, 0), rotXNegZNeg));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), 0));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
@@ -281,21 +281,21 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //
   // Dead Shell
   //
-  G4Box* solidDeadFull = new G4Box("DeadShell", ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ());
-  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
+  G4Box* solidDeadFull   = new G4Box("DeadShell" , ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()        );
+  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX()          , ActiveDims[0].getY()          , ActiveDims[0].getZ() + 10*um);
   G4SubtractionSolid* solidDeadShell = new G4SubtractionSolid("DeadShell", solidDeadFull, solidActiveHole, 0, G4ThreeVector());
   G4LogicalVolume* logicDeadShell = new G4LogicalVolume(solidDeadShell, Si, "Dead");
 
   for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
-    ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
-    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead", logicWorld, false, i, checkOverlaps));
+    ActivePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive   , "CCDSensor", logicWorld, false, i, checkOverlaps));
+    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead"     , logicWorld, false, i, checkOverlaps));
   }
 /*
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(-6.614*mm, -12.4055*mm, 0), rotXNegZNeg));
-  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), 0));
+  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
   std::vector<G4ThreeVector> DeadDims;
   for (unsigned int i=0; i < ActiveDims.size(); i++) {
     DeadDims.push_back(G4ThreeVector(ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()));
@@ -320,8 +320,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidDead = new G4Box("Dead", DeadDims[0].getX(), DeadDims[0].getY(), 1*um);
   G4LogicalVolume* logicDead = new G4LogicalVolume(solidDead, Si, "Dead");
 
-  G4Box* solidFullSideDead = new G4Box("FullSideDead", DeadDims[0].getX(), DeadDims[0].getY(), DeadDims[0].getZ());
-  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
+  G4Box* solidFullSideDead = new G4Box("FullSideDead", DeadDims[0].getX()  , DeadDims[0].getY()  , DeadDims[0].getZ()          );
+  G4Box* solidActiveHole   = new G4Box("ActiveHole"  , ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
   G4SubtractionSolid* solidSideDead = new G4SubtractionSolid("SideDead", solidFullSideDead, solidActiveHole, 0, G4ThreeVector());
   G4LogicalVolume* logicSideDead = new G4LogicalVolume(solidSideDead, Si, "SideDead");
 
@@ -332,16 +332,16 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     G4double ActY = ActiveVecs[i].first.getY();
     G4double ActZ = ActiveVecs[i].first.getZ();
 
-    G4ThreeVector posGet = G4ThreeVector(ActX, ActY + 338*um, ActZ);
-    GetteringPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posGet, logicGet, "Gettering", logicWorld, false, i, checkOverlaps));
+    G4ThreeVector posGet        = G4ThreeVector(ActX, ActY, ActZ - 338*um  );
+    GetteringPVs.push_back( new G4PVPlacement(ActiveVecs[i].second, posGet             , logicGet     , "Gettering"  , logicWorld, false, i, checkOverlaps));
 
-    G4ThreeVector posDeadTop = G4ThreeVector(ActX, ActY - 338.5*um, ActZ);
-    DeadTopPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadTop, logicDead, "Dead_Top", logicWorld, false, i, checkOverlaps));
+    G4ThreeVector posDeadTop    = G4ThreeVector(ActX, ActY, ActZ + 338.5*um);
+    DeadTopPVs.push_back(   new G4PVPlacement(ActiveVecs[i].second, posDeadTop         , logicDead    , "Dead_Top"   , logicWorld, false, i, checkOverlaps));
 
-    G4ThreeVector posDeadBottom = G4ThreeVector(ActX, ActY + 339.5*um, ActZ);
-    DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom, logicDead, "Dead_Bottom", logicWorld, false, i, checkOverlaps));
+    G4ThreeVector posDeadBottom = G4ThreeVector(ActX, ActY, ActZ - 339.5*um);
+    DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom      , logicDead    , "Dead_Bottom", logicWorld, false, i, checkOverlaps));
 
-    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side", logicWorld, false, i, checkOverlaps));
+    DeadSidePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side"  , logicWorld, false, i, checkOverlaps));
 
   }
 */

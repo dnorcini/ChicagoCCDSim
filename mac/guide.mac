@@ -36,7 +36,7 @@
 # Isotropic monoenergetic gamma point source, located inside of the CCD:
 #
 #/gps/pos/type Point
-#/gps/pos/centre -6.614 -12.4055 0 mm
+#/gps/pos/centre 0 -6.614 12.4055 mm
 #
 #/gps/particle gamma
 #/gps/energy 50 keV
@@ -49,7 +49,7 @@
 # Isotropic monoenergetic gamma point source, located just outside of the chamber:
 #
 #/gps/pos/type Point
-#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/centre 0 0 110 mm
 #
 #/gps/particle gamma
 #/gps/energy 150 keV
@@ -62,7 +62,7 @@
 # Isotropic ion point source, located just outside of the chamber:
 #
 #/gps/pos/type Point
-#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/centre 0 0 110 mm
 #
 #/gps/particle ion
 #/gps/ion 27 57 0 0
@@ -76,14 +76,12 @@
 # Cone (45 deg half angle) monoenergetic electron point source, located just outside of the chamber:
 #
 #/gps/pos/type Point
-#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/centre 0 0 110 mm
 #
 #/gps/particle e-
 #/gps/energy 150 keV
 #
 #/gps/ang/type iso
-#/gps/ang/rot1 1 0 0
-#/gps/ang/rot2 0 0 1
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 45 deg
 #
@@ -94,7 +92,7 @@
 #
 #/gps/pos/type Surface
 #/gps/pos/shape Sphere
-#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/centre 0 0 110 mm
 #/gps/pos/radius 5 mm
 #
 #/gps/particle mu-
