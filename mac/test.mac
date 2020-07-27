@@ -1,8 +1,6 @@
-# Macro file for example Trit
+# TEST FILE
+# Has only a few events, to check for major errors.
 # 
-# Can be run in batch, without graphic
-# or interactively: Idle> /control/execute run1.mac
-#
 # Change the default number of workers (in multi-threading mode) 
 #/run/numberOfThreads 30
 #
@@ -21,27 +19,25 @@
 #/analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Co.root
 
 /gps/pos/type Point
-/gps/pos/centre 0 -86 0 mm
+/gps/pos/centre 0 0 110 mm
 
-#/gps/pos/centre -6.614 -12.4055 0 mm
+#/gps/pos/centre 0 -6.614 12.4055 mm
 
 /gps/particle ion
 /gps/ion 27 57 0 0
 /gps/energy 0 keV
 
 /gps/ang/type iso
-#/gps/ang/rot1 0 1 0
-#/gps/ang/rot2 -1 0 0
-#/gps/ang/mintheta 0 rad
-#/gps/ang/maxtheta 0.052 rad
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
 
 /run/beamOn 3
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point
-# /gps/pos/centre 0 -80 0 mm
+# /gps/pos/centre 0 0 110 mm
 # /gps/particle ion
 # /gps/ion 95 241 0 0
 # /gps/energy 0 keV
 # /gps/ang/type iso
-# /run/beamOn 10000000
+# /run/beamOn 3
