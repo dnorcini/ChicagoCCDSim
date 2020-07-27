@@ -78,7 +78,7 @@ int main(int argc,char** argv)
   // G4VisManager* visManager = new G4VisExecutive("Quiet");
   visManager->Initialize();
     // interactive mode
-    UImanager->ApplyCommand("/control/execute init_vis.mac");
+    UImanager->ApplyCommand("/control/execute mac/init_vis.mac");
     ui->SessionStart();
     delete ui;
  delete visManager;

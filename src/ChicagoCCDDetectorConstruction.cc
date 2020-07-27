@@ -113,12 +113,14 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Rotation Matrices
 //
 
+  std::vector<G4double> rID{0,0,0};
   std::vector<G4double> rX{1,0,0,0,0,1,0,-1,0};
   std::vector<G4double> rXNeg{1,0,0,0,0,-1,0,1,0};
   std::vector<G4double> rZXNeg{-1,0,0,0,0,-1,0,-1,0};
   std::vector<G4double> rY{0,0,1,0,1,0,-1,0,0};
   std::vector<G4double> rXNegZNeg{0,1,0,0,0,1,1,0,0};
   G4tgbRotationMatrix rot;
+  G4RotationMatrix* rotID = rot.BuildG4RotMatrixFrom3(rID);
   G4RotationMatrix* rotX = rot.BuildG4RotMatrixFrom9(rX);
   G4RotationMatrix* rotXNeg = rot.BuildG4RotMatrixFrom9(rXNeg);
   G4RotationMatrix* rotY = rot.BuildG4RotMatrixFrom9(rY);
@@ -268,7 +270,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), 0));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), rotID));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
@@ -294,7 +296,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), 0));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), rotID));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
   std::vector<G4ThreeVector> DeadDims;
   for (unsigned int i=0; i < ActiveDims.size(); i++) {
