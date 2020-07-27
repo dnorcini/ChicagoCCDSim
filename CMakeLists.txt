@@ -72,9 +72,23 @@ target_link_libraries(ChicagoCCDSim ${Geant4_LIBRARIES})
 # Copy Macros
 #################
 
-add_custom_command(TARGET ChicagoCCDSim PRE_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/mac/ $<TARGET_FILE_DIR:ChicagoCCDSim>)
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/mac")
+file(COPY "mac" DESTINATION "${CMAKE_BINARY_DIR}")
+
+set(SCRIPTS
+  init_vis.mac
+  vis.mac
+  singlerun.mac
+  test.mac
+  test_full.mac
+  guide.mac
+  loop_guide_master.mac
+  loop_guide_worker.mac
+  )
+
+#add_custom_command(TARGET ChicagoCCDSim PRE_BUILD
+#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                       ${CMAKE_SOURCE_DIR}/mac/ $<TARGET_FILE_DIR:ChicagoCCDSim>)
 
 #----------------------------------------------------------------------------
 # For internal Geant4 use - but has no effect if you build this
