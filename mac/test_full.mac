@@ -1,8 +1,6 @@
-# Macro file for example Trit
+# TEST FILE
+# Has a sizable but not overwhelming number of events to check for low probability errors.
 # 
-# Can be run in batch, without graphic
-# or interactively: Idle> /control/execute run1.mac
-#
 # Change the default number of workers (in multi-threading mode) 
 /run/numberOfThreads 30
 #

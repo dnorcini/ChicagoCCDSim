@@ -1,8 +1,6 @@
-# Macro file for example Trit
+# TEST FILE
+# Has only a few events, to check for major errors.
 # 
-# Can be run in batch, without graphic
-# or interactively: Idle> /control/execute run1.mac
-#
 # Change the default number of workers (in multi-threading mode) 
 #/run/numberOfThreads 30
 #
@@ -30,8 +28,8 @@
 /gps/energy 0 keV
 
 /gps/ang/type iso
-#/gps/ang/mintheta 0 rad
-#/gps/ang/maxtheta 0.052 rad
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
 
 /run/beamOn 3
 
@@ -42,4 +40,4 @@
 # /gps/ion 95 241 0 0
 # /gps/energy 0 keV
 # /gps/ang/type iso
-# /run/beamOn 10000000
+# /run/beamOn 3
