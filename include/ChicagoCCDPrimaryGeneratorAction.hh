@@ -26,7 +26,13 @@ class ChicagoCCDPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     // method from the base class
     virtual void GeneratePrimaries(G4Event*);
 
+    void SetGammaSource(G4bool state) {gammaSource = state;};
+    G4bool GetGammaSource() const {return gammaSource;};
+
     G4GeneralParticleSource* fParticleSource;
+  private:
+    G4bool gammaSource;
+    ChicagoCCDPrimaryMessenger* skipperPrimaryMessenger;
 };
 
 #endif
