@@ -4,6 +4,8 @@
 #ifndef ChicagoCCDPrimaryGeneratorAction_h
 #define ChicagoCCDPrimaryGeneratorAction_h 1
 
+#include "ChicagoCCDPrimaryMessenger.hh"
+
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4GeneralParticleSource.hh"
 #include "globals.hh"

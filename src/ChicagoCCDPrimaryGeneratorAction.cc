@@ -2,6 +2,7 @@
 // implementation of the ChicagoCCDPrimaryGeneratorAction class
 
 #include "ChicagoCCDPrimaryGeneratorAction.hh"
+#include "ChicagoCCDPrimaryMessenger.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"

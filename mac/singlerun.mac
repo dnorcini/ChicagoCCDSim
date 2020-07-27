@@ -11,35 +11,33 @@
 #/run/setCut 1 nm
 /run/initialize
 #
-/control/verbose 1
-/run/verbose 0
+/control/verbose 0
+/run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
 /run/printProgress 0
 #/analysis/verbose 2
 #
-/analysis/setFileName /data/dnorcini/output/singlerun.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
 
 /gps/pos/type Point
-/gps/pos/centre 0 -86 0 mm
+/gps/pos/centre 0 0 110 mm
 
-#/gps/pos/centre -6.614 -12.4055 0 mm
+#/gps/pos/centre 0 -6.614 12.4055 mm
 
 /gps/particle ion
 /gps/ion 27 57 0 0
 /gps/energy 0 keV
 
 /gps/ang/type iso
-#/gps/ang/rot1 0 1 0
-#/gps/ang/rot2 -1 0 0
-#/gps/ang/mintheta 0 rad
-#/gps/ang/maxtheta 0.052 rad
+/gps/ang/mintheta 0 deg
+/gps/ang/maxtheta 85 deg
 
-/run/beamOn 100
+/run/beamOn 50000000
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point
-# /gps/pos/centre 0 -80 0 mm
+# /gps/pos/centre 0 0 110 mm
 # /gps/particle ion
 # /gps/ion 95 241 0 0
 # /gps/energy 0 keV
