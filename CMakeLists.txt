@@ -79,6 +79,7 @@ set(SCRIPTS
   init_vis.mac
   vis.mac
   singlerun.mac
+  comparison.mac
   test.mac
   test_full.mac
   guide.mac
