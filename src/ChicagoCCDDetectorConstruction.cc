@@ -296,8 +296,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), rotID));
-  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.4055*mm), rotID));
+  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
   std::vector<G4ThreeVector> DeadDims;
   for (unsigned int i=0; i < ActiveDims.size(); i++) {
     DeadDims.push_back(G4ThreeVector(ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()));
@@ -330,17 +330,20 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
     ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
  
-    G4double ActX = ActiveVecs[i].first.getX();
-    G4double ActY = ActiveVecs[i].first.getY();
-    G4double ActZ = ActiveVecs[i].first.getZ();
+    G4double posX = ActiveVecs[i].first.getX();
+    G4double posY = ActiveVecs[i].first.getY();
+    G4double posZ = ActiveVecs[i].first.getZ();
+    G4double actX = ActiveDims[i].first.getX();
+    G4double actY = ActiveDims[i].first.getY();
+    G4double actZ = ActiveDims[i].first.getZ();
 
-    G4ThreeVector posGet        = G4ThreeVector(ActX, ActY, ActZ - 338*um  );
+    G4ThreeVector posGet        = G4ThreeVector(posX, posY, posZ - actZ - 0.5*um);
     GetteringPVs.push_back( new G4PVPlacement(ActiveVecs[i].second, posGet             , logicGet     , "Gettering"  , logicWorld, false, i, checkOverlaps));
 
-    G4ThreeVector posDeadTop    = G4ThreeVector(ActX, ActY, ActZ + 338.5*um);
+    G4ThreeVector posDeadTop    = G4ThreeVector(posX, posY, posZ + actZ + 1.*um );
     DeadTopPVs.push_back(   new G4PVPlacement(ActiveVecs[i].second, posDeadTop         , logicDead    , "Dead_Top"   , logicWorld, false, i, checkOverlaps));
 
-    G4ThreeVector posDeadBottom = G4ThreeVector(ActX, ActY, ActZ - 339.5*um);
+    G4ThreeVector posDeadBottom = G4ThreeVector(posX, posY, posZ - actZ - 2.*um );
     DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom      , logicDead    , "Dead_Bottom", logicWorld, false, i, checkOverlaps));
 
     DeadSidePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side"  , logicWorld, false, i, checkOverlaps));
