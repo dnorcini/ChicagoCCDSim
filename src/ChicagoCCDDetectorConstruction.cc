@@ -333,9 +333,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
     G4double posX = ActiveVecs[i].first.getX();
     G4double posY = ActiveVecs[i].first.getY();
     G4double posZ = ActiveVecs[i].first.getZ();
-    G4double actX = ActiveDims[i].first.getX();
-    G4double actY = ActiveDims[i].first.getY();
-    G4double actZ = ActiveDims[i].first.getZ();
+    G4double actX = ActiveDims[i].getX();
+    G4double actY = ActiveDims[i].getY();
+    G4double actZ = ActiveDims[i].getZ();
 
     G4ThreeVector posGet        = G4ThreeVector(posX, posY, posZ - actZ - 0.5*um);
     GetteringPVs.push_back( new G4PVPlacement(ActiveVecs[i].second, posGet             , logicGet     , "Gettering"  , logicWorld, false, i, checkOverlaps));
