@@ -78,7 +78,6 @@ file(COPY "mac" DESTINATION "${CMAKE_BINARY_DIR}")
 set(SCRIPTS
   init_vis.mac
   vis.mac
-  singlerun.mac
   test.mac
   test_full.mac
   guide.mac
