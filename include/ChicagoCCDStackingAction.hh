@@ -35,6 +35,8 @@
 #include "globals.hh"
 #include "G4UserStackingAction.hh"
 
+#include <vector>
+
 class G4Track;
 
 class ChicagoCCDStackingAction : public G4UserStackingAction
