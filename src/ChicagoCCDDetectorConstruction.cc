@@ -269,8 +269,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //
 
   G4Box* solidLeadFull   = new G4Box("LeadFull"  , 101.6*mm, 101.6*mm, 177.8*mm);
-  G4Box* solidLeadInHole = new G4Box("LeadInHole",  50.8*mm,  50.8*mm,  25.4*mm);
-  G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole, 0, G4ThreeVector(0, 0, 50.8*mm));
+  G4Box* solidLeadInHole = new G4Box("LeadInHole",  50.9*mm,  50.8*mm,  25.4*mm);
+  G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole, 0, G4ThreeVector(-50.9*mm, 0, 50.8*mm));
 
   G4LogicalVolume* logicLead = new G4LogicalVolume(solidLead, Pb, "Lead"); 
 
