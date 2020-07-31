@@ -50,6 +50,7 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Si = nist->FindOrBuildMaterial("G4_Si");
   Cu = nist->FindOrBuildMaterial("G4_Cu");
   Pb = nist->FindOrBuildMaterial("G4_Pb");
+  BeO = nist->FindOrBuildMaterial("G4_BERYLLIUM_OXIDE");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
 
   G4double StDens = 8*g/cm3;
@@ -113,18 +114,20 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Rotation Matrices
 //
 
-  std::vector<G4double> rID{0,0,0};
-  std::vector<G4double> rX{1,0,0,0,0,1,0,-1,0};
-  std::vector<G4double> rXNeg{1,0,0,0,0,-1,0,1,0};
-  std::vector<G4double> rZXNeg{-1,0,0,0,0,-1,0,-1,0};
-  std::vector<G4double> rY{0,0,1,0,1,0,-1,0,0};
-  std::vector<G4double> rXNegZNeg{0,1,0,0,0,1,1,0,0};
+  std::vector<G4double> rID{     0    ,  0    ,  0    };
+  std::vector<G4double> rX{     90*deg,  0    ,  0    };
+  std::vector<G4double> rXNeg{ -90*deg,  0    ,  0    };
+  std::vector<G4double> rZXNeg{-90*deg,  0    , 90*deg};
+  std::vector<G4double> rY{      0    , 90*deg,  0    };
+  std::vector<G4double> rYNeg{   0    ,-90*deg,  0    };
+  std::vector<G4double> rXNegZNeg{0, 1, 0, 0, 0, 1, 1, 0, 0};
   G4tgbRotationMatrix rot;
-  G4RotationMatrix* rotID = rot.BuildG4RotMatrixFrom3(rID);
-  G4RotationMatrix* rotX = rot.BuildG4RotMatrixFrom9(rX);
-  G4RotationMatrix* rotXNeg = rot.BuildG4RotMatrixFrom9(rXNeg);
-  G4RotationMatrix* rotY = rot.BuildG4RotMatrixFrom9(rY);
-  G4RotationMatrix* rotZXNeg = rot.BuildG4RotMatrixFrom9(rZXNeg);
+  G4RotationMatrix* rotID       = rot.BuildG4RotMatrixFrom3(rID      );
+  G4RotationMatrix* rotX        = rot.BuildG4RotMatrixFrom3(rX       );
+  G4RotationMatrix* rotXNeg     = rot.BuildG4RotMatrixFrom3(rXNeg    );
+  G4RotationMatrix* rotY        = rot.BuildG4RotMatrixFrom3(rY       );
+  G4RotationMatrix* rotYNeg     = rot.BuildG4RotMatrixFrom3(rYNeg    );
+  G4RotationMatrix* rotZXNeg    = rot.BuildG4RotMatrixFrom3(rZXNeg   );
   G4RotationMatrix* rotXNegZNeg = rot.BuildG4RotMatrixFrom9(rXNegZNeg);
 
 //
@@ -133,7 +136,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 
   G4Box* solidBox = new G4Box("Box", 76.2*mm, 76.2*mm, 76.2*mm);
   G4VSolid* hole  = new G4Tubs("Hole", 0, 50.8*mm, 77*mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidChamber = new G4SubtractionSolid("Chamber", solidBox,     hole);
+  G4SubtractionSolid* solidChamber = new G4SubtractionSolid("Chamber", solidBox    , hole);
   solidChamber                     = new G4SubtractionSolid("Chamber", solidChamber, hole, rotX, G4ThreeVector());
   solidChamber                     = new G4SubtractionSolid("Chamber", solidChamber, hole, rotY, G4ThreeVector());
   G4LogicalVolume* logicChamber = new G4LogicalVolume(solidChamber, Steel, "Chamber");
@@ -260,6 +263,28 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   steelRegion2->AddRootLogicalVolume(logicSmallColdHead);               
   logicLargeColdHead->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicLargeColdHead); 
+
+//
+//  Lead Shielding
+//
+
+//
+//  Beryllium Oxide
+//
+
+  G4VSolid* solidBeOTop        = new G4Tubs("BeOTop"       , 0     , 13.75*mm,  4.5 *mm, 0, 2*M_PI);
+  G4VSolid* solidBeOTube       = new G4Tubs("BeOTube"      , 6.5*mm, 13.  *mm, 12.75*mm, 0, 2*M_PI);
+  G4VSolid* solidBeOBottomFull = new G4Tubs("BeOBottomFull", 0,      22.6 *mm, 12.5 *mm, 0, 2*M_PI);
+  G4VSolid* solidBeOBottomHole = new G4Tubs("BeOBottomHole", 0,      13.75*mm,  8.1 *mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidBeOBottom = new G4SubtractionSolid("BeOBottom", solidBeOBottomFull, solidBeOBottomHole, 0, G4ThreeVector(0, 0, 4.6*mm)); 
+
+  G4LogicalVolume* logicBeOTop    = new G4LogicalVolume(solidBeOTop   , BeO, "BeOTop"   );
+  G4LogicalVolume* logicBeOTube   = new G4LogicalVolume(solidBeOTube  , BeO, "BeOTube"  );
+  G4LogicalVolume* logicBeOBottom = new G4LogicalVolume(solidBeOBottom, BeO, "BeOBottom");
+
+  physBeOTop    = new G4PVPlacement(rotYNeg, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
+  physBeOTube   = new G4PVPlacement(rotYNeg, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
+  physBeOBottom = new G4PVPlacement(rotYNeg, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Detailed CCD Model - One of two possibilities:
