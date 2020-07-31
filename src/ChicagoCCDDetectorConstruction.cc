@@ -282,9 +282,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicBeOTube   = new G4LogicalVolume(solidBeOTube  , BeO, "BeOTube"  );
   G4LogicalVolume* logicBeOBottom = new G4LogicalVolume(solidBeOBottom, BeO, "BeOBottom");
 
-  physBeOTop    = new G4PVPlacement(rotYNeg, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
-  physBeOTube   = new G4PVPlacement(rotYNeg, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
-  physBeOBottom = new G4PVPlacement(rotYNeg, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOTop    = new G4PVPlacement(rotYNeg, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOTube   = new G4PVPlacement(rotYNeg, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOBottom = new G4PVPlacement(rotYNeg, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Detailed CCD Model - One of two possibilities:
