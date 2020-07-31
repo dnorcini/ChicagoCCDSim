@@ -75,6 +75,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4Material *Cu;
     G4Material *Pb;
     G4Material *Ny;
+    G4Material *BeO;
     G4Material *Kap;
     G4Material *world_mat;
     G4Material *Steel;
