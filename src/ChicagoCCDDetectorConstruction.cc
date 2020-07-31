@@ -268,23 +268,31 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Lead Shielding
 //
 
+  G4Box* solidLeadFull   = new G4Box("LeadFull"  , 101.6*mm, 101.6*mm, 177.8*mm);
+  G4Box* solidLeadInHole = new G4Box("LeadInHole",  50.8*mm,  50.8*mm,  25.4*mm);
+  G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole, 0, G4ThreeVector(0, 0, 50.8*mm));
+
+  G4LogicalVolume* logicLead = new G4LogicalVolume(solidLead, Pb, "Lead"); 
+
+  G4VPhysicalVolume* physLead = new G4PVPlacement(0, G4ThreeVector(7.6*mm, 0, 307.*mm), logicLead, "Lead", logicWorld, false, 0, checkOverlaps);
+
 //
 //  Beryllium Oxide
 //
 
   G4VSolid* solidBeOTop        = new G4Tubs("BeOTop"       , 0     , 13.75*mm,  4.5 *mm, 0, 2*M_PI);
   G4VSolid* solidBeOTube       = new G4Tubs("BeOTube"      , 6.5*mm, 13.  *mm, 12.75*mm, 0, 2*M_PI);
-  G4VSolid* solidBeOBottomFull = new G4Tubs("BeOBottomFull", 0,      22.6 *mm, 12.5 *mm, 0, 2*M_PI);
-  G4VSolid* solidBeOBottomHole = new G4Tubs("BeOBottomHole", 0,      13.75*mm,  8.1 *mm, 0, 2*M_PI);
+  G4VSolid* solidBeOBottomFull = new G4Tubs("BeOBottomFull", 0     , 22.6 *mm, 12.5 *mm, 0, 2*M_PI);
+  G4VSolid* solidBeOBottomHole = new G4Tubs("BeOBottomHole", 0     , 13.75*mm,  8.1 *mm, 0, 2*M_PI);
   G4SubtractionSolid* solidBeOBottom = new G4SubtractionSolid("BeOBottom", solidBeOBottomFull, solidBeOBottomHole, 0, G4ThreeVector(0, 0, 4.6*mm)); 
 
   G4LogicalVolume* logicBeOTop    = new G4LogicalVolume(solidBeOTop   , BeO, "BeOTop"   );
   G4LogicalVolume* logicBeOTube   = new G4LogicalVolume(solidBeOTube  , BeO, "BeOTube"  );
   G4LogicalVolume* logicBeOBottom = new G4LogicalVolume(solidBeOBottom, BeO, "BeOBottom");
 
-  G4VPhysicalVolume* physBeOTop    = new G4PVPlacement(rotYNeg, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
-  G4VPhysicalVolume* physBeOTube   = new G4PVPlacement(rotYNeg, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
-  G4VPhysicalVolume* physBeOBottom = new G4PVPlacement(rotYNeg, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOTop    = new G4PVPlacement(rotY, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOTube   = new G4PVPlacement(rotY, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physBeOBottom = new G4PVPlacement(rotY, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Detailed CCD Model - One of two possibilities:
