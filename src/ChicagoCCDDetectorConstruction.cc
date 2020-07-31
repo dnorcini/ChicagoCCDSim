@@ -103,8 +103,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 // World
 //
 
-  G4double world_sizeXY = 60*cm;
-  G4double world_sizeZ  = 60*cm;
+  G4double world_sizeXY = 100*cm;
+  G4double world_sizeZ  = 100*cm;
 
   G4Box* solidWorld = new G4Box("World", 0.5*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
   logicWorld = new G4LogicalVolume(solidWorld,world_mat,"World");
