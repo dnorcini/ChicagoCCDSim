@@ -79,6 +79,24 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Steel->AddElement(elFe, 0.701725);
   Steel->AddElement(elNi, 0.0925);
 
+  G4double EpDens = 0.9828*g/cm3;
+  Epoxy = new G4Material("Epoxy", EpDens, 4);
+
+  G4Isotope* H1 = new G4Isotope("H1", 1, 1);
+  G4Element* elH = new G4Element("H", "H", 1);
+  elH->AddIsotope(H1, 100. * perCent);
+  G4Isotope* N14 = new G4Isotope("N14", 7, 14);
+  G4Element* elN = new G4Element("N", "N", 1);
+  elN->AddIsotope(N14, 100. * perCent);
+  G4Isotope* O16 = new G4Isotope("O16", 8, 16);
+  G4Element* elO = new G4Element("O", "O", 1);
+  elO->AddIsotope(O16, 100. * perCent);
+
+  Epoxy->AddElement(elH, 0.0797);
+  Epoxy->AddElement(elC, 0.7016);
+  Epoxy->AddElement(elN, 0.0142);
+  Epoxy->AddElement(elO, 0.2045);
+
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
 
