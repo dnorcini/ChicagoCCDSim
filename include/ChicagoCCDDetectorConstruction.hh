@@ -62,6 +62,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<G4VPhysicalVolume*> DeadSidePVs;
 
     std::vector<G4VPhysicalVolume*> flangePhys;
+    std::vector<G4VPhysicalVolume*> leadPhys;
+    std::vector<G4VPhysicalVolume*> BeOPhys;
     G4VPhysicalVolume* physChamber;
     G4VPhysicalVolume* physPuck;
     G4VPhysicalVolume* physSmallColdHead;
@@ -76,6 +78,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4Material *Pb;
     G4Material *Ny;
     G4Material *BeO;
+    G4Material *Sb;
     G4Material *Kap;
     G4Material *world_mat;
     G4Material *Steel;

@@ -124,10 +124,14 @@
 /vis/geometry/set/colour Puck            0 0.722  0.451 0.20   0.75
 /vis/geometry/set/colour SmallColdHead   0 1      1     1      0.75
 /vis/geometry/set/colour LargeColdHead   0 1      1     1      0.75
-/vis/geometry/set/colour BeOTop          0 0.9    1     1      1
-/vis/geometry/set/colour BeOTube         0 0.9    1     1      1
-/vis/geometry/set/colour BeOBottom       0 0.9    1     1      1
+/vis/geometry/set/colour BeOTop          0 0.9    1     1      0.75
+/vis/geometry/set/colour BeOTube         0 0.9    1     1      0.75
+/vis/geometry/set/colour BeOBottom       0 0.9    1     1      0.75
 /vis/geometry/set/colour Lead            0 0.463  0.533 0.561  0.5
+/vis/geometry/set/colour LeadBrick1      0 0.463  0.533 0.561  0.5
+/vis/geometry/set/colour LeadBrick2      0 0.463  0.533 0.561  0.5
+/vis/geometry/set/colour LeadBrick3      0 0.463  0.533 0.561  0.5
+/vis/geometry/set/colour SbSource        0 0.98   0.87  0.37   1
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings

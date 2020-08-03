@@ -47,11 +47,12 @@ ChicagoCCDDetectorConstruction::~ChicagoCCDDetectorConstruction()
 
 void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   G4NistManager* nist = G4NistManager::Instance();
-  Si = nist->FindOrBuildMaterial("G4_Si");
-  Cu = nist->FindOrBuildMaterial("G4_Cu");
-  Pb = nist->FindOrBuildMaterial("G4_Pb");
+  Si  = nist->FindOrBuildMaterial("G4_Si");
+  Cu  = nist->FindOrBuildMaterial("G4_Cu");
+  Pb  = nist->FindOrBuildMaterial("G4_Pb");
   BeO = nist->FindOrBuildMaterial("G4_BERYLLIUM_OXIDE");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
+  Sb  = nist->FindOrBuildMaterial("G4_Sb");
 
   G4double StDens = 8*g/cm3;
   Steel = new G4Material("Stainless-Steel", StDens, 8);
@@ -116,19 +117,11 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 
   std::vector<G4double> rID{     0    ,  0    ,  0    };
   std::vector<G4double> rX{     90*deg,  0    ,  0    };
-  std::vector<G4double> rXNeg{ -90*deg,  0    ,  0    };
-  std::vector<G4double> rZXNeg{-90*deg,  0    , 90*deg};
   std::vector<G4double> rY{      0    , 90*deg,  0    };
-  std::vector<G4double> rYNeg{   0    ,-90*deg,  0    };
-  std::vector<G4double> rXNegZNeg{0, 1, 0, 0, 0, 1, 1, 0, 0};
   G4tgbRotationMatrix rot;
   G4RotationMatrix* rotID       = rot.BuildG4RotMatrixFrom3(rID      );
   G4RotationMatrix* rotX        = rot.BuildG4RotMatrixFrom3(rX       );
-  G4RotationMatrix* rotXNeg     = rot.BuildG4RotMatrixFrom3(rXNeg    );
   G4RotationMatrix* rotY        = rot.BuildG4RotMatrixFrom3(rY       );
-  G4RotationMatrix* rotYNeg     = rot.BuildG4RotMatrixFrom3(rYNeg    );
-  G4RotationMatrix* rotZXNeg    = rot.BuildG4RotMatrixFrom3(rZXNeg   );
-  G4RotationMatrix* rotXNegZNeg = rot.BuildG4RotMatrixFrom9(rXNegZNeg);
 
 //
 //  Chamber
@@ -278,7 +271,23 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 
   G4LogicalVolume* logicLead = new G4LogicalVolume(solidLead, Pb, "Lead"); 
 
-  G4VPhysicalVolume* physLead = new G4PVPlacement(0, G4ThreeVector(-17.8*mm, 0, 307.*mm), logicLead, "Lead", logicWorld, false, 0, checkOverlaps);
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-17.8*mm, 0, 307.*mm), logicLead, "Lead", logicWorld, false, 0, checkOverlaps));
+
+// Bricks
+
+  G4Box* solidLeadBrick1 = new G4Box("LeadBrick1", 25.4*mm, 70. *mm,  50.8*mm);
+  G4Box* solidLeadBrick2 = new G4Box("LeadBrick2", 50.8*mm, 50.8*mm,  25.4*mm);
+  G4Box* solidLeadBrick3 = new G4Box("LeadBrick3", 26.3*mm, 50.8*mm,  25.4*mm);
+
+  G4LogicalVolume* logicLeadBrick1 = new G4LogicalVolume(solidLeadBrick1, Pb, "LeadBrick1");
+  G4LogicalVolume* logicLeadBrick2 = new G4LogicalVolume(solidLeadBrick2, Pb, "LeadBrick2");
+  G4LogicalVolume* logicLeadBrick3 = new G4LogicalVolume(solidLeadBrick3, Pb, "LeadBrick3");
+
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-203.2*mm,   0     , 357.8*mm), logicLeadBrick1, "LeadBrick", logicWorld, false, 0, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-177.8*mm,   0     , 434. *mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 1, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-177.8*mm,   0     , 281.6*mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 2, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector( -25.4*mm, 127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 3, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector( -25.4*mm,-127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 4, checkOverlaps));
 
 //
 //  Beryllium Oxide
@@ -294,9 +303,19 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicBeOTube   = new G4LogicalVolume(solidBeOTube  , BeO, "BeOTube"  );
   G4LogicalVolume* logicBeOBottom = new G4LogicalVolume(solidBeOBottom, BeO, "BeOBottom");
 
-  G4VPhysicalVolume* physBeOTop    = new G4PVPlacement(rotY, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps);
-  G4VPhysicalVolume* physBeOTube   = new G4PVPlacement(rotY, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps);
-  G4VPhysicalVolume* physBeOBottom = new G4PVPlacement(rotY, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps);
+  BeOPhys.push_back(new G4PVPlacement(rotY, G4ThreeVector(-31.4 *mm, 0, 357.8*mm), logicBeOTop   , "BeOTop"   , logicWorld, false, 0, checkOverlaps));
+  BeOPhys.push_back(new G4PVPlacement(rotY, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicBeOTube  , "BeOTube"  , logicWorld, false, 0, checkOverlaps));
+  BeOPhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( -4.9 *mm, 0, 357.8*mm), logicBeOBottom, "BeOBottom", logicWorld, false, 0, checkOverlaps));
+
+//
+//  Antimony Source
+//
+
+  G4VSolid* solidSbSource = new G4Tubs("SbSource", 0, 1.5875*mm, 7.5*mm, 0, 2*M_PI);
+
+  G4LogicalVolume* logicSbSource = new G4LogicalVolume(solidSbSource, Sb, "SbSource");
+
+  new G4PVPlacement(rotY, G4ThreeVector(-8.9*mm, 0, 357.8*mm), logicSbSource, "SbSource", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Detailed CCD Model - One of two possibilities:
@@ -408,6 +427,12 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
   logicWorld->RemoveDaughter(physCopperBox);
   for (unsigned int i=0; i < flangePhys.size(); i++) {
     logicWorld->RemoveDaughter(flangePhys[i]);
+  };
+  for (unsigned int i=0; i < leadPhys.size(); i++) {
+    logicWorld->RemoveDaughter(leadPhys[i]);
+  };
+  for (unsigned int i=0; i < BeOPhys.size(); i++) {
+    logicWorld->RemoveDaughter(leadPhys[i]);
   };
   for (unsigned int i=0; i < GetteringPVs.size(); i++) {  
     logicWorld->RemoveDaughter(GetteringPVs[i]);
