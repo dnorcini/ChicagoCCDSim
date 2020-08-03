@@ -283,11 +283,11 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicLeadBrick2 = new G4LogicalVolume(solidLeadBrick2, Pb, "LeadBrick2");
   G4LogicalVolume* logicLeadBrick3 = new G4LogicalVolume(solidLeadBrick3, Pb, "LeadBrick3");
 
-  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-203.2*mm,   0     , 357.8*mm), logicLeadBrick1, "LeadBrick", logicWorld, false, 0, checkOverlaps));
-  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-177.8*mm,   0     , 434. *mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 1, checkOverlaps));
-  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-177.8*mm,   0     , 281.6*mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 2, checkOverlaps));
-  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector( -25.4*mm, 127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 3, checkOverlaps));
-  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector( -25.4*mm,-127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 4, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-170.2*mm,   0     , 357.8*mm), logicLeadBrick1, "LeadBrick", logicWorld, false, 0, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-144.8*mm,   0     , 434. *mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 1, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(-144.8*mm,   0     , 281.6*mm), logicLeadBrick2, "LeadBrick", logicWorld, false, 2, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(   7.6*mm, 127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 3, checkOverlaps));
+  leadPhys.push_back(new G4PVPlacement(0, G4ThreeVector(   7.6*mm,-127.9*mm, 357.8*mm), logicLeadBrick3, "LeadBrick", logicWorld, false, 4, checkOverlaps));
 
 //
 //  Beryllium Oxide
