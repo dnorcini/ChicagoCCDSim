@@ -127,7 +127,7 @@
 /vis/geometry/set/colour BeOTop          0 0.9    1     1      1
 /vis/geometry/set/colour BeOTube         0 0.9    1     1      1
 /vis/geometry/set/colour BeOBottom       0 0.9    1     1      1
-/vis/geometry/set/colour Lead            0 0.463  0.533 0.561  1
+/vis/geometry/set/colour Lead            0 0.463  0.533 0.561  0.5
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings

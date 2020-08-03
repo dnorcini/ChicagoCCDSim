@@ -268,13 +268,17 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Lead Shielding
 //
 
-  G4Box* solidLeadFull   = new G4Box("LeadFull"  , 101.6*mm, 101.6*mm, 177.8*mm);
-  G4Box* solidLeadInHole = new G4Box("LeadInHole",  50.9*mm,  50.8*mm,  25.4*mm);
-  G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole, 0, G4ThreeVector(-50.9*mm, 0, 50.8*mm));
+  G4Box* solidLeadFull         = new G4Box("LeadFull"        , 127. *mm, 101.6*mm, 177.8*mm);
+  G4Box* solidLeadInHole       = new G4Box("LeadInHole"      ,  50.9*mm,  50.8*mm,  25.4*mm);
+  G4Box* solidLeadOutFrontHole = new G4Box("LeadOutFrontHole",  25.5*mm, 102. *mm,  89. *mm);
+  G4Box* solidLeadOutBackHole  = new G4Box("LeadOutBackHole" ,  25.5*mm, 102. *mm,  38.2*mm);
+  G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole      , 0, G4ThreeVector( -50.9*mm, 0,  50.8*mm));
+  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutFrontHole, 0, G4ThreeVector(-119.5*mm, 0, -89. *mm));
+  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutBackHole , 0, G4ThreeVector(-119.5*mm, 0, 139.8*mm));
 
   G4LogicalVolume* logicLead = new G4LogicalVolume(solidLead, Pb, "Lead"); 
 
-  G4VPhysicalVolume* physLead = new G4PVPlacement(0, G4ThreeVector(7.6*mm, 0, 307.*mm), logicLead, "Lead", logicWorld, false, 0, checkOverlaps);
+  G4VPhysicalVolume* physLead = new G4PVPlacement(0, G4ThreeVector(-17.8*mm, 0, 307.*mm), logicLead, "Lead", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Beryllium Oxide
