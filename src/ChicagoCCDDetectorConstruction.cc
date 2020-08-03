@@ -266,8 +266,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidLeadOutFrontHole = new G4Box("LeadOutFrontHole",  25.5*mm, 102. *mm,  89. *mm);
   G4Box* solidLeadOutBackHole  = new G4Box("LeadOutBackHole" ,  25.5*mm, 102. *mm,  38.2*mm);
   G4SubtractionSolid* solidLead = new G4SubtractionSolid("Lead", solidLeadFull, solidLeadInHole      , 0, G4ThreeVector( -25.4*mm, 0,  50.8*mm));
-  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutFrontHole, 0, G4ThreeVector(-119.5*mm, 0, -89. *mm));
-  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutBackHole , 0, G4ThreeVector(-119.5*mm, 0, 139.8*mm));
+  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutFrontHole, 0, G4ThreeVector(-101.6*mm, 0, -89. *mm));
+  solidLead                     = new G4SubtractionSolid("Lead", solidLead    , solidLeadOutBackHole , 0, G4ThreeVector(-101.6*mm, 0, 139.8*mm));
 
   G4LogicalVolume* logicLead = new G4LogicalVolume(solidLead, Pb, "Lead"); 
 
@@ -277,7 +277,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 
   G4Box* solidLeadBrick1 = new G4Box("LeadBrick1", 25.4*mm, 70. *mm,  50.8*mm);
   G4Box* solidLeadBrick2 = new G4Box("LeadBrick2", 50.8*mm, 50.8*mm,  25.4*mm);
-  G4Box* solidLeadBrick3 = new G4Box("LeadBrick3", 26.3*mm, 50.8*mm,  25.4*mm);
+  G4Box* solidLeadBrick3 = new G4Box("LeadBrick3", 50.8*mm, 26.3*mm,  25.4*mm);
 
   G4LogicalVolume* logicLeadBrick1 = new G4LogicalVolume(solidLeadBrick1, Pb, "LeadBrick1");
   G4LogicalVolume* logicLeadBrick2 = new G4LogicalVolume(solidLeadBrick2, Pb, "LeadBrick2");
@@ -429,9 +429,6 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
     logicWorld->RemoveDaughter(flangePhys[i]);
   };
   for (unsigned int i=0; i < leadPhys.size(); i++) {
-    logicWorld->RemoveDaughter(leadPhys[i]);
-  };
-  for (unsigned int i=0; i < BeOPhys.size(); i++) {
     logicWorld->RemoveDaughter(leadPhys[i]);
   };
   for (unsigned int i=0; i < GetteringPVs.size(); i++) {  
