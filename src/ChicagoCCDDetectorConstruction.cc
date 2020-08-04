@@ -113,19 +113,13 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Rotation Matrices
 //
 
-  std::vector<G4double> rID{0,0,0};
-  std::vector<G4double> rX{1,0,0,0,0,1,0,-1,0};
-  std::vector<G4double> rXNeg{1,0,0,0,0,-1,0,1,0};
-  std::vector<G4double> rZXNeg{-1,0,0,0,0,-1,0,-1,0};
-  std::vector<G4double> rY{0,0,1,0,1,0,-1,0,0};
-  std::vector<G4double> rXNegZNeg{0,1,0,0,0,1,1,0,0};
+  std::vector<G4double> rID{ 0    ,  0    , 0};
+  std::vector<G4double> rX{ 90*deg,  0    , 0};
+  std::vector<G4double> rY{  0    , 90*deg, 0};
   G4tgbRotationMatrix rot;
   G4RotationMatrix* rotID = rot.BuildG4RotMatrixFrom3(rID);
-  G4RotationMatrix* rotX = rot.BuildG4RotMatrixFrom9(rX);
-  G4RotationMatrix* rotXNeg = rot.BuildG4RotMatrixFrom9(rXNeg);
-  G4RotationMatrix* rotY = rot.BuildG4RotMatrixFrom9(rY);
-  G4RotationMatrix* rotZXNeg = rot.BuildG4RotMatrixFrom9(rZXNeg);
-  G4RotationMatrix* rotXNegZNeg = rot.BuildG4RotMatrixFrom9(rXNegZNeg);
+  G4RotationMatrix* rotX  = rot.BuildG4RotMatrixFrom3(rX );
+  G4RotationMatrix* rotY  = rot.BuildG4RotMatrixFrom3(rY );
 
 //
 //  Chamber
@@ -202,14 +196,14 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   solidFlex                     = new G4SubtractionSolid("Flex", solidFlex      , solidFlexHole2, 0, G4ThreeVector( 17.35*mm,-60.61*mm, 0));
   solidFlex                     = new G4SubtractionSolid("Flex", solidFlex      , solidFlexHole2, 0, G4ThreeVector(-17.35*mm,-60.61*mm, 0));
   G4LogicalVolume* logicFlex = new G4LogicalVolume(solidFlex, Kap, "Flex");
-  physFlex = new G4PVPlacement(0,G4ThreeVector(0, -26.361*mm, 12.2175*mm), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
+  physFlex = new G4PVPlacement(0,G4ThreeVector(0, -26.361*mm, -20.1675*mm), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Silicon Backing of CCD
 //
   G4Box* solidSiBacking = new G4Box("SiBacking", 18.9992*mm, 53.5051*mm, 0.3375*mm);
   G4LogicalVolume* logicSiBacking = new G4LogicalVolume(solidSiBacking, Si, "SiBacking");
-  physSiBacking = new G4PVPlacement(0, G4ThreeVector(0, -12.3271*mm, 11.7275*mm), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
+  physSiBacking = new G4PVPlacement(0, G4ThreeVector(0, -12.3271*mm, -20.6575*mm), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Copper Box of CCD
@@ -225,7 +219,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   solidCopperBox                     = new G4SubtractionSolid("CopperBox", solidCopperBox      , solidCopperBoxGroove2 , 0, G4ThreeVector(0,  0       , 0.2015*mm));
   solidCopperBox                     = new G4SubtractionSolid("CopperBox", solidCopperBox      , solidCopperBoxGroove3 , 0, G4ThreeVector(0,  0       ,-1.0805*mm));
   G4LogicalVolume* logicCopperBox = new G4LogicalVolume(solidCopperBox, Cu, "CopperBox");
-  physCopperBox = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, 11.43*mm), logicCopperBox, "CopperBox", logicWorld, false, 0, checkOverlaps);
+  physCopperBox = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -20.955*mm), logicCopperBox, "CopperBox", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Copper Face Plate
@@ -235,13 +229,13 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidCopperFaceHole      = new G4Box("CopperFaceHole"     , 18.8 *mm, 56.515*mm, 0.8  *mm);
   G4SubtractionSolid* solidCopperFacePlate = new G4SubtractionSolid("CopperFacePlate", solidCopperFacePlateFull, solidCopperFaceHole, 0, G4ThreeVector());
   G4LogicalVolume* logicCopperFacePlate = new G4LogicalVolume(solidCopperFacePlate, Cu, "CopperFacePlate");
-  physCopperFacePlate = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, 13.0105*mm), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
+  physCopperFacePlate = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -19.3745*mm), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
 
 //
 //  Puck Model
 //
 
-  G4Box* solidPuck = new G4Box("Puck", 9.525*mm, 5.08*mm, 9.525*mm);
+  G4Box* solidPuck = new G4Box("Puck", 19.05*mm, 5.08*mm, 19.05*mm);
   G4LogicalVolume* logicPuck = new G4LogicalVolume(solidPuck, Cu, "Puck");
   physPuck = new G4PVPlacement(0, G4ThreeVector(0, 55.866*mm, 0), logicPuck, "Puck", logicWorld, false, 0, checkOverlaps);
 
@@ -270,7 +264,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.405*mm), rotID));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, -19.98*mm), rotID));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
@@ -296,7 +290,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, 12.4055*mm), rotID));
+  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, -19.9795*mm), rotID));
   ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
   std::vector<G4ThreeVector> DeadDims;
   for (unsigned int i=0; i < ActiveDims.size(); i++) {
