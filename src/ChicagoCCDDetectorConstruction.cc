@@ -329,11 +329,15 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Antimony Source
 //
 
-  G4VSolid* solidSbSource = new G4Tubs("SbSource", 0, 1.5875*mm, 7.5*mm, 0, 2*M_PI);
+  G4VSolid* solidSbSource  = new G4Tubs("SbSource" , 0, 1.5875*mm,  7.5 *mm, 0, 2*M_PI);
+  G4VSolid* solidEpoxyFull = new G4Tubs("EpoxyFull", 0, 6.5   *mm, 12.75*mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidEpoxy = new G4SubtractionSolid("Epoxy", solidEpoxyFull, solidSbSource, 0, G4ThreeVector(0, 0,-5.25*mm)); 
 
-  G4LogicalVolume* logicSbSource = new G4LogicalVolume(solidSbSource, Sb, "SbSource");
+  G4LogicalVolume* logicSbSource = new G4LogicalVolume(solidSbSource, Sb   , "SbSource");
+  G4LogicalVolume* logicEpoxy    = new G4LogicalVolume(solidEpoxy   , Epoxy, "Epoxy"   );
 
-  new G4PVPlacement(rotY, G4ThreeVector(-8.9*mm, 0, 357.8*mm), logicSbSource, "SbSource", logicWorld, false, 0, checkOverlaps);
+  new G4PVPlacement(rotY, G4ThreeVector( -8.9 *mm, 0, 357.8*mm), logicSbSource, "SbSource", logicWorld, false, 0, checkOverlaps);
+  new G4PVPlacement(rotY, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicEpoxy   , "Epoxy"   , logicWorld, false, 0, checkOverlaps);
 
 //
 //  Detailed CCD Model - One of two possibilities:

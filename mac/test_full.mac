@@ -16,28 +16,18 @@
 /run/printProgress 1
 #/analysis/verbose 2
 #
-#/analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Co.root
+#/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
 
 /gps/pos/type Point
 /gps/pos/centre 0 0 110 mm
 
 #/gps/pos/centre 0 -6.614 12.4055 mm
 
-/gps/particle ion
-/gps/ion 27 57 0 0
-/gps/energy 0 keV
+/gps/particle neutron
+/gps/energy 10 keV
 
 /gps/ang/type iso
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
 
 /run/beamOn 10000
-
-# /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
-# /gps/pos/type Point
-# /gps/pos/centre 0 0 110 mm
-# /gps/particle ion
-# /gps/ion 95 241 0 0
-# /gps/energy 0 keV
-# /gps/ang/type iso
-# /run/beamOn 10000000

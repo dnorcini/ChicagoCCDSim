@@ -1,0 +1,42 @@
+# Macro file for example Trit
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Change the default number of workers (in multi-threading mode) 
+/run/numberOfThreads 30
+#
+# Initialize kernel
+#/cuts/setLowEdge 1 eV
+#/run/setCut 1 nm
+/run/initialize
+#
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/run/printProgress 10000
+#/analysis/verbose 2
+#
+/ChicagoGeom/deleteGeometry
+
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_comparison/Neutron.root
+
+#/gps/pos/type Point
+/gps/pos/type Beam
+/gps/pos/centre 0 0 110 mm
+
+#/gps/pos/centre -6.614 -12.4055 0 mm
+
+/gps/particle neutron 
+
+/gps/ene/type Mono
+/gps/ene/mono 10. keV
+
+/gps/ang/type focused
+/gps/ang/focuspoint 0 0 12.4055 mm
+#/gps/ang/type iso
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
+
+/run/beamOn 500000000

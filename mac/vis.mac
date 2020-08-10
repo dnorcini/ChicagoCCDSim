@@ -132,6 +132,7 @@
 /vis/geometry/set/colour LeadBrick2      0 0.463  0.533 0.561  0.5
 /vis/geometry/set/colour LeadBrick3      0 0.463  0.533 0.561  0.5
 /vis/geometry/set/colour SbSource        0 0.98   0.87  0.37   1
+/vis/geometry/set/colour Epoxy           0 0.98   1.    0.8353 0.6
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
