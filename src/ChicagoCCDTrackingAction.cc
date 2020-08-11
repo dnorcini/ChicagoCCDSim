@@ -31,6 +31,7 @@
 
 #include "ChicagoCCDTrackingAction.hh"
 #include "ChicagoCCDTrackInformation.hh"
+#include "ChicagoCCDStackingAction.hh"
 
 #include "G4TrackingManager.hh"
 #include "G4Track.hh"
@@ -38,8 +39,9 @@
 #include <vector>
 #include <algorithm>
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
-ChicagoCCDTrackingAction::ChicagoCCDTrackingAction()
-:G4UserTrackingAction()
+ChicagoCCDTrackingAction::ChicagoCCDTrackingAction(ChicagoCCDStackingAction* stackingAction)
+:G4UserTrackingAction(),
+  fStackingAction(stackingAction)
 {;}
 
 void ChicagoCCDTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
@@ -50,8 +52,9 @@ void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
   G4int parentid = aTrack->GetParentID();
   G4TrackVector* secondaries = fpTrackingManager->GimmeSecondaries();
+  std::vector< G4int > trackList = fStackingAction->GetTrackList();
   // If the particle is such that it would have information stored to pass down, then pass it down to secondaries
-  if (aTrack->GetParticleDefinition()->GetParticleType() != "nucleus" && aTrack->GetParticleDefinition()->GetParticleType() != "GenericIon") 
+  if ((aTrack->GetParticleDefinition()->GetParticleType() != "nucleus" && aTrack->GetParticleDefinition()->GetParticleType() != "GenericIon" && std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end()) || std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) != trackList.end())
   {
     ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
     size_t nSeco = secondaries->size();
