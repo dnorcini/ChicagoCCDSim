@@ -34,15 +34,21 @@
 
 #include "G4Types.hh"
 #include "G4UserTrackingAction.hh"
+#include "ChicagoCCDStackingAction.hh"
+
+class ChicagoCCDStackingAction;
 
 class ChicagoCCDTrackingAction : public G4UserTrackingAction 
 {
 public:
-  ChicagoCCDTrackingAction();
+  ChicagoCCDTrackingAction(ChicagoCCDStackingAction* stackingAction);
   virtual ~ChicagoCCDTrackingAction(){};
    
   virtual void PreUserTrackingAction(const G4Track*);
   virtual void PostUserTrackingAction(const G4Track*);
+
+private:
+  ChicagoCCDStackingAction* fStackingAction;
 };
 
 #endif

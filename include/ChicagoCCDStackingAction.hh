@@ -45,6 +45,8 @@ public:
   ChicagoCCDStackingAction();
   virtual ~ChicagoCCDStackingAction();
 
+  std::vector< G4int > GetTrackList() const {return trackList;};
+
 public:
   virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
   virtual void NewStage();
