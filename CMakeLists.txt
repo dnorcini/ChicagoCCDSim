@@ -83,6 +83,7 @@ set(SCRIPTS
   guide.mac
   loop_guide_master.mac
   loop_guide_worker.mac
+  muon.mac
   )
 
 #add_custom_command(TARGET ChicagoCCDSim PRE_BUILD
