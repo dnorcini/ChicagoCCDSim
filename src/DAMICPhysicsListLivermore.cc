@@ -144,7 +144,7 @@
 DAMICPhysicsListLivermore::DAMICPhysicsListLivermore() : G4VUserPhysicsList()
 {
     
-    defaultCutValue     = 0.1*micrometer;
+    defaultCutValue     = 0.05*micrometer;
     cutForGamma         = defaultCutValue;
     cutForElectron      = 1*nanometer;
     cutForPositron      = defaultCutValue;
