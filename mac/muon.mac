@@ -1,0 +1,45 @@
+# Change the default number of workers (in multi-threading mode) (default is 2)
+/run/numberOfThreads 30
+#
+#/ChicagoGeom/deleteGeometry
+#
+# Initialize kernel
+/run/initialize
+#
+# Verbosity Levels
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/run/printProgress 1
+/analysis/verbose 0
+#
+# SUPPLY YOUR OWN OUTPUT FILE NAME HERE - Will make one file per thread named {filename} + '_t#.root' with '#' the thread number
+/analysis/setFileName /data/paul09/ChicagoCCDSim_output/muon.root
+#
+#
+# Isotropic power-law muon spherical surface source, located just outside of the chamber:
+#
+#/gps/pos/type Surface
+#/gps/pos/shape Sphere
+#/gps/pos/centre 0 -110 0 mm
+#/gps/pos/radius 5 mm
+#
+#
+#Rectangular planar source confined to CCD with power law energy spectrum, cosinesquared angular dist.
+#
+/gps/pos/type Plane
+/gps/pos/shape Rectangle
+/gps/pos/centre 0 -6.614 12.745 mm
+/gps/pos/halfx 7.68 mm
+/gps/pos/halfy 46.320 mm
+#
+/gps/particle mu-
+/gps/ene/type Pow
+/gps/ene/min 2 GeV
+/gps/ene/max 2000 GeV
+/gps/ene/alpha -2.7
+#
+/run/beamOn 10000
+#
+
