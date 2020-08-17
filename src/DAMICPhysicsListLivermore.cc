@@ -824,7 +824,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     }
     
     //special for low energy physics
-    G4double lowlimit=20*eV;
+    G4double lowlimit=10*eV;
     G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(lowlimit,100.*GeV);
     
     // set cut values for gamma at first and for e- second and next for e+,
@@ -834,7 +834,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(1*nm);
+    actcut->SetProductionCut(0.5*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
 
