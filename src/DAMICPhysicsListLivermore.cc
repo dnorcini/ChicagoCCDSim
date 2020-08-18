@@ -837,8 +837,8 @@ void DAMICPhysicsListLivermore::SetCuts()
     actcut->SetProductionCut(0.5*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
-    G4double activeMaxStep = 15*um;
-    G4UserLimits* activeStepLimit = new G4UserLimits(activeMaxStep);
+    G4UserLimits* activeStepLimit = new G4UserLimits();
+    activeStepLimit->SetMaxAllowedStep(15.*um);
     actregion->SetUserLimits(activeStepLimit);
 
     G4ProductionCuts* steelcut = new G4ProductionCuts;
