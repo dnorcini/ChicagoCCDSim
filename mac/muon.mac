@@ -30,7 +30,7 @@
 #
 /gps/pos/type Plane
 /gps/pos/shape Rectangle
-/gps/pos/centre 0 -6.614 12.745 mm
+/gps/pos/centre 0 -6.614 -19.64 mm
 /gps/pos/halfx 7.68 mm
 /gps/pos/halfy 46.320 mm
 #
