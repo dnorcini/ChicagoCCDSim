@@ -273,6 +273,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Region* actRegion = new G4Region("ActiveRegion");
   logicActive->SetRegion(actRegion);
   actRegion->AddRootLogicalVolume(logicActive);               
+  G4UserLimits* activeStepLimit = new G4UserLimits();
+  activeStepLimit->SetMaxAllowedStep(15.*um);
+  logicActive->SetUserLimits(activeStepLimit);
 
   //
   // Dead Shell
