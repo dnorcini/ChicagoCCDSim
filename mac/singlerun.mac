@@ -4,7 +4,7 @@
 # or interactively: Idle> /control/execute run1.mac
 #
 # Change the default number of workers (in multi-threading mode) 
-/run/numberOfThreads 30
+/run/numberOfThreads 40
 #
 # Initialize kernel
 #/cuts/setLowEdge 1 eV
@@ -15,7 +15,7 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 0
+/run/printProgress 1000000
 #/analysis/verbose 2
 #
 /analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
@@ -30,10 +30,10 @@
 /gps/energy 0 keV
 
 /gps/ang/type iso
-/gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 85 deg
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
 
-/run/beamOn 50000000
+/run/beamOn 1000000000
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point

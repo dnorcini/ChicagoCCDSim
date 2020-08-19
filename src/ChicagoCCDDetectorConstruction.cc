@@ -50,6 +50,7 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Si = nist->FindOrBuildMaterial("G4_Si");
   Cu = nist->FindOrBuildMaterial("G4_Cu");
   Pb = nist->FindOrBuildMaterial("G4_Pb");
+  Al = nist->FindOrBuildMaterial("G4_Al");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
 
   G4double StDens = 8*g/cm3;
@@ -148,6 +149,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4VSolid* solidSmallTube             = new G4Tubs("SmallTube"      , 18   *mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
   G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
   G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole",  0      , 50.8 *mm,  9.21*mm, 0, 2*M_PI);
+  G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole" ,  0      , 50.8 *mm,  9.21*mm, 0, 2*M_PI);
   G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -0.8*mm));
   G4LogicalVolume* logicFullFlange      = new G4LogicalVolume(solidFullFlange,      Steel, "FullFlange"     );
   G4LogicalVolume* logicSmallTubeFlange = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange");

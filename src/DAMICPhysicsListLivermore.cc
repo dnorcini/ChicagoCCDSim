@@ -235,7 +235,7 @@ void DAMICPhysicsListLivermore::ConstructProcess()
     ConstructEM();
 
     G4EmParameters* param = G4EmParameters::Instance();
-    param->SetLowestElectronEnergy(10*eV);
+    param->SetLowestElectronEnergy(1*eV);
 
     ConstructOp();
 
@@ -311,7 +311,7 @@ void DAMICPhysicsListLivermore::ConstructEM()
             // Ionisation
             G4eIonisation* eIonisation = new G4eIonisation();
             eIonisation->SetEmModel(new G4LivermoreIonisationModel());
-            eIonisation->SetStepFunction(0.2, 100*um); //improved precision in tracking
+            eIonisation->SetStepFunction(0.2, 10*um); //improved precision in tracking
             pmanager->AddProcess(eIonisation,-1, 2, 2);
             
             // Bremsstrahlung
@@ -824,7 +824,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     }
     
     //special for low energy physics
-    G4double lowlimit=20*eV;
+    G4double lowlimit=10*eV;
     G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(lowlimit,100.*GeV);
     
     // set cut values for gamma at first and for e- second and next for e+,
@@ -834,7 +834,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(1*nm);
+    actcut->SetProductionCut(0.1*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
 

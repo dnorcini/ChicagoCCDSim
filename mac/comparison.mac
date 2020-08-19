@@ -15,10 +15,10 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 0
+/run/printProgress 10000
 #/analysis/verbose 2
 #
-#/compton/deleteGeometry
+/ChicagoGeom/deleteGeometry
 
 #/analysis/setFileName /data/ncorso/Compton_output/output/output_beam_comparison_07_ion/Compton_Co.root
 
