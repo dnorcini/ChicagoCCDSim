@@ -23,6 +23,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4RotationMatrix.hh"
 #include "G4tgbRotationMatrix.hh"
+#include "G4UserLimits.hh"
 
 #include <iostream>
 #include <vector>
