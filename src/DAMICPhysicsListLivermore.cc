@@ -298,6 +298,8 @@ void DAMICPhysicsListLivermore::ConstructEM()
             G4GammaConversion* theGammaConversion = new G4GammaConversion();
             theGammaConversion->SetEmModel(new G4LivermoreGammaConversionModel());
             pmanager->AddDiscreteProcess(theGammaConversion);
+
+            pmanager->AddProcess(new G4StepLimiter(),-1,-1,5);
         }
         else if(particleName=="e-")
         {
@@ -311,13 +313,17 @@ void DAMICPhysicsListLivermore::ConstructEM()
             // Ionisation
             G4eIonisation* eIonisation = new G4eIonisation();
             eIonisation->SetEmModel(new G4LivermoreIonisationModel());
-            eIonisation->SetStepFunction(0.2, 10*um); //improved precision in tracking
+            eIonisation->SetStepFunction(0.2, 100*um); //improved precision in tracking
             pmanager->AddProcess(eIonisation,-1, 2, 2);
             
             // Bremsstrahlung
             G4eBremsstrahlung* eBremsstrahlung = new G4eBremsstrahlung();
             eBremsstrahlung->SetEmModel(new G4LivermoreBremsstrahlungModel());
             pmanager->AddProcess(eBremsstrahlung,-1,-3, 3);
+
+            // Step Limit
+            G4StepLimiter* eStepLimiter = new G4StepLimiter();
+            pmanager->AddProcess(eStepLimiter,-1,-1,4);
         }
         else if(particleName=="e+")
         {
@@ -336,6 +342,10 @@ void DAMICPhysicsListLivermore::ConstructEM()
             
             //Annihilation
             pmanager->AddProcess(new G4eplusAnnihilation(),0,-1, 4);
+
+            // Step Limit
+            G4StepLimiter* eStepLimiter = new G4StepLimiter();
+            pmanager->AddProcess(eStepLimiter,-1,-1,5);
         }
         else if(particleName == "mu+" || particleName == "mu-")
         {
@@ -348,6 +358,7 @@ void DAMICPhysicsListLivermore::ConstructEM()
             {
                 pmanager->AddProcess(new G4MuonMinusCapture(), 0,-1,-1);
             }
+            pmanager->AddProcess(new G4StepLimiter(),      -1,-1, 5);
         }
         else if(particleName == "proton"||particleName == "pi+"||particleName == "pi-")
         {
@@ -824,7 +835,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     }
     
     //special for low energy physics
-    G4double lowlimit=10*eV;
+    G4double lowlimit=20*eV;
     G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(lowlimit,100.*GeV);
     
     // set cut values for gamma at first and for e- second and next for e+,
@@ -834,9 +845,12 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(0.1*nm);
+    actcut->SetProductionCut(0.5*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
+    G4UserLimits* activeStepLimit = new G4UserLimits();
+    activeStepLimit->SetMaxAllowedStep(15.*um);
+    actregion->SetUserLimits(activeStepLimit);
 
     G4ProductionCuts* steelcut = new G4ProductionCuts;
     steelcut->SetProductionCut(50*um);
