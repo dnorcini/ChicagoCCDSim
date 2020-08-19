@@ -1,5 +1,5 @@
 # Change the default number of workers (in multi-threading mode) (default is 2)
-/run/numberOfThreads 30
+/run/numberOfThreads 1
 #
 #/ChicagoGeom/deleteGeometry
 #
@@ -40,6 +40,6 @@
 /gps/ene/max 2000 GeV
 /gps/ene/alpha -2.7
 #
-/run/beamOn 10000
+/run/beamOn 500
 #
 
