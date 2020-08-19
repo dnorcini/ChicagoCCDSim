@@ -40,6 +40,6 @@
 /gps/ene/max 2000 GeV
 /gps/ene/alpha -2.7
 #
-/run/beamOn 500
+/run/beamOn 100
 #
 
