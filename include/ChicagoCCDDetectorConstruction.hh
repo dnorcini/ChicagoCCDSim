@@ -38,6 +38,10 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     G4VPhysicalVolume* GetPhysWorld() const {return physWorld;};
 
+    void SetCCDDead(G4bool newval, G4bool isFirst = false);
+    G4bool GetCCDDead() const {return CCDDead;};
+    G4double GetCCDCenterOff() const {return CCDCenterOff;};
+
     void ConstructMaterials();
 
     int GetCCDNum(G4VPhysicalVolume *volume);
@@ -47,19 +51,35 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
   protected:
     ChicagoCCDDetectorMessenger* skipperDetectorMessenger;
 
+    G4bool checkOverlaps;
     G4LogicalVolume*  fScoringVolume;
 
     G4LogicalVolume* logicWorld;
     G4VPhysicalVolume* physWorld;
     G4VPhysicalVolume* ConstructWorld();
 
+    G4double getThick;
+    G4double deadThick;
+
+    G4bool CCDDead;
+    G4double CCDCenterOff;
+
     std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
     std::vector<G4ThreeVector> ActiveDims;
+    std::vector<G4ThreeVector> ActiveDims1;
+    std::vector<G4ThreeVector> ActiveDims2;
     std::vector<G4VPhysicalVolume*> ActivePVs;
     std::vector<G4VPhysicalVolume*> GetteringPVs;
     std::vector<G4VPhysicalVolume*> DeadTopPVs;
     std::vector<G4VPhysicalVolume*> DeadBottomPVs;
     std::vector<G4VPhysicalVolume*> DeadSidePVs;
+
+    std::vector<G4LogicalVolume*> ActiveFullLVs;
+    std::vector<G4LogicalVolume*> DeadShellLVs;
+    std::vector<G4LogicalVolume*> ActiveLVs;
+    std::vector<G4LogicalVolume*> GetteringLVs;
+    std::vector<G4LogicalVolume*> DeadLayLVs;
+    std::vector<G4LogicalVolume*> DeadSideLVs;
 
     std::vector<G4VPhysicalVolume*> flangePhys;
     std::vector<G4VPhysicalVolume*> leadPhys;
