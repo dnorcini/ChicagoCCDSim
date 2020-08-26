@@ -95,7 +95,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4SolidStore::GetInstance()->Clean();
   // Option to switch on/off checking of volumes overlaps
   //
-  G4bool checkOverlaps = false;
+  checkOverlaps = false;
 
   // **KEEP IN MIND, ALL DIMENSIONS ARE HALF-DIMENSIONS**
 
@@ -263,90 +263,66 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  2. Dead layer in front is a separate volume, detection will only occur within the active layer, and assume full efficiency for this region
 //
 
+// Option 1
+
   //     
   // Active Layer
   //  
   ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, -19.98*mm), rotID));
-  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
+  ActiveDims1.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
-  G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
-  G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "CCDSensor");
+  G4Box* solidActiveFull = new G4Box("CCDSensor", ActiveDims1[0].getX(), ActiveDims1[0].getY(), ActiveDims1[0].getZ());
+  ActiveFullLVs.push_back(new G4LogicalVolume(solidActiveFull, Si, "CCDSensor"));
 
   G4Region* actRegion = new G4Region("ActiveRegion");
-  logicActive->SetRegion(actRegion);
-  actRegion->AddRootLogicalVolume(logicActive);               
+  ActiveFullLVs[0]->SetRegion(actRegion);
+  actRegion->AddRootLogicalVolume(ActiveFullLVs[0]);               
 
   //
   // Dead Shell
   //
-  G4Box* solidDeadFull   = new G4Box("DeadShell" , ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()        );
-  G4Box* solidActiveHole = new G4Box("ActiveHole", ActiveDims[0].getX()          , ActiveDims[0].getY()          , ActiveDims[0].getZ() + 10*um);
-  G4SubtractionSolid* solidDeadShell = new G4SubtractionSolid("DeadShell", solidDeadFull, solidActiveHole, 0, G4ThreeVector());
-  G4LogicalVolume* logicDeadShell = new G4LogicalVolume(solidDeadShell, Si, "Dead");
+  G4Box* solidDeadFull       = new G4Box("DeadShell" , ActiveDims1[0].getX() + 1291*um, ActiveDims1[0].getY() + 1002*um, ActiveDims1[0].getZ()        );
+  G4Box* solidActiveFullHole = new G4Box("ActiveHole", ActiveDims1[0].getX()          , ActiveDims1[0].getY()          , ActiveDims1[0].getZ() + 10*um);
+  G4SubtractionSolid* solidDeadShell = new G4SubtractionSolid("DeadShell", solidDeadFull, solidActiveFullHole, 0, G4ThreeVector());
+  DeadShellLVs.push_back(new G4LogicalVolume(solidDeadShell, Si, "Dead"));
 
-  for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
-    ActivePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive   , "CCDSensor", logicWorld, false, i, checkOverlaps));
-    DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicDeadShell, "Dead"     , logicWorld, false, i, checkOverlaps));
-  }
-/*
+// Option 2
+
   //     
   // Active Layer
   //  
-  ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, -19.9795*mm), rotID));
-  ActiveDims.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
+  ActiveDims2.push_back(G4ThreeVector(7680*um, 46320*um, 337.5*um));
   std::vector<G4ThreeVector> DeadDims;
-  for (unsigned int i=0; i < ActiveDims.size(); i++) {
-    DeadDims.push_back(G4ThreeVector(ActiveDims[0].getX() + 1291*um, ActiveDims[0].getY() + 1002*um, ActiveDims[0].getZ()));
+  for (unsigned int i=0; i < ActiveDims2.size(); i++) {
+    DeadDims.push_back(G4ThreeVector(ActiveDims2[0].getX() + 1291*um, ActiveDims2[0].getY() + 1002*um, ActiveDims2[0].getZ()));
   }
 
-  G4Box* solidActive = new G4Box("CCDSensor", ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ());
-  G4LogicalVolume* logicActive = new G4LogicalVolume(solidActive, Si, "CCDSensor");
+  G4Box* solidActive = new G4Box("CCDSensor", ActiveDims2[0].getX(), ActiveDims2[0].getY(), ActiveDims2[0].getZ());
+  ActiveLVs.push_back(new G4LogicalVolume(solidActive, Si, "CCDSensor"));
 
-  G4Region* actRegion = new G4Region("ActiveRegion");
-  logicActive->SetRegion(actRegion);
-  actRegion->AddRootLogicalVolume(logicActive);               
+  ActiveLVs[0]->SetRegion(actRegion);
+  actRegion->AddRootLogicalVolume(ActiveLVs[0]);               
 
   //
   // Gettering Layer
   //
-  G4Box* solidGet = new G4Box("Gettering", DeadDims[0].getX(), DeadDims[0].getY(), 0.5*um);
-  G4LogicalVolume* logicGet = new G4LogicalVolume(solidGet, Si, "Gettering");
+  getThick = 0.5*um;
+  G4Box* solidGet = new G4Box("Gettering", DeadDims[0].getX(), DeadDims[0].getY(), getThick);
+  GetteringLVs.push_back(new G4LogicalVolume(solidGet, Si, "Gettering"));
 
   //
   // Dead Layers
   //
-  G4Box* solidDead = new G4Box("Dead", DeadDims[0].getX(), DeadDims[0].getY(), 1*um);
-  G4LogicalVolume* logicDead = new G4LogicalVolume(solidDead, Si, "Dead");
+  deadThick = 1*um;
+  G4Box* solidDead = new G4Box("Dead", DeadDims[0].getX(), DeadDims[0].getY(), deadThick);
+  DeadLayLVs.push_back(new G4LogicalVolume(solidDead, Si, "Dead"));
 
   G4Box* solidFullSideDead = new G4Box("FullSideDead", DeadDims[0].getX()  , DeadDims[0].getY()  , DeadDims[0].getZ()          );
-  G4Box* solidActiveHole   = new G4Box("ActiveHole"  , ActiveDims[0].getX(), ActiveDims[0].getY(), ActiveDims[0].getZ() + 10*um);
+  G4Box* solidActiveHole   = new G4Box("ActiveHole"  , ActiveDims2[0].getX(), ActiveDims2[0].getY(), ActiveDims2[0].getZ() + 10*um);
   G4SubtractionSolid* solidSideDead = new G4SubtractionSolid("SideDead", solidFullSideDead, solidActiveHole, 0, G4ThreeVector());
-  G4LogicalVolume* logicSideDead = new G4LogicalVolume(solidSideDead, Si, "SideDead");
+  DeadSideLVs.push_back(new G4LogicalVolume(solidSideDead, Si, "SideDead"));
 
-  for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
-    ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicActive, "CCDSensor", logicWorld, false, i, checkOverlaps));
- 
-    G4double posX = ActiveVecs[i].first.getX();
-    G4double posY = ActiveVecs[i].first.getY();
-    G4double posZ = ActiveVecs[i].first.getZ();
-    G4double actX = ActiveDims[i].getX();
-    G4double actY = ActiveDims[i].getY();
-    G4double actZ = ActiveDims[i].getZ();
-
-    G4ThreeVector posGet        = G4ThreeVector(posX, posY, posZ - actZ - 0.5*um);
-    GetteringPVs.push_back( new G4PVPlacement(ActiveVecs[i].second, posGet             , logicGet     , "Gettering"  , logicWorld, false, i, checkOverlaps));
-
-    G4ThreeVector posDeadTop    = G4ThreeVector(posX, posY, posZ + actZ + 1.*um );
-    DeadTopPVs.push_back(   new G4PVPlacement(ActiveVecs[i].second, posDeadTop         , logicDead    , "Dead_Top"   , logicWorld, false, i, checkOverlaps));
-
-    G4ThreeVector posDeadBottom = G4ThreeVector(posX, posY, posZ - actZ - 2.*um );
-    DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom      , logicDead    , "Dead_Bottom", logicWorld, false, i, checkOverlaps));
-
-    DeadSidePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, logicSideDead, "Dead_Side"  , logicWorld, false, i, checkOverlaps));
-
-  }
-*/
-  fScoringVolume = logicActive;
+  SetCCDDead(false, true);
 
   //
   //always return the physical World
@@ -391,4 +367,78 @@ G4int ChicagoCCDDetectorConstruction::GetCCDNum(G4VPhysicalVolume *volume) {
     if (volume == ActivePVs.at(i)) return i+1;
   }
   return -1;
+}
+
+void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
+  if ((newval == false && newval != CCDDead) && isFirst == false) {
+    for (unsigned int i=0; i < ActivePVs.size(); i++) {  
+      logicWorld->RemoveDaughter(ActivePVs[i]);
+      ActivePVs.erase(ActivePVs.begin() + i);
+    };
+    for (unsigned int i=0; i < GetteringPVs.size(); i++) {  
+      logicWorld->RemoveDaughter(GetteringPVs[i]);
+      GetteringPVs.erase(GetteringPVs.begin() + i);
+    };
+    for (unsigned int i=0; i < DeadTopPVs.size(); i++) {  
+      logicWorld->RemoveDaughter(DeadTopPVs[i]);
+      DeadTopPVs.erase(DeadTopPVs.begin() + i);
+    };
+    for (unsigned int i=0; i < DeadBottomPVs.size(); i++) {  
+      logicWorld->RemoveDaughter(DeadBottomPVs[i]);
+      DeadBottomPVs.erase(DeadBottomPVs.begin() + i);
+    };
+    for (unsigned int i=0; i < DeadSidePVs.size(); i++) {  
+      logicWorld->RemoveDaughter(DeadSidePVs[i]);
+      DeadSidePVs.erase(DeadSidePVs.begin() + i);
+    };
+  }
+  else if ((newval == true && newval != CCDDead) && isFirst == false) {
+    for (unsigned int i=0; i < ActivePVs.size(); i++) {  
+      logicWorld->RemoveDaughter(ActivePVs[i]);
+      ActivePVs.erase(ActivePVs.begin() + i);
+    };
+    for (unsigned int i=0; i < DeadSidePVs.size(); i++) {  
+      logicWorld->RemoveDaughter(DeadSidePVs[i]);
+      DeadSidePVs.erase(DeadSidePVs.begin() + i);
+    };
+  }
+
+  if (newval == false && newval != CCDDead) {
+    for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
+      ActivePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, ActiveFullLVs[0], "CCDSensor", logicWorld, false, i, checkOverlaps));
+      DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, DeadShellLVs[0] , "Dead"     , logicWorld, false, i, checkOverlaps));
+    }
+    fScoringVolume = ActiveFullLVs[0];
+    ActiveDims = ActiveDims1;
+  }
+  else if (newval == true && newval != CCDDead) {
+    for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
+      ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second    , ActiveVecs[i].first, ActiveLVs[0]   , "CCDSensor"  , logicWorld, false, i, checkOverlaps));
+   
+      G4double posX = ActiveVecs[i].first.getX();
+      G4double posY = ActiveVecs[i].first.getY();
+      G4double posZ = ActiveVecs[i].first.getZ();
+      G4double actX = ActiveDims2[i].getX();
+      G4double actY = ActiveDims2[i].getY();
+      G4double actZ = ActiveDims2[i].getZ();
+
+      G4ThreeVector posGet        = G4ThreeVector(posX, posY, posZ - actZ - 0.5*um);
+      GetteringPVs.push_back( new G4PVPlacement(ActiveVecs[i].second, posGet             , GetteringLVs[0], "Gettering"  , logicWorld, false, i, checkOverlaps));
+
+      G4ThreeVector posDeadTop    = G4ThreeVector(posX, posY, posZ + actZ + 1.*um );
+      DeadTopPVs.push_back(   new G4PVPlacement(ActiveVecs[i].second, posDeadTop         , DeadLayLVs[0]  , "Dead_Top"   , logicWorld, false, i, checkOverlaps));
+
+      G4ThreeVector posDeadBottom = G4ThreeVector(posX, posY, posZ - actZ - 2.*um );
+      DeadBottomPVs.push_back(new G4PVPlacement(ActiveVecs[i].second, posDeadBottom      , DeadLayLVs[0]  , "Dead_Bottom", logicWorld, false, i, checkOverlaps));
+
+      DeadSidePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, DeadSideLVs[0] , "Dead_Side"  , logicWorld, false, i, checkOverlaps));
+    }
+    fScoringVolume = ActiveLVs[0];
+    ActiveDims = ActiveDims2;
+  }
+  else {return;}
+
+  CCDDead = newval;
+
+  if (isFirst == false) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
 }
