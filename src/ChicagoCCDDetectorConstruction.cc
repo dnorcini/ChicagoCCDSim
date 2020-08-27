@@ -151,10 +151,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4VSolid* solidSmallTube             = new G4Tubs("SmallTube"        , 18   *mm, 19.1 *mm, 27.73 *mm, 0, 2*M_PI);
   G4VSolid* solidSmallLid              = new G4Tubs("SmallLid"         ,  0      , 21.  *mm,  7.4  *mm, 0, 2*M_PI);
   G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42 *mm, 20.31*mm, 0, 2*M_PI);
-  G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole"  ,  0      , 50.8 *mm,  9.21 *mm, 0, 2*M_PI);
-  G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole"   ,  0      , 48.93*mm,  7.94 *mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange    , solidFrontFlangeHole, 0, G4ThreeVector(0, 0,-0.8*mm));
-  G4SubtractionSolid* solidBackFlange  = new G4SubtractionSolid("BackFlange" , solidFullAlumFlange, solidBackFlangeHole , 0, G4ThreeVector(0, 0, 0.8*mm));
+  G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole"  ,  0      , 50.8 *mm,  8.735*mm, 0, 2*M_PI);
+  G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole"   ,  0      , 48.93*mm,  8.95 *mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange    , solidFrontFlangeHole, 0, G4ThreeVector(0, 0,-0.8 *mm));
+  G4SubtractionSolid* solidBackFlange  = new G4SubtractionSolid("BackFlange" , solidFullAlumFlange, solidBackFlangeHole , 0, G4ThreeVector(0, 0, 1.85*mm));
   G4LogicalVolume* logicFullFlange       = new G4LogicalVolume(solidFullFlange     , Steel, "FullFlange"      );
   G4LogicalVolume* logicSmallTubeFlange  = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange" );
   G4LogicalVolume* logicNippleElecFlange = new G4LogicalVolume(solidNippleFlange   , Steel, "NippleElecFlange");
