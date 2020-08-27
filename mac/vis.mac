@@ -115,8 +115,10 @@
 /vis/geometry/set/colour SmallTubeFlange 0 0.753  0.753 0.753  0.5
 /vis/geometry/set/colour NippleFlange    0 0.753  0.753 0.753  0.5
 /vis/geometry/set/colour FrontFlange     0 0.753  0.753 0.753  0.5
+/vis/geometry/set/colour BackFlange      0 0.6797 0.699 0.7421 0.5
 /vis/geometry/set/colour Nipple          0 0.753  0.753 0.753  0.5
 /vis/geometry/set/colour SmallTube       0 0.753  0.753 0.753  0.5
+/vis/geometry/set/colour SmallLid        0 0.753  0.753 0.753  0.5
 /vis/geometry/set/colour SmallCap        0 0.753  0.753 0.753  0.5
 /vis/geometry/set/colour SiBacking       0 0.5843 0.6   0.6471 1
 /vis/geometry/set/colour CopperBox       0 0.722  0.451 0.20   1

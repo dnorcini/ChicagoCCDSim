@@ -21,7 +21,7 @@
 /analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
 
 /gps/pos/type Point
-/gps/pos/centre 0 0 110 mm
+/gps/pos/centre 0 0 -110 mm
 
 #/gps/pos/centre 0 -6.614 12.4055 mm
 
@@ -37,7 +37,7 @@
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point
-# /gps/pos/centre 0 0 110 mm
+# /gps/pos/centre 0 0 -110 mm
 # /gps/particle ion
 # /gps/ion 95 241 0 0
 # /gps/energy 0 keV

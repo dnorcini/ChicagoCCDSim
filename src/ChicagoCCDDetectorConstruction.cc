@@ -142,34 +142,43 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Flanges
 //
 
-  G4VSolid* solidFullFlange            = new G4Tubs("FullFlange"     ,  0      , 76.2 *mm, 10.  *mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTubeFlange       = new G4Tubs("SmallTubeFlange", 19.1 *mm, 76.2 *mm, 10.  *mm, 0, 2*M_PI);
-  G4VSolid* solidNippleFlange          = new G4Tubs("NippleFlange"   , 51.16*mm, 76.2 *mm, 10.  *mm, 0, 2*M_PI);
-  G4VSolid* solidNipple                = new G4Tubs("Nipple"         , 48   *mm, 51.16*mm, 85.55*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallTube             = new G4Tubs("SmallTube"      , 18   *mm, 19.05*mm, 27.73*mm, 0, 2*M_PI);
-  G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42*mm, 20.31*mm, 0, 2*M_PI);
-  G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole",  0      , 50.8 *mm,  9.21*mm, 0, 2*M_PI);
-  G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole" ,  0      , 50.8 *mm,  9.21*mm, 0, 2*M_PI);
-  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange, solidFrontFlangeHole, 0, G4ThreeVector(0, 0, -0.8*mm));
-  G4LogicalVolume* logicFullFlange      = new G4LogicalVolume(solidFullFlange,      Steel, "FullFlange"     );
-  G4LogicalVolume* logicSmallTubeFlange = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange");
-  G4LogicalVolume* logicNippleFlange    = new G4LogicalVolume(solidNippleFlange,    Steel, "NippleFlange"   );
-  G4LogicalVolume* logicNipple          = new G4LogicalVolume(solidNipple,          Steel, "Nipple"         );
-  G4LogicalVolume* logicSmallTube       = new G4LogicalVolume(solidSmallTube,       Steel, "SmallTube"      );
-  G4LogicalVolume* logicSmallCap        = new G4LogicalVolume(solidSmallCap,        Steel, "SmallCap"       );
-  G4LogicalVolume* logicFrontFlange     = new G4LogicalVolume(solidFrontFlange,     Steel, "FrontFlange"    );
-  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0     ,   0      ,-86.2*mm), logicFullFlange  , "BackFlange"       , logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( 86.2*mm,   0      ,  0     ), logicFullFlange  , "BottomRestFlange" , logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0     ,   0      , 86.2*mm), logicFrontFlange , "FrontFlange"      , logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector(-86.2*mm,   0      ,  0     ), logicFullFlange  , "TopRestFlange"    , logicWorld, false, 2, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,  86.2 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , -86.2 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 217.3 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-217.3 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 3, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 237.3 *mm,  0     ), logicNippleFlange, "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-237.3 *mm,  0     ), logicNippleFlange, "LeftNippleFlange" , logicWorld, false, 5, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     , 161.75*mm,  0     ), logicNipple      , "RightNipple"      , logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0     ,-161.75*mm,  0     ), logicNipple      , "LeftNipple"       , logicWorld, false, 1, checkOverlaps));
+  G4VSolid* solidFullFlange            = new G4Tubs("FullFlange"       ,  0      , 76.2 *mm,  9.525*mm, 0, 2*M_PI);
+  G4VSolid* solidFullAlumFlange        = new G4Tubs("FullAlumFlange"   ,  0      , 76.2 *mm, 10.75 *mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTubeFlange       = new G4Tubs("SmallTubeFlange"  , 19.1 *mm, 76.2 *mm,  9.525*mm, 0, 2*M_PI);
+  G4VSolid* solidNippleFlange          = new G4Tubs("NippleFlange"     , 51.16*mm, 76.2 *mm,  9.525*mm, 0, 2*M_PI);
+  G4VSolid* solidNippleElecFlange      = new G4Tubs("NippleElecFlange" , 51.16*mm, 76.2 *mm,  7.4  *mm, 0, 2*M_PI);
+  G4VSolid* solidNipple                = new G4Tubs("Nipple"           , 48   *mm, 51.16*mm, 85.55 *mm, 0, 2*M_PI);
+  G4VSolid* solidSmallTube             = new G4Tubs("SmallTube"        , 18   *mm, 19.1 *mm, 27.73 *mm, 0, 2*M_PI);
+  G4VSolid* solidSmallLid              = new G4Tubs("SmallLid"         ,  0      , 21.  *mm,  7.4  *mm, 0, 2*M_PI);
+  G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42 *mm, 20.31*mm, 0, 2*M_PI);
+  G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole"  ,  0      , 50.8 *mm,  9.21 *mm, 0, 2*M_PI);
+  G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole"   ,  0      , 48.93*mm,  7.94 *mm, 0, 2*M_PI);
+  G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange    , solidFrontFlangeHole, 0, G4ThreeVector(0, 0,-0.8*mm));
+  G4SubtractionSolid* solidBackFlange  = new G4SubtractionSolid("BackFlange" , solidFullAlumFlange, solidBackFlangeHole , 0, G4ThreeVector(0, 0, 0.8*mm));
+  G4LogicalVolume* logicFullFlange       = new G4LogicalVolume(solidFullFlange     , Steel, "FullFlange"      );
+  G4LogicalVolume* logicSmallTubeFlange  = new G4LogicalVolume(solidSmallTubeFlange, Steel, "SmallTubeFlange" );
+  G4LogicalVolume* logicNippleElecFlange = new G4LogicalVolume(solidNippleFlange   , Steel, "NippleElecFlange");
+  G4LogicalVolume* logicNippleFlange     = new G4LogicalVolume(solidNippleFlange   , Steel, "NippleFlange"    );
+  G4LogicalVolume* logicNipple           = new G4LogicalVolume(solidNipple         , Steel, "Nipple"          );
+  G4LogicalVolume* logicSmallTube        = new G4LogicalVolume(solidSmallTube      , Steel, "SmallTube"       );
+  G4LogicalVolume* logicSmallLid         = new G4LogicalVolume(solidSmallLid       , Steel, "SmallLid"       );
+  G4LogicalVolume* logicSmallCap         = new G4LogicalVolume(solidSmallCap       , Steel, "SmallCap"        );
+  G4LogicalVolume* logicFrontFlange      = new G4LogicalVolume(solidFrontFlange    , Steel, "FrontFlange"     );
+  G4LogicalVolume* logicBackFlange       = new G4LogicalVolume(solidBackFlange     , Steel, "BackFlange"      );
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , -86.95 *mm), logicBackFlange      , "BackFlange"       , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( 85.725*mm,   0       ,   0       ), logicFullFlange      , "BottomRestFlange" , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       ,  85.725*mm), logicSmallTubeFlange , "FrontFlange"      , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , 103.93 *mm), logicSmallTube       , "SmallTube"        , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , 139.06 *mm), logicSmallLid        , "SmallLid"         , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector(-85.725*mm,   0       ,   0       ), logicSmallTubeFlange , "TopRestFlange"    , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,  85.725*mm,   0       ), logicNippleFlange    , "RightNippleFlange", logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , -85.725*mm,   0       ), logicNippleFlange    , "LeftNippleFlange" , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , 217.3  *mm,   0       ), logicNippleFlange    , "RightNippleFlange", logicWorld, false, 2, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-217.3  *mm,   0       ), logicNippleFlange    , "LeftNippleFlange" , logicWorld, false, 3, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , 237.3  *mm,   0       ), logicNippleFlange    , "RightNippleFlange", logicWorld, false, 4, checkOverlaps)); 
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-237.3  *mm,   0       ), logicNippleElecFlange, "LeftNippleFlange" , logicWorld, false, 5, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , 161.75 *mm,   0       ), logicNipple          , "RightNipple"      , logicWorld, false, 0, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-161.75 *mm,   0       ), logicNipple          , "LeftNipple"       , logicWorld, false, 1, checkOverlaps));
 
   G4Region* steelRegion2 = new G4Region("SteelRegion2");
   logicFullFlange->SetRegion(steelRegion);
@@ -178,14 +187,20 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   steelRegion->AddRootLogicalVolume(logicSmallTubeFlange); 
   logicNippleFlange->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicNippleFlange); 
+  logicNippleElecFlange->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicNippleElecFlange); 
   logicNipple->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicNipple); 
   logicSmallTube->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicSmallTube); 
+  logicSmallLid->SetRegion(steelRegion2);
+  steelRegion2->AddRootLogicalVolume(logicSmallLid); 
   logicSmallCap->SetRegion(steelRegion2);
   steelRegion2->AddRootLogicalVolume(logicSmallCap); 
   logicFrontFlange->SetRegion(steelRegion);
   steelRegion->AddRootLogicalVolume(logicFrontFlange);               
+  logicBackFlange->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicBackFlange);               
 
 //
 // Flex Cable

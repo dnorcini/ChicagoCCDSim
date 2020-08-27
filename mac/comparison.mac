@@ -18,34 +18,13 @@
 /run/printProgress 10000
 #/analysis/verbose 2
 #
-/ChicagoGeom/deleteGeometry
-
-#/analysis/setFileName /data/ncorso/Compton_output/output/output_beam_comparison_07_ion/Compton_Co.root
-
-#/gps/pos/type Point
-#/gps/pos/centre 0 -86 0 mm
-
-#/gps/pos/centre -6.614 -12.4055 0 mm
-
-#/gps/particle ion
-#/gps/ion 27 57 0 0
-#/gps/energy 0 keV
-
-#/gps/ang/type focused
-#/gps/ang/focuspoint 0 -12.4055 0 mm
-#/gps/ang/type iso
-#/gps/ang/rot1 0 1 0
-#/gps/ang/rot2 -1 0 0
-#/gps/ang/mintheta 0 rad
-#/gps/ang/maxtheta 0.052 rad
-
-#/run/beamOn 500000000
+#/ChicagoGeom/deleteGeometry
 
 /analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_122/Compton_Co.root
 
 /gps/pos/type Point
 #/gps/pos/type Beam
-/gps/pos/centre 0 0 110 mm
+/gps/pos/centre 0 0 -110 mm
 
 #/gps/pos/centre -6.614 -12.4055 0 mm
 
