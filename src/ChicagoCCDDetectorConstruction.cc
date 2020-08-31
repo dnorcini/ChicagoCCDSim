@@ -488,7 +488,7 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
     };
   }
 
-  if (newval == false && newval != CCDDead) {
+  if (newval == false && (newval != CCDDead || isFirst == true)) {
     for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
       ActivePVs.push_back(  new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, ActiveFullLVs[0], "CCDSensor", logicWorld, false, i, checkOverlaps));
       DeadSidePVs.push_back(new G4PVPlacement(ActiveVecs[i].second, ActiveVecs[i].first, DeadShellLVs[0] , "Dead"     , logicWorld, false, i, checkOverlaps));
@@ -496,7 +496,7 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
     fScoringVolume = ActiveFullLVs[0];
     ActiveDims = ActiveDims1;
   }
-  else if (newval == true && newval != CCDDead) {
+  else if (newval == true && (newval != CCDDead || isFirst == true)) {
     for (unsigned int i=0; i < ActiveVecs.size(); i++) {  
       ActivePVs.push_back(new G4PVPlacement(ActiveVecs[i].second    , ActiveVecs[i].first, ActiveLVs[0]   , "CCDSensor"  , logicWorld, false, i, checkOverlaps));
    
