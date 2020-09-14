@@ -16,7 +16,10 @@
 /run/printProgress 1
 #/analysis/verbose 2
 #
-#/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
+/ChicagoGeom/deleteGeometry
+/ChicagoGeom/setShield Pb
+
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
 
 /gps/pos/type Point
 /gps/pos/centre 0 0 110 mm

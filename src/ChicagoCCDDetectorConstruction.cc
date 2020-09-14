@@ -358,6 +358,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //
 
   solidShield = new G4Box("Shield", 50.*mm, 50.*mm, 25.*mm);
+  shieldExist = false;
 
 //
 //  Detailed CCD Model - One of two possibilities:
@@ -555,20 +556,19 @@ void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
   else {
     shieldExist = true;
   }
-
-  if (mat == "Lead") {
+  if (mat == "Pb") {
     logicShield = new G4LogicalVolume(solidShield, Pb, "Shield");
   }
-  else if (mat == "Boron") {
+  else if (mat == "B") {
     logicShield = new G4LogicalVolume(solidShield, B, "Shield");
   }
   else if (mat == "Poly") {
     logicShield = new G4LogicalVolume(solidShield, Poly, "Shield");
   }
-  else if (mat == "Water") {
+  else if (mat == "D2O") {
     logicShield = new G4LogicalVolume(solidShield, D2O, "Shield");
   }
-  else if (mat == "Concrete") {
+  else if (mat == "Con") {
     logicShield = new G4LogicalVolume(solidShield, Con, "Shield");
   }
   physShield = new G4PVPlacement(ActiveVecs[0].second, ActiveVecs[0].first + G4ThreeVector(0., 0., 44.6625*mm), logicShield, "Shield", logicWorld, false, 0, checkOverlaps);
