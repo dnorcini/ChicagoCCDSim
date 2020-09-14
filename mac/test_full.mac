@@ -2,7 +2,7 @@
 # Has a sizable but not overwhelming number of events to check for low probability errors.
 # 
 # Change the default number of workers (in multi-threading mode) 
-#/run/numberOfThreads 30
+/run/numberOfThreads 30
 #
 # Initialize kernel
 #/cuts/setLowEdge 1 eV
@@ -10,24 +10,27 @@
 /run/initialize
 #
 /control/verbose 0
-/run/verbose 0
+/run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 1
+/run/printProgress 500000
 #/analysis/verbose 2
 #
-#/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
 
-/gps/pos/type Point
+#/gps/pos/type Point
+/gps/pos/type Beam
 /gps/pos/centre 0 0 110 mm
 
 #/gps/pos/centre 0 -6.614 12.4055 mm
 
 /gps/particle neutron
-/gps/energy 10 keV
+/gps/energy 5 keV
 
-/gps/ang/type iso
+#/gps/ang/type iso
+/gps/ang/type focused
+/gps/ang/focuspoint 0 0 -19.98 mm
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
 
-/run/beamOn 10000
+/run/beamOn 50000000

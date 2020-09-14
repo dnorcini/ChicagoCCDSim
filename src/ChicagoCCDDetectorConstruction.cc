@@ -53,6 +53,10 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   BeO = nist->FindOrBuildMaterial("G4_BERYLLIUM_OXIDE");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
   Sb  = nist->FindOrBuildMaterial("G4_Sb");
+  B   = nist->FindOrBuildMaterial("G4_B");
+  Con = nist->FindOrBuildMaterial("G4_Concrete");
+  Poly= nist->FindOrBuildMaterial("G4_Polyethylene");
+
 
   G4double StDens = 8*g/cm3;
   Steel = new G4Material("Stainless-Steel", StDens, 8);
@@ -60,12 +64,12 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   G4Element* elC = nist->FindOrBuildElement("C", true);
   G4Element* elSi = nist->FindOrBuildElement("Si", true);
   G4Isotope* P31 = new G4Isotope("P31", 15, 31);
-  G4Element* elP = new G4Element("P", "P", 1);
+  G4Element* elP = new G4Element("Phosphorus", "P", 1);
   elP->AddIsotope(P31, 100. * perCent);
   G4Element* elS = nist->FindOrBuildElement("S", true);
   G4Element* elCr = nist->FindOrBuildElement("Cr", true);
   G4Isotope* Mn55 = new G4Isotope("Mn55", 25, 55);
-  G4Element* elMn = new G4Element("Mn", "Mn", 1);
+  G4Element* elMn = new G4Element("Manganese", "Mn", 1);
   elMn->AddIsotope(Mn55, 100. * perCent);
   G4Element* elFe = nist->FindOrBuildElement("Fe", true);
   G4Element* elNi = nist->FindOrBuildElement("Ni", true);
@@ -83,19 +87,29 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Epoxy = new G4Material("Epoxy", EpDens, 4);
 
   G4Isotope* H1 = new G4Isotope("H1", 1, 1);
-  G4Element* elH = new G4Element("H", "H", 1);
+  G4Element* elH = new G4Element("Hydrogen", "H", 1);
   elH->AddIsotope(H1, 100. * perCent);
   G4Isotope* N14 = new G4Isotope("N14", 7, 14);
-  G4Element* elN = new G4Element("N", "N", 1);
+  G4Element* elN = new G4Element("Nitrogen", "N", 1);
   elN->AddIsotope(N14, 100. * perCent);
   G4Isotope* O16 = new G4Isotope("O16", 8, 16);
-  G4Element* elO = new G4Element("O", "O", 1);
+  G4Element* elO = new G4Element("Oxygen", "O", 1);
   elO->AddIsotope(O16, 100. * perCent);
 
   Epoxy->AddElement(elH, 0.0797);
   Epoxy->AddElement(elC, 0.7016);
   Epoxy->AddElement(elN, 0.0142);
   Epoxy->AddElement(elO, 0.2045);
+
+  G4double DeuDens = 1.107*g/cm3;
+  D2O = new G4Material("HeavyWater", DeuDens, 2);
+
+  G4Isotope* D2 = new G4Isotope("D2", 1, 2);
+  G4Element* elD = new G4Element("Deuterium", "D", 1);
+  elD->AddIsotope(D2, 100. * perCent);
+
+  D2O->AddElement(elD, 2);
+  D2O->AddElement(elO, 1);
 
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
@@ -340,6 +354,12 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   new G4PVPlacement(rotY, G4ThreeVector(-14.15*mm, 0, 357.8*mm), logicEpoxy   , "Epoxy"   , logicWorld, false, 0, checkOverlaps);
 
 //
+//  Additional Shielding
+//
+
+  solidShield = new G4Box("Shield", 50.*mm, 50.*mm, 25.*mm);
+
+//
 //  Detailed CCD Model - One of two possibilities:
 //  1. (Default) Include dead layer in front as part of detecting region, so that diffusion of this area can be considered so long as we artificially drop efficiency
 //  2. Dead layer in front is a separate volume, detection will only occur within the active layer, and assume full efficiency for this region
@@ -526,4 +546,31 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
   CCDDead = newval;
 
   if (isFirst == false) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
+}
+
+void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
+  if (shieldExist == true) {
+    logicWorld->RemoveDaughter(physShield);
+  }
+  else {
+    shieldExist = true;
+  }
+
+  if (mat == "Lead") {
+    logicShield = new G4LogicalVolume(solidShield, Pb, "Shield");
+  }
+  else if (mat == "Boron") {
+    logicShield = new G4LogicalVolume(solidShield, B, "Shield");
+  }
+  else if (mat == "Poly") {
+    logicShield = new G4LogicalVolume(solidShield, Poly, "Shield");
+  }
+  else if (mat == "Water") {
+    logicShield = new G4LogicalVolume(solidShield, D2O, "Shield");
+  }
+  else if (mat == "Concrete") {
+    logicShield = new G4LogicalVolume(solidShield, Con, "Shield");
+  }
+  physShield = new G4PVPlacement(ActiveVecs[0].second, ActiveVecs[0].first + G4ThreeVector(0., 0., 44.6625*mm), logicShield, "Shield", logicWorld, false, 0, checkOverlaps);
+  G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }

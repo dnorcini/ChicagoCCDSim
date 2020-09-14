@@ -4,6 +4,7 @@
 #include "globals.hh"
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithAString.hh"
 #include "G4UImessenger.hh"
 
 class ChicagoCCDDetectorConstruction;
@@ -11,6 +12,7 @@ class G4UIdirectory;
 class G4UIcommand;
 class G4UIcmdWithoutParameter;
 class G4UIcmdWithABool;
+class G4UIcmdWithAString;
 
 class ChicagoCCDDetectorMessenger: public G4UImessenger
 {
@@ -26,6 +28,7 @@ class ChicagoCCDDetectorMessenger: public G4UImessenger
     G4UIdirectory* CommandDir;
     G4UIcmdWithoutParameter* DelGeomCmd;
     G4UIcmdWithABool* CCDDeadCmd;
+    G4UIcmdWithAString* SetShieldCmd;
 };
 
 #endif

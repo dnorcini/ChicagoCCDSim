@@ -15,12 +15,12 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 10000
+/run/printProgress 50000
 #/analysis/verbose 2
 #
 /ChicagoGeom/deleteGeometry
 
-/analysis/setFileName /data/ncorso/Neutron_output/output/output_comparison/Neutron.root
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_comparison_5keV/Neutron.root
 
 #/gps/pos/type Point
 /gps/pos/type Beam
@@ -31,12 +31,24 @@
 /gps/particle neutron 
 
 /gps/ene/type Mono
-/gps/ene/mono 10. keV
+/gps/ene/mono 5. keV
 
 /gps/ang/type focused
-/gps/ang/focuspoint 0 0 12.4055 mm
+/gps/ang/focuspoint 0 0 -19.98 mm
 #/gps/ang/type iso
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
+
+/run/beamOn 500000000
+
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_comparison_20keV/Neutron.root
+
+/gps/ene/mono 20. keV
+
+/run/beamOn 500000000
+
+/analysis/setFileName /data/ncorso/Neutron_output/output/output_comparison_2keV/Neutron.root
+
+/gps/ene/mono 2. keV
 
 /run/beamOn 500000000

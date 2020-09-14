@@ -42,6 +42,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4bool GetCCDDead() const {return CCDDead;};
     G4double GetCCDCenterOff() const {return CCDCenterOff;};
 
+    void SetShielding(G4String mat = "Pb");
+
     void ConstructMaterials();
 
     int GetCCDNum(G4VPhysicalVolume *volume);
@@ -93,18 +95,25 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physCopperBox;
     G4VPhysicalVolume* physCopperFacePlate;
 
+    G4bool shieldExist;
+    G4Box* solidShield;
+    G4LogicalVolume* logicShield;
+    G4VPhysicalVolume* physShield;
+
     G4Material *Si;
     G4Material *Cu;
     G4Material *Pb;
     G4Material *Ny;
     G4Material *BeO;
     G4Material *Sb;
+    G4Material *B;
+    G4Material *Con;
+    G4Material *Poly;
     G4Material *Kap;
     G4Material *world_mat;
     G4Material *Epoxy;
     G4Material *Steel;
-    G4Material *Co57;
-    G4Material *Am241;
+    G4Material *D2O;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
