@@ -22,6 +22,7 @@ ChicagoCCDDetectorMessenger::ChicagoCCDDetectorMessenger(ChicagoCCDDetectorConst
 
   SetShieldCmd = new G4UIcmdWithAString("/ChicagoGeom/setShield", this);
   SetShieldCmd->SetGuidance("Sets the material for a shield in front of the CCD.");
+  SetShieldCmd->SetCandidates("Pb B D2O Con Poly");
   SetShieldCmd->SetDefaultValue("Pb");
 }
 

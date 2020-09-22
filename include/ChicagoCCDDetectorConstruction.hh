@@ -10,6 +10,7 @@
 #include "G4ThreeVector.hh"
 #include "G4RotationMatrix.hh"
 #include "G4tgbRotationMatrix.hh"
+#include "G4Region.hh"
 #include "globals.hh"
 #include "G4NistManager.hh"
 
@@ -55,6 +56,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     G4bool checkOverlaps;
     G4LogicalVolume*  fScoringVolume;
+
+    G4Region* steelRegion;
 
     G4LogicalVolume* logicWorld;
     G4VPhysicalVolume* physWorld;

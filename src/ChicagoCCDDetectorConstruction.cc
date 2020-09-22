@@ -54,12 +54,8 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
   Sb  = nist->FindOrBuildMaterial("G4_Sb");
   B   = nist->FindOrBuildMaterial("G4_B");
-  Con = nist->FindOrBuildMaterial("G4_Concrete");
-  Poly= nist->FindOrBuildMaterial("G4_Polyethylene");
 
-
-  G4double StDens = 8*g/cm3;
-  Steel = new G4Material("Stainless-Steel", StDens, 8);
+  Steel = new G4Material("Stainless-Steel", 8.*g/cm3, 8);
 
   G4Element* elC = nist->FindOrBuildElement("C", true);
   G4Element* elSi = nist->FindOrBuildElement("Si", true);
@@ -83,8 +79,7 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Steel->AddElement(elFe, 0.701725);
   Steel->AddElement(elNi, 0.0925);
 
-  G4double EpDens = 0.9828*g/cm3;
-  Epoxy = new G4Material("Epoxy", EpDens, 4);
+  Epoxy = new G4Material("Epoxy", 0.9828*g/cm3, 4);
 
   G4Isotope* H1 = new G4Isotope("H1", 1, 1);
   G4Element* elH = new G4Element("Hydrogen", "H", 1);
@@ -101,8 +96,7 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Epoxy->AddElement(elN, 0.0142);
   Epoxy->AddElement(elO, 0.2045);
 
-  G4double DeuDens = 1.107*g/cm3;
-  D2O = new G4Material("HeavyWater", DeuDens, 2);
+  D2O = new G4Material("HeavyWater", 1.107*g/cm3, 2);
 
   G4Isotope* D2 = new G4Isotope("D2", 1, 2);
   G4Element* elD = new G4Element("Deuterium", "D", 1);
@@ -110,6 +104,29 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
 
   D2O->AddElement(elD, 2);
   D2O->AddElement(elO, 1);
+
+  Con = new G4Material("Concrete", 2.3*g/cm3, 7);
+
+  G4Isotope* Na23 = new G4Isotope("Na23", 11, 23);
+  G4Element* elNa = new G4Element("Sodium", "Na", 1);
+  elNa->AddIsotope(Na23, 100. * perCent);
+  G4Isotope* Al27 = new G4Isotope("Al27", 13, 27);
+  G4Element* elAl = new G4Element("Aluminum", "Al", 1);
+  elAl->AddIsotope(Al27, 100. * perCent);
+  G4Element* elCa = nist->FindOrBuildElement("Ca", true);
+
+  Con->AddElement(elH, 0.01);
+  Con->AddElement(elO, 0.532);
+  Con->AddElement(elNa, 0.029);
+  Con->AddElement(elAl, 0.034);
+  Con->AddElement(elSi, 0.337);
+  Con->AddElement(elCa, 0.044);
+  Con->AddElement(elFe, 0.014);
+  
+  Poly= new G4Material("Polyethylene", 0.93*g/cm3, 2);
+
+  Poly->AddElement(elH, 0.143716);
+  Poly->AddElement(elC, 0.856284);
 
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 }
@@ -167,7 +184,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicChamber = new G4LogicalVolume(solidChamber, Steel, "Chamber");
   physChamber = new G4PVPlacement(0,G4ThreeVector(), logicChamber, "Chamber", logicWorld, false, 0, checkOverlaps);
 
-  G4Region* steelRegion = new G4Region("SteelRegion");
+  steelRegion = new G4Region("SteelRegion");
   logicChamber->SetRegion(steelRegion);
   steelRegion->AddRootLogicalVolume(logicChamber);
 
@@ -552,6 +569,7 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
 void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
   if (shieldExist == true) {
     logicWorld->RemoveDaughter(physShield);
+    steelRegion->RemoveRootLogicalVolume(logicShield);               
   }
   else {
     shieldExist = true;
@@ -571,6 +589,8 @@ void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
   else if (mat == "Con") {
     logicShield = new G4LogicalVolume(solidShield, Con, "Shield");
   }
+  logicShield->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicShield);               
   physShield = new G4PVPlacement(ActiveVecs[0].second, ActiveVecs[0].first + G4ThreeVector(0., 0., 44.6625*mm), logicShield, "Shield", logicWorld, false, 0, checkOverlaps);
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }
