@@ -62,7 +62,6 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4double deadThick;
 
     G4bool CCDDead;
-    G4double CCDCenterOff;
 
     std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
     std::vector<G4ThreeVector> ActiveDims;

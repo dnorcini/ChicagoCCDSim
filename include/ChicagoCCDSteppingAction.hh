@@ -7,6 +7,9 @@
 #include "G4UserSteppingAction.hh"
 #include "globals.hh"
 
+#include <vector>
+#include <utility>
+
 class ChicagoCCDEventAction;
 class ChicagoCCDRunAction;
 class ChicagoCCDDetectorConstruction;
