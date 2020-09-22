@@ -52,13 +52,24 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
   G4LogicalVolume* logVolume 
     = step->GetPreStepPoint()->GetTouchableHandle()
       ->GetVolume()->GetLogicalVolume();
+  G4Track *track=step->GetTrack();
   // check if we are in scoring volume
-  if (logVolume != fScoringVolume) return;
+  if (logVolume != fScoringVolume) {
+    /*
+    if (track->GetParticleDefinition()->GetPDGEncoding() == 11) {
+      track->SetTrackStatus(fStopAndKill);
+    }
+    */
+    return;
+  }
+
+  if (track->GetParticleDefinition()->GetPDGEncoding() == 1e9) {
+    track->SetTrackStatus(fStopAndKill);
+  }
 
   G4double edepStep = step->GetTotalEnergyDeposit();  
   if (edepStep > 0.) {
     // check if we are looking at the decay particle
-    G4Track *track=step->GetTrack();
     // This step runs under the assumption that no particle that hits the CCD is not or does not descend from a primary
     // If it's breaking here, check that the primaries defined in StackingAction are not too restrictive
     ChicagoCCDTrackInformation* trackInfo = (ChicagoCCDTrackInformation*)(track->GetUserInformation());

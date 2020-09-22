@@ -15,29 +15,46 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 10000
+/run/printProgress 500000
 #/analysis/verbose 2
 #
-#/ChicagoGeom/deleteGeometry
+/ChicagoGeom/setDeadLayer True
+/ChicagoGeom/deleteGeometry
 
-/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_122/Compton_Co.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_6_49keV/Compton_Fe.root
 
 /gps/pos/type Point
 #/gps/pos/type Beam
-/gps/pos/centre 0 0 -110 mm
+/gps/pos/centre 0 0 50 mm
 
-#/gps/pos/centre -6.614 -12.4055 0 mm
+#/gps/pos/centre 0 -6.614 -19.98 mm
 
 #/ChicagoPrimaryGen/setGammaSource True
+/ChicagoPrimaryGen/setSource Fe55
+#/gps/particle ion
+#/gps/ion 26 55 0 0
+#/gps/energy 0 keV
+
 /gps/particle gamma
-
 /gps/ene/type Mono
-/gps/ene/mono 122.06065 keV
+/gps/ene/mono 6.49 keV
 
-#/gps/ang/type focused
-#/gps/ang/focuspoint 0 -12.4055 0 mm
-/gps/ang/type iso
-/gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 85 deg
+/gps/ang/type focused
+/gps/ang/focuspoint 0 0 -19.98 mm
+#/gps/ang/type iso
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
 
-/run/beamOn 50000000
+/run/beamOn 10000000
+
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_5_888keV/Compton_Fe.root
+
+#/gps/ene/mono 5.888 keV
+
+#/run/beamOn 10000000
+
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe__648keV/Compton_Fe.root
+
+#/gps/ene/mono 0.648 keV
+
+#/run/beamOn 10000000

@@ -21,6 +21,7 @@ ChicagoCCDPrimaryGeneratorAction::ChicagoCCDPrimaryGeneratorAction()
   fParticleSource = new G4GeneralParticleSource();
   skipperPrimaryMessenger = new ChicagoCCDPrimaryMessenger(this);
   SetGammaSource(false);
+  SetSource("Co57");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -38,10 +39,20 @@ void ChicagoCCDPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // GammaSource defines whether gammas of specific energies are used as the source rather than an ion
   if (GetGammaSource() == true) {
     G4double gammaEn;
-    G4double randGen = G4UniformRand() * 1.0538;
-    if (randGen <= 0.8551) {gammaEn = 122.06065*keV;}
-    else if (randGen > 0.8551 && randGen <= 0.9622) {gammaEn = 136.47356*keV;}
-    else if (randGen > 0.9622) {gammaEn = 14.41295*keV;};
+    if (source == "Co57") {
+      G4double randGen = G4UniformRand() * 1.0538;
+      if (randGen <= 0.8551) {gammaEn = 122.06065*keV;}
+      else if (randGen > 0.8551 && randGen <= 0.9622) {gammaEn = 136.47356*keV;}
+      else if (randGen > 0.9622) {gammaEn = 14.41295*keV;};
+    }
+    else if (source == "Fe55") {
+      G4double randGen = G4UniformRand() * 0.28858;
+      if (randGen <= 0.169) {gammaEn = 5.899*keV;}
+      else if (randGen > 0.169 && randGen <= 0.254) {gammaEn = 5.888*keV;}
+      else if (randGen > 0.254 && randGen <= 0.2839) {gammaEn = 6.49*keV;}
+      else if (randGen > 0.2839 && randGen <= 0.28668) {gammaEn = 0.637*keV;}
+      else if (randGen > 0.28668) {gammaEn = 0.648*keV;};
+    }
 
     G4SPSEneDistribution* eneDist = fParticleSource->GetCurrentSource()->GetEneDist();
     eneDist->SetEnergyDisType("Mono");
