@@ -20,6 +20,7 @@
 #include "G4ThreeVector.hh"
 
 #include <vector>
+#include <utility>
 #include <algorithm>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -103,7 +104,7 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       fRunAction->momzPrim.push_back(primMomentum.getZ() / eV);
       fRunAction->triggerTime.push_back(trigTime / s);
     }
-    
+   
     //
     // Collect CCDOut Info
     //
@@ -112,24 +113,48 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
     G4int CCDNum = fDetectorConstruction->GetCCDNum(physVolume);
     std::vector<G4ThreeVector> ActiveDims = fDetectorConstruction->GetActiveDims();
     G4ThreeVector CCDDim = ActiveDims[CCDNum - 1];
+    G4double pixWidth = fDetectorConstruction->GetPixWidth();
 
     G4TouchableHandle theTouchable = step->GetPreStepPoint()->GetTouchableHandle();
     G4ThreeVector worldPosition = step->GetPreStepPoint()->GetPosition();
     G4ThreeVector localPosition = theTouchable->GetHistory()->GetTopTransform().TransformPoint(worldPosition);
-    
-    fRunAction->pdgCCD.push_back(track->GetParticleDefinition()->GetPDGEncoding());
-    fRunAction->trackid.push_back(track->GetTrackID());
-    fRunAction->parentid.push_back(track->GetParentID());
-    fRunAction->primaryidCCD.push_back(primaryID);
-    fRunAction->CCDid.push_back(CCDNum);
-    fRunAction->posxCCD.push_back((localPosition.getX() + CCDDim.getX())/mm);
-    fRunAction->posyCCD.push_back((localPosition.getY() + CCDDim.getY())/mm);
-    fRunAction->poszCCD.push_back((CCDDim.getZ())/mm - localPosition.getZ());
-    fRunAction->gposxCCD.push_back(worldPosition.getX()/mm);
-    fRunAction->gposyCCD.push_back(worldPosition.getY()/mm);
-    fRunAction->gposzCCD.push_back(worldPosition.getZ()/mm);
-    fRunAction->Edep.push_back(edepStep / eV);
-    fRunAction->time.push_back(track->GetGlobalTime() / s);
+
+    G4double posx = (localPosition.getX() + CCDDim.getX())/mm;
+    G4double posy = (localPosition.getY() + CCDDim.getY())/mm;
+    G4double posz = (CCDDim.getZ() - localPosition.getZ())/mm;
+
+    G4int pixx = (G4int) floor(posx / pixWidth);
+    G4int pixy = (G4int) floor(posy / pixWidth);
+    G4int trackid = track->GetTrackID();
+    std::vector<G4int> thisPix = {CCDNum, pixx, pixy, trackid};
+    std::vector< std::vector<G4int> >::iterator it = std::find(fEventAction->usedPix.begin(), fEventAction->usedPix.end(), thisPix);
+    if (it == fEventAction->usedPix.end()) {
+      fEventAction->usedPix.push_back(thisPix);
+      fRunAction->pdgCCD.push_back(track->GetParticleDefinition()->GetPDGEncoding());
+      fRunAction->trackid.push_back(trackid);
+      fRunAction->parentid.push_back(track->GetParentID());
+      fRunAction->primaryidCCD.push_back(primaryID);
+      fRunAction->CCDid.push_back(CCDNum);
+      fRunAction->posxCCD.push_back(posx * edepStep / eV);
+      fRunAction->posyCCD.push_back(posy * edepStep / eV);
+      fRunAction->poszCCD.push_back(posz * edepStep / eV);
+      fRunAction->gposxCCD.push_back(worldPosition.getX() * edepStep / (mm * eV));
+      fRunAction->gposyCCD.push_back(worldPosition.getY() * edepStep / (mm * eV));
+      fRunAction->gposzCCD.push_back(worldPosition.getZ() * edepStep / (mm * eV));
+      fRunAction->Edep.push_back(edepStep / eV);
+      fRunAction->time.push_back(track->GetGlobalTime() * edepStep / (s * eV));
+    }
+    else {
+      G4int ind = std::distance(fEventAction->usedPix.begin(), it);
+      fRunAction->posxCCD.at(ind) += posx * edepStep / eV;
+      fRunAction->posyCCD.at(ind) += posy * edepStep / eV;
+      fRunAction->poszCCD.at(ind) += posz * edepStep / eV;
+      fRunAction->gposxCCD.at(ind) += worldPosition.getX() * edepStep/(mm * eV);
+      fRunAction->gposyCCD.at(ind) += worldPosition.getY() * edepStep/(mm * eV);
+      fRunAction->gposzCCD.at(ind) += worldPosition.getZ() * edepStep/(mm * eV);
+      fRunAction->Edep.at(ind) += edepStep / eV;
+      fRunAction->time.at(ind) += track->GetGlobalTime() * edepStep / (s * eV);
+    }
   }  
 }
 

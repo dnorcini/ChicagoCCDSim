@@ -15,6 +15,7 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include <functional>
 #include <stdio.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -32,7 +33,8 @@ ChicagoCCDEventAction::~ChicagoCCDEventAction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void ChicagoCCDEventAction::BeginOfEventAction(const G4Event* event)
-{ 
+{
+  usedPix.clear();
   // Since the vectors used for the outputs were created by RunAction, we can't make them anew but we'll clear them at the beginning of each event
   fRunAction->pdgPrim.clear();
   fRunAction->primaryid.clear();
@@ -67,14 +69,20 @@ void ChicagoCCDEventAction::BeginOfEventAction(const G4Event* event)
 void ChicagoCCDEventAction::EndOfEventAction(const G4Event* event)
 { 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  G4int EventID = event->GetEventID(); 
+  G4int EventID = event->GetEventID();
   // If there was energy deposition, seal the deal and record it
   if (!fRunAction->Edep.empty()) {
+    std::transform(fRunAction->posxCCD.begin(), fRunAction->posxCCD.end(), fRunAction->Edep.begin(), fRunAction->posxCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->posyCCD.begin(), fRunAction->posyCCD.end(), fRunAction->Edep.begin(), fRunAction->posyCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->poszCCD.begin(), fRunAction->poszCCD.end(), fRunAction->Edep.begin(), fRunAction->poszCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->gposxCCD.begin(), fRunAction->gposxCCD.end(), fRunAction->Edep.begin(), fRunAction->gposxCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->gposyCCD.begin(), fRunAction->gposyCCD.end(), fRunAction->Edep.begin(), fRunAction->gposyCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->gposzCCD.begin(), fRunAction->gposzCCD.end(), fRunAction->Edep.begin(), fRunAction->gposzCCD.begin(), std::divides<G4double>());
+    std::transform(fRunAction->time.begin(), fRunAction->time.end(), fRunAction->Edep.begin(), fRunAction->time.begin(), std::divides<G4double>());
     analysisManager->FillNtupleIColumn(2, 0, EventID);
     analysisManager->AddNtupleRow(2);
   }
-  // If there was no energy deposition, the event should still be recorded, using what information we can come up with
-  if (fRunAction->primaryid.empty()) {
+  else {
     primVert = event->GetPrimaryVertex();
     primPart = primVert->GetPrimary();
 

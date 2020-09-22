@@ -30,6 +30,8 @@ class ChicagoCCDEventAction : public G4UserEventAction
 
     G4EventManager* evManager;
 
+    std::vector< std::vector<G4int> > usedPix;
+
   private:
     ChicagoCCDRunAction* fRunAction;
     G4bool gammaSource;
