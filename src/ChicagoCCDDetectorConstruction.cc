@@ -389,6 +389,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   // Active Layer
   //  
   ActiveVecs.push_back(std::make_pair(G4ThreeVector(0, -6.614*mm, -19.98*mm), rotID));
+  pixWidth = 15.*um;
   ActiveDims1.push_back(G4ThreeVector(7680*um, 46320*um, 340*um));
 
   G4Box* solidActiveFull = new G4Box("CCDSensor", ActiveDims1[0].getX(), ActiveDims1[0].getY(), ActiveDims1[0].getZ());
