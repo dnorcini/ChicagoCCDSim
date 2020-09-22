@@ -40,13 +40,13 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     void SetCCDDead(G4bool newval, G4bool isFirst = false);
     G4bool GetCCDDead() const {return CCDDead;};
-    G4double GetCCDCenterOff() const {return CCDCenterOff;};
 
     void ConstructMaterials();
 
     int GetCCDNum(G4VPhysicalVolume *volume);
     int GetTotCCDs() {return ActivePVs.size();};
     std::vector<G4ThreeVector> GetActiveDims() const {return ActiveDims;};
+    G4double GetPixWidth() {return pixWidth;};
 
   protected:
     ChicagoCCDDetectorMessenger* skipperDetectorMessenger;
@@ -64,6 +64,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4bool CCDDead;
 
     std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
+    G4double pixWidth;
     std::vector<G4ThreeVector> ActiveDims;
     std::vector<G4ThreeVector> ActiveDims1;
     std::vector<G4ThreeVector> ActiveDims2;
