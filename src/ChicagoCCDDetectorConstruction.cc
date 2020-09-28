@@ -253,6 +253,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Aluminum Lid
 //
 
+  SetLidMat("Al");
   AssembleAlLids(1.6*mm, true);
 
 //

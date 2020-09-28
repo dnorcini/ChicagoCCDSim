@@ -127,6 +127,8 @@
 /vis/geometry/set/colour Puck             0 0.722  0.451 0.20   0.75
 /vis/geometry/set/colour SmallColdHead    0 1      1     1      0.75
 /vis/geometry/set/colour LargeColdHead    0 1      1     1      0.75
+/vis/geometry/set/colour AluminumLid      0 0.6797 0.699 0.7421 0.7
+/vis/geometry/set/colour MylarLid         0 0.226  0.334 0.44   0.7
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings
