@@ -48,6 +48,9 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<G4ThreeVector> GetActiveDims() const {return ActiveDims;};
     G4double GetPixWidth() {return pixWidth;};
 
+    void AssembleAlLids(G4double thickness, G4bool isFirst = false);
+    void SetLidMat(G4String mat) {lidMat = mat;};
+
   protected:
     ChicagoCCDDetectorMessenger* skipperDetectorMessenger;
 
@@ -91,6 +94,13 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physCopperBox;
     G4VPhysicalVolume* physCopperFacePlate;
 
+    G4bool mylarLid;
+    G4String lidMat;
+    G4VPhysicalVolume* physFrontLidMylar;
+    G4VPhysicalVolume* physBackLidMylar;
+    G4VPhysicalVolume* physFrontLidAlum;
+    G4VPhysicalVolume* physBackLidAlum;
+
     G4Material *Si;
     G4Material *Cu;
     G4Material *Pb;
@@ -101,6 +111,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4Material *Steel;
     G4Material *Co57;
     G4Material *Am241;
+    G4Material *Myl;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

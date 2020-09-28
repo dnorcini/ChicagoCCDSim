@@ -47,14 +47,33 @@
 
 /run/beamOn 10000000
 
-#/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_5_888keV/Compton_Fe.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_5_888keV/Compton_Fe.root
 
-#/gps/ene/mono 5.888 keV
+/gps/ene/mono 5.888 keV
 
-#/run/beamOn 10000000
+/run/beamOn 10000000
 
-#/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe__648keV/Compton_Fe.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe__648keV/Compton_Fe.root
 
-#/gps/ene/mono 0.648 keV
+/gps/ene/mono 0.648 keV
 
-#/run/beamOn 10000000
+/run/beamOn 10000000
+
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_6_49keV_dead/Compton_Fe.root
+/ChicagoGeom/setDeadLayer False
+
+/gps/ene/mono 6.49 keV
+
+/run/beamOn 10000000
+
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe_5_888keV_dead/Compton_Fe.root
+
+/gps/ene/mono 5.888 keV
+
+/run/beamOn 10000000
+
+/analysis/setFileName /data/ncorso/Compton_output/output/output_comparison_Fe__648keV_dead/Compton_Fe.root
+
+/gps/ene/mono 0.648 keV
+
+/run/beamOn 10000000

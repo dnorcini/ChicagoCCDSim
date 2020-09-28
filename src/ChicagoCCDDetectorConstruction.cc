@@ -52,6 +52,7 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Pb = nist->FindOrBuildMaterial("G4_Pb");
   Al = nist->FindOrBuildMaterial("G4_Al");
   Kap = nist->FindOrBuildMaterial("G4_KAPTON");
+  Myl = nist->FindOrBuildMaterial("G4_MYLAR");
 
   G4double StDens = 8*g/cm3;
   Steel = new G4Material("Stainless-Steel", StDens, 8);
@@ -249,6 +250,12 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   physCopperFacePlate = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -19.3745*mm), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
 
 //
+//  Aluminum Lid
+//
+
+  AssembleAlLids(1.6*mm, true);
+
+//
 //  Puck Model
 //
 
@@ -386,7 +393,7 @@ G4int ChicagoCCDDetectorConstruction::GetCCDNum(G4VPhysicalVolume *volume) {
 }
 
 void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
-  if ((newval == false && newval != CCDDead) && isFirst == false) {
+  if ((!newval && newval != CCDDead) && !isFirst) {
     for (unsigned int i=0; i < ActivePVs.size(); i++) {  
       logicWorld->RemoveDaughter(ActivePVs[i]);
       ActivePVs.erase(ActivePVs.begin() + i);
@@ -456,5 +463,33 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
 
   CCDDead = newval;
 
-  if (isFirst == false) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
+  if (!isFirst) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
+}
+
+void ChicagoCCDDetectorConstruction::AssembleAlLids(G4double thickness, G4bool isFirst) {
+  if (!isFirst) {
+    logicWorld->RemoveDaughter(physFrontLidAlum);
+    logicWorld->RemoveDaughter(physBackLidAlum);
+    if (mylarLid) {
+      logicWorld->RemoveDaughter(physFrontLidMylar);
+      logicWorld->RemoveDaughter(physBackLidMylar);
+    }
+  }
+  if (lidMat == "Al") {
+    G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, thickness / 2);
+    G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al, "AluminumLid");
+    physFrontLidAlum = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness / 2), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
+    physBackLidAlum =  new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness / 2), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
+  }
+  else if (lidMat == "Mylar") {
+    G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, 0.0127*mm);
+    G4Box* solidMylarLid =    new G4Box("MylarLid"   , 34.925*mm, 61.722*mm, thickness / 2 - 0.0127*mm);
+    G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al , "AluminumLid");
+    G4LogicalVolume* logicMylarLid    = new G4LogicalVolume(solidMylarLid   , Myl, "MylarLid"   );
+    physFrontLidMylar = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + (thickness / 2 - 0.0127)), logicMylarLid   , "FrontLidMylar"   , logicWorld, false, 0, checkOverlaps);
+    physBackLidMylar  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - (thickness / 2 - 0.0127)), logicMylarLid   , "BackLidMylar"    , logicWorld, false, 0, checkOverlaps);
+    physFrontLidAlum  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness - 0.0127      ), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
+    physBackLidAlum   = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness + 0.0127      ), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
+  }
+  if (!isFirst) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
 }
