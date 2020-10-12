@@ -253,7 +253,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Aluminum Lid
 //
 
-  SetLidMat("Al");
+  SetLidMat("Aluminum");
   AssembleAlLids(1.6*mm, true);
 
 //
@@ -476,21 +476,23 @@ void ChicagoCCDDetectorConstruction::AssembleAlLids(G4double thickness, G4bool i
       logicWorld->RemoveDaughter(physBackLidMylar);
     }
   }
-  if (lidMat == "Al") {
+
+  if (lidMat == "Aluminum" && thickness > 1e-10) {
     G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, thickness / 2);
     G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al, "AluminumLid");
     physFrontLidAlum = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness / 2), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
     physBackLidAlum =  new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness / 2), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
   }
-  else if (lidMat == "Mylar") {
-    G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, 0.0127*mm);
-    G4Box* solidMylarLid =    new G4Box("MylarLid"   , 34.925*mm, 61.722*mm, thickness / 2 - 0.0127*mm);
+  else if (lidMat == "Mylar" && thickness > 1e-10) {
+    G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, 0.00127*mm);
+    G4Box* solidMylarLid =    new G4Box("MylarLid"   , 34.925*mm, 61.722*mm, thickness / 2 - 0.00127*mm);
     G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al , "AluminumLid");
     G4LogicalVolume* logicMylarLid    = new G4LogicalVolume(solidMylarLid   , Myl, "MylarLid"   );
-    physFrontLidMylar = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + (thickness / 2 - 0.0127)), logicMylarLid   , "FrontLidMylar"   , logicWorld, false, 0, checkOverlaps);
-    physBackLidMylar  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - (thickness / 2 - 0.0127)), logicMylarLid   , "BackLidMylar"    , logicWorld, false, 0, checkOverlaps);
-    physFrontLidAlum  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness - 0.0127      ), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
-    physBackLidAlum   = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness + 0.0127      ), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
+    physFrontLidMylar = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + (thickness / 2 - 0.00127)), logicMylarLid   , "FrontLidMylar"   , logicWorld, false, 0, checkOverlaps);
+    physBackLidMylar  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - (thickness / 2 - 0.00127)), logicMylarLid   , "BackLidMylar"    , logicWorld, false, 0, checkOverlaps);
+    physFrontLidAlum  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness - 0.00127      ), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
+    physBackLidAlum   = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness + 0.00127      ), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
   }
+
   if (!isFirst) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
 }

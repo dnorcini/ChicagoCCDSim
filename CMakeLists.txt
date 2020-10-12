@@ -80,6 +80,7 @@ set(SCRIPTS
   vis.mac
   singlerun.mac
   comparison.mac
+  lidtest.mac
   test.mac
   test_full.mac
   guide.mac
