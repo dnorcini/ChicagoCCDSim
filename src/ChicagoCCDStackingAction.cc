@@ -70,7 +70,15 @@ G4ClassificationOfNewTrack ChicagoCCDStackingAction
       G4Track* theTrack = (G4Track*)aTrack;
       theTrack->SetUserInformation(trackInfo);
     }
-    else if ((aTrack->GetParticleDefinition()->GetParticleType() == "GenericIon" || aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") && std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end()) {
+    else if ((aTrack->GetParticleDefinition()->GetParticleType() == "GenericIon" || aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) == parentList.end()) {
+      // Consider it a non-tracked parent of the primary
+      parentList.push_back(aTrack->GetTrackID());
+      // Give it track information so that it
+      trackInfo = new ChicagoCCDTrackInformation(aTrack);
+      G4Track* theTrack = (G4Track*)aTrack;
+      theTrack->SetUserInformation(trackInfo);
+    }
+    else if ((aTrack->GetParticleDefinition()->GetParticleType() == "GenericIon" || aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) != parentList.end()) {
       // Consider it a non-tracked parent of the primary
       parentList.push_back(aTrack->GetTrackID());
     }
