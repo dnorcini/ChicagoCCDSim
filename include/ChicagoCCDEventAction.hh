@@ -11,6 +11,8 @@
 #include "G4PrimaryParticle.hh"
 #include "G4PrimaryVertex.hh"
 
+#include <vector>
+
 class ChicagoCCDRunAction;
 
 /// Event action class
@@ -29,6 +31,8 @@ class ChicagoCCDEventAction : public G4UserEventAction
     G4bool GetGammaSource() {return gammaSource;}
 
     G4EventManager* evManager;
+
+    std::vector< std::vector<G4int> > usedPix;
 
   private:
     ChicagoCCDRunAction* fRunAction;

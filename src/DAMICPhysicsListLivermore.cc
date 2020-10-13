@@ -144,9 +144,9 @@
 DAMICPhysicsListLivermore::DAMICPhysicsListLivermore() : G4VUserPhysicsList()
 {
     
-    defaultCutValue     = 0.05*micrometer;
+    defaultCutValue     = 1.*micrometer;
     cutForGamma         = defaultCutValue;
-    cutForElectron      = 1*nanometer;
+    cutForElectron      = defaultCutValue;
     cutForPositron      = defaultCutValue;
     
     VerboseLevel = 1;
@@ -845,7 +845,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(0.5*nm);
+    actcut->SetProductionCut(500*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
     G4UserLimits* activeStepLimit = new G4UserLimits();
