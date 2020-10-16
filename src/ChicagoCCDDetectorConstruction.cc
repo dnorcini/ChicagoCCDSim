@@ -154,6 +154,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4VSolid* solidSmallCap              = new G4Cons("SmallCap", 18*mm, 19.05*mm, 12.37*mm, 13.42 *mm, 20.31*mm, 0, 2*M_PI);
   G4VSolid* solidFrontFlangeHole       = new G4Tubs("FrontFlangeHole"  ,  0      , 50.8 *mm,  8.735*mm, 0, 2*M_PI);
   G4VSolid* solidBackFlangeHole        = new G4Tubs("BackFlangeHole"   ,  0      , 48.93*mm,  8.95 *mm, 0, 2*M_PI);
+  G4Box*    solidAluminumShield        = new G4Box( "AluminumShield", 25.4*mm, 25.4*mm, 6.35*mm);
   G4SubtractionSolid* solidFrontFlange = new G4SubtractionSolid("FrontFlange", solidFullFlange    , solidFrontFlangeHole, 0, G4ThreeVector(0, 0,-0.8 *mm));
   G4SubtractionSolid* solidBackFlange  = new G4SubtractionSolid("BackFlange" , solidFullAlumFlange, solidBackFlangeHole , 0, G4ThreeVector(0, 0, 1.85*mm));
   G4LogicalVolume* logicFullFlange       = new G4LogicalVolume(solidFullFlange     , Steel, "FullFlange"      );
@@ -162,12 +163,13 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicNippleFlange     = new G4LogicalVolume(solidNippleFlange   , Steel, "NippleFlange"    );
   G4LogicalVolume* logicNipple           = new G4LogicalVolume(solidNipple         , Steel, "Nipple"          );
   G4LogicalVolume* logicSmallTube        = new G4LogicalVolume(solidSmallTube      , Steel, "SmallTube"       );
-  G4LogicalVolume* logicSmallLid         = new G4LogicalVolume(solidSmallLid       , Steel, "SmallLid"       );
+  G4LogicalVolume* logicSmallLid         = new G4LogicalVolume(solidSmallLid       , Steel, "SmallLid"        );
   G4LogicalVolume* logicSmallCap         = new G4LogicalVolume(solidSmallCap       , Steel, "SmallCap"        );
   G4LogicalVolume* logicFrontFlange      = new G4LogicalVolume(solidFrontFlange    , Steel, "FrontFlange"     );
-  G4LogicalVolume* logicBackFlange       = new G4LogicalVolume(solidBackFlange     , Steel, "BackFlange"      );
+  G4LogicalVolume* logicBackFlange       = new G4LogicalVolume(solidBackFlange     , Al   , "BackFlange"      );
+  G4LogicalVolume* logicAluminumShield   = new G4LogicalVolume(solidAluminumShield , Al   , "AluminumShield"  );
   flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , -86.95 *mm), logicBackFlange      , "BackFlange"       , logicWorld, false, 0, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( 85.725*mm,   0       ,   0       ), logicFullFlange      , "BottomRestFlange" , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(rotY, G4ThreeVector( 85.725*mm,   0       ,   0       ), logicFullFlange      , "BottomRestFlange" , logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       ,  85.725*mm), logicSmallTubeFlange , "FrontFlange"      , logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , 103.93 *mm), logicSmallTube       , "SmallTube"        , logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       , 139.06 *mm), logicSmallLid        , "SmallLid"         , logicWorld, false, 0, checkOverlaps));
@@ -180,6 +182,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-237.3  *mm,   0       ), logicNippleElecFlange, "LeftNippleFlange" , logicWorld, false, 5, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , 161.75 *mm,   0       ), logicNipple          , "RightNipple"      , logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-161.75 *mm,   0       ), logicNipple          , "LeftNipple"       , logicWorld, false, 1, checkOverlaps));
+  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       ,-104.05 *mm), logicAluminumShield  , "AluminumShield"   , logicWorld, false, 0, checkOverlaps));
 
   G4Region* steelRegion2 = new G4Region("SteelRegion2");
   logicFullFlange->SetRegion(steelRegion);
@@ -201,7 +204,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   logicFrontFlange->SetRegion(steelRegion);
   steelRegion->AddRootLogicalVolume(logicFrontFlange);               
   logicBackFlange->SetRegion(steelRegion);
-  steelRegion->AddRootLogicalVolume(logicBackFlange);               
+  steelRegion->AddRootLogicalVolume(logicBackFlange);
+  logicAluminumShield->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicAluminumShield);
 
 //
 // Flex Cable
@@ -495,4 +500,5 @@ void ChicagoCCDDetectorConstruction::AssembleAlLids(G4double thickness, G4bool i
   }
 
   if (!isFirst) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
+  if (thickness < 1e-10) {isFirst = true;}
 }
