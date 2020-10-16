@@ -62,7 +62,7 @@ G4ClassificationOfNewTrack ChicagoCCDStackingAction
   {
     ChicagoCCDTrackInformation* trackInfo;
     // Check if there is a particle we want to deem the "primary" for its daughters
-    if(std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end() && aTrack->GetParticleDefinition()->GetParticleType() != "nucleus" && aTrack->GetParticleDefinition()->GetParticleType() != "GenericIon") {
+    if(std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end() && aTrack->GetParticleDefinition()->GetParticleType() != "nucleus") {
       trackList.push_back(aTrack->GetTrackID());
       parentList.push_back(aTrack->GetTrackID());
       // If the particle is a primary, collect its information and store it in the track
@@ -70,7 +70,7 @@ G4ClassificationOfNewTrack ChicagoCCDStackingAction
       G4Track* theTrack = (G4Track*)aTrack;
       theTrack->SetUserInformation(trackInfo);
     }
-    else if ((aTrack->GetParticleDefinition()->GetParticleType() == "GenericIon" || aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) == parentList.end()) {
+    else if (aTrack->GetParticleDefinition()->GetParticleType() == "nucleus" && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) == parentList.end()) {
       // Consider it a non-tracked parent of the primary
       parentList.push_back(aTrack->GetTrackID());
       // Give it track information so that it
@@ -78,7 +78,7 @@ G4ClassificationOfNewTrack ChicagoCCDStackingAction
       G4Track* theTrack = (G4Track*)aTrack;
       theTrack->SetUserInformation(trackInfo);
     }
-    else if ((aTrack->GetParticleDefinition()->GetParticleType() == "GenericIon" || aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) != parentList.end()) {
+    else if (aTrack->GetParticleDefinition()->GetParticleType() == "nucleus" && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) != parentList.end()) {
       // Consider it a non-tracked parent of the primary
       parentList.push_back(aTrack->GetTrackID());
     }

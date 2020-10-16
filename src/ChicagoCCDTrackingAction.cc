@@ -52,12 +52,12 @@ void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
   G4int parentid = aTrack->GetParentID();
   G4TrackVector* secondaries = fpTrackingManager->GimmeSecondaries();
+  size_t nSeco = secondaries->size();
   std::vector< G4int > trackList = fStackingAction->GetTrackList();
   // If the particle is such that it would have information stored to pass down, then pass it down to secondaries
-  if ((aTrack->GetParticleDefinition()->GetParticleType() != "nucleus" && aTrack->GetParticleDefinition()->GetParticleType() != "GenericIon" && std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end()) || std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) != trackList.end())
+  if ((aTrack->GetParticleDefinition()->GetParticleType() != "nucleus"  && std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end()) || std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) != trackList.end())
   {
     ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
-    size_t nSeco = secondaries->size();
     if(nSeco>0)
     {
       for(size_t i=0;i<nSeco;i++)
@@ -69,14 +69,18 @@ void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   }
   else {
     ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
-    size_t nSeco = secondaries->size();
     if(nSeco>0)
     {
       for(size_t i=0;i<nSeco;i++)
       {
-        if ((*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "nucleus" || (*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "GenericIon") {
-          ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
-          (*secondaries)[i]->SetUserInformation(infoNew);
+        if ((*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "nucleus") {
+          if ((*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding() == 1000020040) {
+            (*secondaries)[i]->SetTrackStatus(fStopAndKill);
+          }
+          else {
+            ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
+            (*secondaries)[i]->SetUserInformation(infoNew);
+          }
         }
       }
     }

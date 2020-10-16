@@ -176,7 +176,6 @@ void ChicagoCCDRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* 
   G4LogicalVolume* logVol = physVol->GetLogicalVolume();
   G4VSolid* solVol = logVol->GetSolid();
   volVals.concatedVolumeNames += physVol->GetName() + ";";
-  G4cout << physVol->GetName() << G4endl;
   if (volVals.volumeNameID.size() == 0) {
     volVals.volumeNameID.push_back(0);
   }
