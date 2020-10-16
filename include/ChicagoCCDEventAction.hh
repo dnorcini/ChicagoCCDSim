@@ -11,6 +11,8 @@
 #include "G4PrimaryParticle.hh"
 #include "G4PrimaryVertex.hh"
 
+#include <vector>
+
 class ChicagoCCDRunAction;
 
 /// Event action class

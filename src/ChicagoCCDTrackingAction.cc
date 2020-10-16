@@ -67,5 +67,19 @@ void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       }
     }
   }
+  else {
+    ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
+    size_t nSeco = secondaries->size();
+    if(nSeco>0)
+    {
+      for(size_t i=0;i<nSeco;i++)
+      {
+        if ((*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "nucleus" || (*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "GenericIon") {
+          ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
+          (*secondaries)[i]->SetUserInformation(infoNew);
+        }
+      }
+    }
+  }
 }
 

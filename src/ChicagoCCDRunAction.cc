@@ -106,6 +106,11 @@ ChicagoCCDRunAction::~ChicagoCCDRunAction()
 
 void ChicagoCCDRunAction::BeginOfRunAction(const G4Run*)
 { 
+  runInfoVals.volumeNameID.clear();
+  runInfoVals.volumeMass.clear(); 
+  runInfoVals.volumeDensity.clear();
+  runInfoVals.volumeVolume.clear();
+  runInfoVals.volumeSurface.clear();
   // inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
 
@@ -170,7 +175,8 @@ void ChicagoCCDRunAction::BuildVolList (volumeVals& volVals, G4VPhysicalVolume* 
   // The RunInfo output requires a bunch of information about the geometry of the simulation. This function starts with one physical volume and iterates through it and its descendents to construct a list of their names and corresponding vectors of their properties. Input the world volume to get every piece of geometry
   G4LogicalVolume* logVol = physVol->GetLogicalVolume();
   G4VSolid* solVol = logVol->GetSolid();
-  volVals.concatedVolumeNames += physVol->GetName() + ";"; 
+  volVals.concatedVolumeNames += physVol->GetName() + ";";
+  G4cout << physVol->GetName() << G4endl;
   if (volVals.volumeNameID.size() == 0) {
     volVals.volumeNameID.push_back(0);
   }

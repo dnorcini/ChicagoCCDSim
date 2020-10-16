@@ -79,6 +79,7 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       G4String nameList = fRunAction->runInfoVals.concatedVolumeNames;
       G4int namePos = nameList.find(containerName);
       G4int volid = std::count(nameList.begin(), nameList.begin() + namePos, ';');
+      delete navigator;
 
       fRunAction->pdgPrim.push_back(primParticle->GetPDGEncoding());
       fRunAction->primaryid.push_back(primaryID);
