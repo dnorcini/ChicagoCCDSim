@@ -96,10 +96,10 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   Epoxy->AddElement(elN, 0.0142);
   Epoxy->AddElement(elO, 0.2045);
 
-  D2O = new G4Material("HeavyWater", 1.107*g/cm3, 2);
+  D2O = new G4Material("HeavyWater", 1.107*g/cm3, 2, kStateLiquid);
 
   G4Isotope* D2 = new G4Isotope("D2", 1, 2);
-  G4Element* elD = new G4Element("Deuterium", "D", 1);
+  G4Element* elD = new G4Element("TS_D_of_Heavy_Water", "D", 1);
   elD->AddIsotope(D2, 100. * perCent);
 
   D2O->AddElement(elD, 2);
@@ -125,7 +125,10 @@ void ChicagoCCDDetectorConstruction::ConstructMaterials() {
   
   Poly= new G4Material("Polyethylene", 0.93*g/cm3, 2);
 
-  Poly->AddElement(elH, 0.143716);
+  G4Element* elHT = new G4Element("TS_H_of_Polyethylene", "H", 1);
+  elHT->AddIsotope(H1, 100. * perCent);
+
+  Poly->AddElement(elHT, 0.143716);
   Poly->AddElement(elC, 0.856284);
 
   world_mat = nist->FindOrBuildMaterial("G4_Galactic");
@@ -374,7 +377,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
 //  Additional Shielding
 //
 
-  solidShield = new G4Box("Shield", 50.*mm, 50.*mm, 25.*mm);
+  solidShield = new G4Box("Shield", 7680*um, 46320*um, 25.*mm);
   shieldExist = false;
 
 //
@@ -567,6 +570,7 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
   if (isFirst == false) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
 }
 
+
 void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
   if (shieldExist == true) {
     logicWorld->RemoveDaughter(physShield);
@@ -575,6 +579,7 @@ void ChicagoCCDDetectorConstruction::SetShielding(G4String mat) {
   else {
     shieldExist = true;
   }
+
   if (mat == "Pb") {
     logicShield = new G4LogicalVolume(solidShield, Pb, "Shield");
   }

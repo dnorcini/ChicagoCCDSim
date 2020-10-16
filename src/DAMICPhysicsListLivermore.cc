@@ -126,6 +126,8 @@
 #include "G4ParticleHPCaptureData.hh"
 #include "G4ParticleHPInelastic.hh"
 #include "G4ParticleHPInelasticData.hh"
+#include "G4ParticleHPThermalScatteringData.hh"
+#include "G4ParticleHPThermalScattering.hh"
 
 // Stopping processes
 #include "G4PiMinusAbsorptionBertini.hh"
@@ -701,10 +703,16 @@ void DAMICPhysicsListLivermore::ConstructHad()
             elastic_neutronChipsModel->SetMinEnergy( 19.0*MeV );
             theElasticProcess->RegisterMe( elastic_neutronChipsModel );
             G4ParticleHPElastic * theElasticNeutronHP = new G4ParticleHPElastic;
-            theElasticNeutronHP->SetMinEnergy( theHPMin );
+            theElasticNeutronHP->SetMinEnergy( 4.*eV );
             theElasticNeutronHP->SetMaxEnergy( theHPMax );
             theElasticProcess->RegisterMe( theElasticNeutronHP );
             theElasticProcess->AddDataSet( new G4ParticleHPElasticData );
+            // thermal scattering
+            G4ParticleHPThermalScattering* theThermalModel = new G4ParticleHPThermalScattering();
+            theThermalModel->SetMaxEnergy( 4.*eV );
+            theThermalModel->SetMinEnergy( theHPMin );
+            theElasticProcess->RegisterMe(theThermalModel);
+            theElasticProcess->AddDataSet(new G4ParticleHPThermalScatteringData());
             pmanager->AddDiscreteProcess( theElasticProcess );
             // inelastic scattering
             G4NeutronInelasticProcess* theInelasticProcess=new G4NeutronInelasticProcess("inelastic");
