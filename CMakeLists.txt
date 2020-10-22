@@ -105,7 +105,7 @@ install(TARGETS ChicagoCCDSim DESTINATION bin)
 # Build settings
 #################
 
-#set(CMAKE_BUILD_TYPE release)
+set(CMAKE_BUILD_TYPE release)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 set(CMAKE_BUILD_TYPE debug)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O3 -Wextra")
