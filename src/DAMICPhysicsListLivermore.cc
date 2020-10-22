@@ -331,6 +331,10 @@ void DAMICPhysicsListLivermore::ConstructEM()
             G4eBremsstrahlung* eBremsstrahlung = new G4eBremsstrahlung();
             eBremsstrahlung->SetEmModel(new G4LivermoreBremsstrahlungModel());
             pmanager->AddProcess(eBremsstrahlung,-1,-3, 3);
+            
+            // Step Limit
+            G4StepLimiter* eStepLimiter = new G4StepLimiter();
+            pmanager->AddProcess(eStepLimiter,-1,-1,4);
         }
         else if(particleName=="e+")
         {
@@ -349,6 +353,10 @@ void DAMICPhysicsListLivermore::ConstructEM()
             
             //Annihilation
             pmanager->AddProcess(new G4eplusAnnihilation(),0,-1, 4);
+
+            // Step Limit
+            G4StepLimiter* eStepLimiter = new G4StepLimiter();
+            pmanager->AddProcess(eStepLimiter,-1,-1,5);
         }
         else if(particleName == "mu+" || particleName == "mu-")
         {
@@ -361,6 +369,7 @@ void DAMICPhysicsListLivermore::ConstructEM()
             {
                 pmanager->AddProcess(new G4MuonMinusCapture(), 0,-1,-1);
             }
+            pmanager->AddProcess(new G4StepLimiter(),      -1,-1, 5);
         }
         else if(particleName == "proton"||particleName == "pi+"||particleName == "pi-")
         {
@@ -867,6 +876,24 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForElectron, "e-");
     SetCutValue(cutForPositron, "e+");
     
+    G4ProductionCuts* actcut = new G4ProductionCuts;
+    actcut->SetProductionCut(500*nm);
+    G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
+    actregion->SetProductionCuts(actcut);
+    G4UserLimits* activeStepLimit = new G4UserLimits();
+    activeStepLimit->SetMaxAllowedStep(15.*um);
+    actregion->SetUserLimits(activeStepLimit);
+
+    G4ProductionCuts* steelcut = new G4ProductionCuts;
+    steelcut->SetProductionCut(50*um);
+    G4Region* steelregion = G4RegionStore::GetInstance()->GetRegion("SteelRegion");
+    steelregion->SetProductionCuts(steelcut);
+
+    G4ProductionCuts* steelcut2 = new G4ProductionCuts;
+    steelcut2->SetProductionCut(1.2*cm);
+    G4Region* steelregion2 = G4RegionStore::GetInstance()->GetRegion("SteelRegion2");
+    steelregion2->SetProductionCuts(steelcut2);
+
     if(verboseLevel>0)
     {
         DumpCutValuesTable();
