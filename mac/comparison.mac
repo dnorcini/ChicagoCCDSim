@@ -15,8 +15,8 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
+/analysis/verbose 0
 /run/printProgress 500000
-#/analysis/verbose 2
 #
 /ChicagoGeom/setDeadLayer True
 /ChicagoGeom/deleteGeometry

@@ -205,8 +205,8 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   steelRegion->AddRootLogicalVolume(logicFrontFlange);               
   logicBackFlange->SetRegion(steelRegion);
   steelRegion->AddRootLogicalVolume(logicBackFlange);
-  logicAluminumShield->SetRegion(steelRegion);
-  steelRegion->AddRootLogicalVolume(logicAluminumShield);
+  //logicAluminumShield->SetRegion(steelRegion);
+  //steelRegion->AddRootLogicalVolume(logicAluminumShield);
 
 //
 // Flex Cable

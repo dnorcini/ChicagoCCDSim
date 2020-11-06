@@ -877,7 +877,7 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(500*nm);
+    actcut->SetProductionCut(1.*um);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
     G4UserLimits* activeStepLimit = new G4UserLimits();

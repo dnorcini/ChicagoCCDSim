@@ -15,10 +15,10 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 1000000
-#/analysis/verbose 2
+/analysis/verbose 0
+/run/printProgress 10000000
 #
-#/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_al_1_6mm/Compton_Co.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_al_1_6mm/Compton_Co.root
 
 /gps/pos/type Point
 /gps/pos/centre 0 0 -110 mm
@@ -33,7 +33,13 @@
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
 
-#/run/beamOn 100000000
+/run/beamOn 1000000000
+
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_none/Compton_Co.root
+
+#/ChicagoGeom/setLidThickness 0. mm
+
+#/run/beamOn 1000000000
 
 #/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_al_1_27mm/Compton_Co.root
 
@@ -51,23 +57,18 @@
 
 #/ChicagoGeom/setLidThickness 0.4064 mm
 
-#/run/beamOn 100000000
+#/run/beamOn 1000000000
 
-/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_myl__0254mm/Compton_Co.root
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_myl__0254mm/Compton_Co.root
 
-/ChicagoGeom/setLidMaterial Mylar
-/ChicagoGeom/setLidThickness 0.0254 mm
+#/ChicagoGeom/setLidMaterial Mylar
+#/ChicagoGeom/setLidThickness 0.0254 mm
 
-/run/beamOn 100000000
+#/run/beamOn 1000000000
 
-/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_myl__0508mm/Compton_Co.root
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_myl__0508mm/Compton_Co.root
 
-/ChicagoGeom/setLidThickness 0.0508 mm
+#/ChicagoGeom/setLidThickness 0.0508 mm
 
-/run/beamOn 100000000
+#/run/beamOn 1000000000
 
-/analysis/setFileName /data/ncorso/Compton_output/output/output_lid_none/Compton_Co.root
-
-/ChicagoGeom/setLidThickness 0. mm
-
-/run/beamOn 100000000

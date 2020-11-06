@@ -74,7 +74,7 @@ void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       for(size_t i=0;i<nSeco;i++)
       {
         if ((*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "nucleus") {
-          if ((*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding() == 1000020040) {
+          if ((*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding() == 1000020040 || (*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding() == 1000932370) {
             (*secondaries)[i]->SetTrackStatus(fStopAndKill);
           }
           else {

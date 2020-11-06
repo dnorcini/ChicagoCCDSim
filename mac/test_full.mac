@@ -13,25 +13,26 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
-/run/printProgress 1
-#/analysis/verbose 2
+/analysis/verbose 0
+/run/printProgress 0
 #
 /analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Co.root
 
 /gps/pos/type Point
-#/gps/pos/centre 0 0 110 mm
-/gps/pos/centre 0 -6.614 -19. mm
+/gps/pos/centre 0 0 -113 mm
+#/gps/pos/centre 0 -6.614 -19. mm
 
-/gps/particle neutron
-/gps/energy 10 keV
+/gps/particle ion
+/gps/ion 95 241 0 0
+/gps/energy 0 keV
 
 #/gps/ang/type focused
 #/gps/ang/focuspoint 0 -6.614 12.4055 mm
 /gps/ang/type iso
-/gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 85 deg
+#/gps/ang/mintheta 0 deg
+#/gps/ang/maxtheta 85 deg
 
-/run/beamOn 10000000
+/run/beamOn 25000
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 # /gps/pos/type Point

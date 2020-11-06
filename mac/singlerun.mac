@@ -15,31 +15,32 @@
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
+/analysis/verbose 0
 /run/printProgress 1000000
-#/analysis/verbose 2
 #
-/analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
 
+/ChicagoGeom/setLidThickness 0. mm
 /gps/pos/type Point
-/gps/pos/centre 0 0 -110 mm
+#/gps/pos/centre 0 0 -110 mm
 
 #/gps/pos/centre 0 -6.614 12.4055 mm
 
 /gps/particle ion
-/gps/ion 27 57 0 0
+#/gps/ion 27 57 0 0
 /gps/energy 0 keV
 
 /gps/ang/type iso
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
 
-/run/beamOn 1000000000
+#/run/beamOn 1000000000
 
-# /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
-# /gps/pos/type Point
-# /gps/pos/centre 0 0 -110 mm
-# /gps/particle ion
-# /gps/ion 95 241 0 0
-# /gps/energy 0 keV
-# /gps/ang/type iso
-# /run/beamOn 10000000
+/analysis/setFileName /data/ncorso/Compton_output/output/output_Americium/Compton_Am.root
+#/gps/pos/type Point
+/gps/pos/centre 0 0 -113 mm
+#/gps/particle ion
+/gps/ion 95 241 0 0
+#/gps/energy 0 keV
+#/gps/ang/type iso
+/run/beamOn 100000000
