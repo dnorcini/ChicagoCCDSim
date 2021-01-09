@@ -2,7 +2,7 @@
 # Has only a few events, to check for major errors.
 # 
 # Change the default number of workers (in multi-threading mode) 
-#/run/numberOfThreads 30
+/run/numberOfThreads 1
 #
 # Initialize kernel
 #/cuts/setLowEdge 1 eV
@@ -13,8 +13,8 @@
 /run/verbose 2
 /event/verbose 2
 /tracking/verbose 2
+/analysis/verbose 1
 /run/printProgress 1
-#/analysis/verbose 2
 #
 /ChicagoGeom/deleteGeometry
 /ChicagoGeom/setShield Pb
@@ -23,8 +23,7 @@
 
 /gps/pos/type Point
 /gps/pos/centre 0 0 110 mm
-
-#/gps/pos/centre 0 -6.614 12.4055 mm
+#/gps/pos/centre 0 -6.614 -19.98 mm
 
 /gps/particle neutron
 /gps/energy 10 keV

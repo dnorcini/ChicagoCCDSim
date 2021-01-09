@@ -47,6 +47,7 @@ ChicagoCCDTrackInformation::ChicagoCCDTrackInformation()
     fOriginalMomentum = G4ThreeVector(0.,0.,0.);
     fOriginalEnergy = 0.;
     fOriginalTime = 0.;
+    fParentStatus = false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -59,6 +60,7 @@ ChicagoCCDTrackInformation::ChicagoCCDTrackInformation(const G4Track* aTrack)
     fOriginalMomentum = aTrack->GetMomentum();
     fOriginalEnergy = aTrack->GetKineticEnergy();
     fOriginalTime = aTrack->GetGlobalTime();
+    fParentStatus = false;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -72,11 +74,24 @@ ChicagoCCDTrackInformation
     fOriginalMomentum = aTrackInfo->fOriginalMomentum;
     fOriginalEnergy = aTrackInfo->fOriginalEnergy;
     fOriginalTime = aTrackInfo->fOriginalTime;
+    fParentStatus = aTrackInfo->fParentStatus;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 ChicagoCCDTrackInformation::~ChicagoCCDTrackInformation()
 {;}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void ChicagoCCDTrackInformation::ResetPrimary(const G4Track* aTrack)
+{
+    fOriginalTrackID = aTrack->GetTrackID();
+    fParticleDefinition = aTrack->GetDefinition();
+    fOriginalPosition = aTrack->GetPosition();
+    fOriginalMomentum = aTrack->GetMomentum();
+    fOriginalEnergy = aTrack->GetKineticEnergy();
+    fOriginalTime = aTrack->GetGlobalTime();
+    fParentStatus = false;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 ChicagoCCDTrackInformation& ChicagoCCDTrackInformation
@@ -88,6 +103,7 @@ ChicagoCCDTrackInformation& ChicagoCCDTrackInformation
     fOriginalMomentum = aTrackInfo.fOriginalMomentum;
     fOriginalEnergy = aTrackInfo.fOriginalEnergy;
     fOriginalTime = aTrackInfo.fOriginalTime;
+    fParentStatus = aTrackInfo.fParentStatus;
 
     return *this;
 }
@@ -98,6 +114,6 @@ void ChicagoCCDTrackInformation::Print() const
     G4cout
       << "Original primary track ID " << fOriginalTrackID << " (" 
       << fParticleDefinition->GetParticleName() << ","
-     << fOriginalEnergy/GeV << "[GeV])" << G4endl;
+     << fOriginalEnergy/keV << "[keV])" << G4endl;
 }
 

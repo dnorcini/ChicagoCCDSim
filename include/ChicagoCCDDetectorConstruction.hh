@@ -68,6 +68,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     G4bool CCDDead;
 
+    G4Region* nearCCDRegion;
+    
     std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
     G4double pixWidth;
     std::vector<G4ThreeVector> ActiveDims;
@@ -104,6 +106,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physShield;
 
     G4Material *Si;
+    G4Material *Al;
     G4Material *Cu;
     G4Material *Pb;
     G4Material *Ny;

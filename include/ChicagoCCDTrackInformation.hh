@@ -53,6 +53,7 @@ public:
 
   ChicagoCCDTrackInformation& operator =(const ChicagoCCDTrackInformation& right);
   
+  void ResetPrimary(const G4Track* aTrack);
   virtual void Print() const;
 
 public:
@@ -62,6 +63,8 @@ public:
   G4ThreeVector         GetPrimaryMomentum() {return fOriginalMomentum;};
   G4double              GetPrimaryEnergy() {return fOriginalEnergy;};
   G4double              GetPrimaryTime() {return fOriginalTime;};
+  G4bool                GetParentStatus() {return fParentStatus;};
+  void                  SetParentStatus(G4bool newStatus) {fParentStatus = newStatus;};
 
   G4bool isNew = true;
 private:
@@ -72,6 +75,7 @@ private:
   G4ThreeVector         fOriginalMomentum;
   G4double              fOriginalEnergy;
   G4double              fOriginalTime;
+  G4bool                fParentStatus;
 };
 
 extern G4ThreadLocal
