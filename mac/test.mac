@@ -18,7 +18,7 @@
 #
 /analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Am.root
 
-#/ChicagoGeom/deleteGeometry
+/ChicagoGeom/deleteGeometry
 
 #/gps/pos/type Point
 #/gps/pos/type Beam
@@ -43,7 +43,8 @@
 
 # /analysis/setFileName /data/ncorso/Compton_output/output/output/Compton_Am.root
 /gps/pos/type Point
-/gps/pos/centre 0 0 -113 mm
+#/gps/pos/centre 0 0 -113 mm
+/gps/pos/centre 0 0 -35 mm
 /gps/particle ion
 /gps/ion 95 241 0 0
 /gps/energy 0 keV

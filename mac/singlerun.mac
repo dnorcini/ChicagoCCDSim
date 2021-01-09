@@ -1,46 +1,48 @@
-# Macro file for example Trit
+# Macro file for Compton runs
 # 
 # Can be run in batch, without graphic
 # or interactively: Idle> /control/execute run1.mac
 #
 # Change the default number of workers (in multi-threading mode) 
-/run/numberOfThreads 40
+/run/numberOfThreads 50
 #
 # Initialize kernel
 #/cuts/setLowEdge 1 eV
 #/run/setCut 1 nm
 /run/initialize
 #
+# Verbosity
 /control/verbose 0
 /run/verbose 1
 /event/verbose 0
 /tracking/verbose 0
 /analysis/verbose 0
-/run/printProgress 1000000
-#
+/run/printProgress 20000000
+
+#/ChicagoGeom/deleteGeometry
+/gps/pos/type Point
+/gps/particle ion
+/gps/energy 0 keV
+/gps/ang/type iso
+
 #/analysis/setFileName /data/ncorso/Compton_output/output/output_reconstruction/Compton_Co.root
 
-/ChicagoGeom/setLidThickness 0. mm
-/gps/pos/type Point
 #/gps/pos/centre 0 0 -110 mm
-
-#/gps/pos/centre 0 -6.614 12.4055 mm
-
-/gps/particle ion
 #/gps/ion 27 57 0 0
-/gps/energy 0 keV
 
-/gps/ang/type iso
-#/gps/ang/mintheta 0 deg
-#/gps/ang/maxtheta 85 deg
+#/run/beamOn 2000000000
 
-#/run/beamOn 1000000000
+#/analysis/setFileName /data/ncorso/Compton_output/output/output_Iron/Compton_Fe.root
+
+#/ChicagoGeom/setLidThickness 0. mm
+#/gps/pos/centre 0 0 76.2 mm
+#/gps/ion 26 55 0 0
+
+#/run/beamOn 2000000000
 
 /analysis/setFileName /data/ncorso/Compton_output/output/output_Americium/Compton_Am.root
-#/gps/pos/type Point
+
 /gps/pos/centre 0 0 -113 mm
-#/gps/particle ion
 /gps/ion 95 241 0 0
-#/gps/energy 0 keV
-#/gps/ang/type iso
-/run/beamOn 100000000
+
+/run/beamOn 2000000000

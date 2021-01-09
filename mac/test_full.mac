@@ -14,9 +14,9 @@
 /event/verbose 0
 /tracking/verbose 0
 /analysis/verbose 0
-/run/printProgress 0
+/run/printProgress 250
 #
-/analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Co.root
+/analysis/setFileName /data/ncorso/Compton_output/output/output_test/Compton_Am.root
 
 /gps/pos/type Point
 /gps/pos/centre 0 0 -113 mm

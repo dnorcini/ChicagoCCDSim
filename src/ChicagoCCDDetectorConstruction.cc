@@ -41,7 +41,9 @@ ChicagoCCDDetectorConstruction::ChicagoCCDDetectorConstruction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ChicagoCCDDetectorConstruction::~ChicagoCCDDetectorConstruction()
-{ }
+{
+  delete skipperDetectorMessenger;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -182,7 +184,7 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-237.3  *mm,   0       ), logicNippleElecFlange, "LeftNippleFlange" , logicWorld, false, 5, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       , 161.75 *mm,   0       ), logicNipple          , "RightNipple"      , logicWorld, false, 0, checkOverlaps));
   flangePhys.push_back(new G4PVPlacement(rotX, G4ThreeVector(  0       ,-161.75 *mm,   0       ), logicNipple          , "LeftNipple"       , logicWorld, false, 1, checkOverlaps));
-  flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       ,-104.05 *mm), logicAluminumShield  , "AluminumShield"   , logicWorld, false, 0, checkOverlaps));
+  //flangePhys.push_back(new G4PVPlacement(0   , G4ThreeVector(  0       ,   0       ,-104.05 *mm), logicAluminumShield  , "AluminumShield"   , logicWorld, false, 0, checkOverlaps));
 
   G4Region* steelRegion2 = new G4Region("SteelRegion2");
   logicFullFlange->SetRegion(steelRegion);
@@ -221,12 +223,19 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicFlex = new G4LogicalVolume(solidFlex, Kap, "Flex");
   physFlex = new G4PVPlacement(0,G4ThreeVector(0, -26.361*mm, -20.1675*mm), logicFlex, "Flex", logicWorld, false, 0, checkOverlaps);
 
+  nearCCDRegion = new G4Region("NearCCDRegion");
+  logicFlex->SetRegion(nearCCDRegion);
+  nearCCDRegion->AddRootLogicalVolume(logicFlex);
+
 //
 //  Silicon Backing of CCD
 //
   G4Box* solidSiBacking = new G4Box("SiBacking", 18.9992*mm, 53.5051*mm, 0.3375*mm);
   G4LogicalVolume* logicSiBacking = new G4LogicalVolume(solidSiBacking, Si, "SiBacking");
   physSiBacking = new G4PVPlacement(0, G4ThreeVector(0, -12.3271*mm, -20.6575*mm), logicSiBacking, "SiBacking", logicWorld, false, 0, checkOverlaps);
+
+  logicSiBacking->SetRegion(nearCCDRegion);
+  nearCCDRegion->AddRootLogicalVolume(logicSiBacking);
 
 //
 //  Copper Box of CCD
@@ -244,6 +253,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4LogicalVolume* logicCopperBox = new G4LogicalVolume(solidCopperBox, Cu, "CopperBox");
   physCopperBox = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -20.955*mm), logicCopperBox, "CopperBox", logicWorld, false, 0, checkOverlaps);
 
+  logicCopperBox->SetRegion(nearCCDRegion);
+  nearCCDRegion->AddRootLogicalVolume(logicCopperBox);
+
 //
 //  Copper Face Plate
 //
@@ -253,6 +265,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4SubtractionSolid* solidCopperFacePlate = new G4SubtractionSolid("CopperFacePlate", solidCopperFacePlateFull, solidCopperFaceHole, 0, G4ThreeVector());
   G4LogicalVolume* logicCopperFacePlate = new G4LogicalVolume(solidCopperFacePlate, Cu, "CopperFacePlate");
   physCopperFacePlate = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -19.3745*mm), logicCopperFacePlate, "CopperFacePlate", logicWorld, false, 0, checkOverlaps);
+
+  logicCopperFacePlate->SetRegion(nearCCDRegion);
+  nearCCDRegion->AddRootLogicalVolume(logicCopperFacePlate);
 
 //
 //  Aluminum Lid
@@ -268,6 +283,9 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidPuck = new G4Box("Puck", 19.05*mm, 5.08*mm, 19.05*mm);
   G4LogicalVolume* logicPuck = new G4LogicalVolume(solidPuck, Cu, "Puck");
   physPuck = new G4PVPlacement(0, G4ThreeVector(0, 55.866*mm, 0), logicPuck, "Puck", logicWorld, false, 0, checkOverlaps);
+
+  logicPuck->SetRegion(steelRegion);
+  steelRegion->AddRootLogicalVolume(logicPuck);
 
 //
 //  Cold Head
@@ -304,8 +322,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   ActiveFullLVs.push_back(new G4LogicalVolume(solidActiveFull, Si, "CCDSensor"));
 
   G4Region* actRegion = new G4Region("ActiveRegion");
-  ActiveFullLVs[0]->SetRegion(actRegion);
-  actRegion->AddRootLogicalVolume(ActiveFullLVs[0]);               
+  for (unsigned int i=0; i < ActiveFullLVs.size(); i++) {
+    ActiveFullLVs[i]->SetRegion(actRegion);
+    actRegion->AddRootLogicalVolume(ActiveFullLVs[i]);
+  }    
 
   //
   // Dead Shell
@@ -314,6 +334,11 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidActiveFullHole = new G4Box("ActiveHole", ActiveDims1[0].getX()          , ActiveDims1[0].getY()          , ActiveDims1[0].getZ() + 10*um);
   G4SubtractionSolid* solidDeadShell = new G4SubtractionSolid("DeadShell", solidDeadFull, solidActiveFullHole, 0, G4ThreeVector());
   DeadShellLVs.push_back(new G4LogicalVolume(solidDeadShell, Si, "Dead"));
+
+  for (unsigned int i=0; i < DeadShellLVs.size(); i++) {
+    DeadShellLVs[i]->SetRegion(nearCCDRegion);
+    nearCCDRegion->AddRootLogicalVolume(DeadShellLVs[i]);
+  }    
 
 // Option 2
 
@@ -329,8 +354,10 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidActive = new G4Box("CCDSensor", ActiveDims2[0].getX(), ActiveDims2[0].getY(), ActiveDims2[0].getZ());
   ActiveLVs.push_back(new G4LogicalVolume(solidActive, Si, "CCDSensor"));
 
-  ActiveLVs[0]->SetRegion(actRegion);
-  actRegion->AddRootLogicalVolume(ActiveLVs[0]);               
+  for (unsigned int i=0; i < ActiveLVs.size(); i++) {
+    ActiveLVs[i]->SetRegion(actRegion);
+    actRegion->AddRootLogicalVolume(ActiveLVs[i]);
+  }    
 
   //
   // Gettering Layer
@@ -339,6 +366,11 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidGet = new G4Box("Gettering", DeadDims[0].getX(), DeadDims[0].getY(), getThick);
   GetteringLVs.push_back(new G4LogicalVolume(solidGet, Si, "Gettering"));
 
+  for (unsigned int i=0; i < GetteringLVs.size(); i++) {
+    GetteringLVs[i]->SetRegion(nearCCDRegion);
+    nearCCDRegion->AddRootLogicalVolume(GetteringLVs[i]);
+  }   
+ 
   //
   // Dead Layers
   //
@@ -350,7 +382,12 @@ G4VPhysicalVolume* ChicagoCCDDetectorConstruction::ConstructWorld()
   G4Box* solidActiveHole   = new G4Box("ActiveHole"  , ActiveDims2[0].getX(), ActiveDims2[0].getY(), ActiveDims2[0].getZ() + 10*um);
   G4SubtractionSolid* solidSideDead = new G4SubtractionSolid("SideDead", solidFullSideDead, solidActiveHole, 0, G4ThreeVector());
   DeadSideLVs.push_back(new G4LogicalVolume(solidSideDead, Si, "SideDead"));
-
+  
+  for (unsigned int i=0; i < DeadSideLVs.size(); i++) {
+    DeadSideLVs[i]->SetRegion(nearCCDRegion);
+    nearCCDRegion->AddRootLogicalVolume(DeadSideLVs[i]);
+  }   
+  
   SetCCDDead(false, true);
 
   //
@@ -368,7 +405,7 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
   logicWorld->RemoveDaughter(physLargeColdHead);
   logicWorld->RemoveDaughter(physFlex);
   logicWorld->RemoveDaughter(physCopperFacePlate);
-  logicWorld->RemoveDaughter(physSiBacking);
+  //logicWorld->RemoveDaughter(physSiBacking);
   logicWorld->RemoveDaughter(physCopperBox);
   for (unsigned int i=0; i < flangePhys.size(); i++) {
     logicWorld->RemoveDaughter(flangePhys[i]);
@@ -385,6 +422,7 @@ void ChicagoCCDDetectorConstruction::ToggleGeometry()
   for (unsigned int i=0; i < DeadSidePVs.size(); i++) {  
     logicWorld->RemoveDaughter(DeadSidePVs[i]);
   };
+  AssembleAlLids(0.*mm);
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
 }
 
@@ -447,8 +485,6 @@ void ChicagoCCDDetectorConstruction::SetCCDDead(G4bool newval, G4bool isFirst) {
       G4double posX = ActiveVecs[i].first.getX();
       G4double posY = ActiveVecs[i].first.getY();
       G4double posZ = ActiveVecs[i].first.getZ();
-      G4double actX = ActiveDims2[i].getX();
-      G4double actY = ActiveDims2[i].getY();
       G4double actZ = ActiveDims2[i].getZ();
 
       G4ThreeVector posGet        = G4ThreeVector(posX, posY, posZ - actZ - 0.5*um);
@@ -476,29 +512,38 @@ void ChicagoCCDDetectorConstruction::AssembleAlLids(G4double thickness, G4bool i
   if (!isFirst) {
     logicWorld->RemoveDaughter(physFrontLidAlum);
     logicWorld->RemoveDaughter(physBackLidAlum);
+    nearCCDRegion->RemoveRootLogicalVolume(logicAluminumLid);
     if (mylarLid) {
       logicWorld->RemoveDaughter(physFrontLidMylar);
       logicWorld->RemoveDaughter(physBackLidMylar);
+      nearCCDRegion->RemoveRootLogicalVolume(logicMylarLid);
     }
   }
 
   if (lidMat == "Aluminum" && thickness > 1e-10) {
     G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, thickness / 2);
-    G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al, "AluminumLid");
+    logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al, "AluminumLid");
     physFrontLidAlum = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness / 2), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
     physBackLidAlum =  new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness / 2), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
+    mylarLid = false;
   }
   else if (lidMat == "Mylar" && thickness > 1e-10) {
     G4Box* solidAluminumLid = new G4Box("AluminumLid", 34.925*mm, 61.722*mm, 0.00127*mm);
     G4Box* solidMylarLid =    new G4Box("MylarLid"   , 34.925*mm, 61.722*mm, thickness / 2 - 0.00127*mm);
-    G4LogicalVolume* logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al , "AluminumLid");
-    G4LogicalVolume* logicMylarLid    = new G4LogicalVolume(solidMylarLid   , Myl, "MylarLid"   );
+    logicAluminumLid = new G4LogicalVolume(solidAluminumLid, Al , "AluminumLid");
+    logicMylarLid    = new G4LogicalVolume(solidMylarLid   , Myl, "MylarLid"   );
     physFrontLidMylar = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + (thickness / 2 - 0.00127)), logicMylarLid   , "FrontLidMylar"   , logicWorld, false, 0, checkOverlaps);
     physBackLidMylar  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - (thickness / 2 - 0.00127)), logicMylarLid   , "BackLidMylar"    , logicWorld, false, 0, checkOverlaps);
     physFrontLidAlum  = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -18.5795*mm + thickness - 0.00127      ), logicAluminumLid, "FrontLidAluminum", logicWorld, false, 0, checkOverlaps);
     physBackLidAlum   = new G4PVPlacement(0, G4ThreeVector(0, -12.079*mm, -22.86  *mm - thickness + 0.00127      ), logicAluminumLid, "BackLidAluminum" , logicWorld, false, 0, checkOverlaps);
+    logicMylarLid->SetRegion(nearCCDRegion);
+    nearCCDRegion->AddRootLogicalVolume(logicMylarLid);
+    mylarLid = true;
   }
+  logicAluminumLid->SetRegion(nearCCDRegion);
+  nearCCDRegion->AddRootLogicalVolume(logicAluminumLid);
 
   if (!isFirst) {G4RunManager::GetRunManager()->GeometryHasBeenModified();}
   if (thickness < 1e-10) {isFirst = true;}
 }
+

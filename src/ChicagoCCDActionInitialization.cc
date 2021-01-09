@@ -68,10 +68,9 @@ void ChicagoCCDActionInitialization::Build() const
   ChicagoCCDEventAction* eventAction = new ChicagoCCDEventAction(runAction);
   SetUserAction(eventAction);
 
-  ChicagoCCDStackingAction* stackingAction = new ChicagoCCDStackingAction();
-  SetUserAction(stackingAction);
+  SetUserAction(new ChicagoCCDStackingAction());
 
-  SetUserAction(new ChicagoCCDTrackingAction(stackingAction));
+  SetUserAction(new ChicagoCCDTrackingAction());
 
   SetUserAction(new ChicagoCCDSteppingAction(eventAction,runAction,detectorConstruction));
 }
