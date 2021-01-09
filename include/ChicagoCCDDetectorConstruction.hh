@@ -10,6 +10,7 @@
 #include "G4ThreeVector.hh"
 #include "G4RotationMatrix.hh"
 #include "G4tgbRotationMatrix.hh"
+#include "G4Region.hh"
 #include "globals.hh"
 #include "G4NistManager.hh"
 
@@ -63,6 +64,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
 
     G4bool CCDDead;
 
+    G4Region* nearCCDRegion;
+    
     std::vector< std::pair<G4ThreeVector, G4RotationMatrix*> > ActiveVecs;
     G4double pixWidth;
     std::vector<G4ThreeVector> ActiveDims;
@@ -92,6 +95,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physCopperFacePlate;
 
     G4Material *Si;
+    G4Material *Al;
     G4Material *Cu;
     G4Material *Pb;
     G4Material *Ny;

@@ -41,14 +41,11 @@ class ChicagoCCDStackingAction;
 class ChicagoCCDTrackingAction : public G4UserTrackingAction 
 {
 public:
-  ChicagoCCDTrackingAction(ChicagoCCDStackingAction* stackingAction);
+  ChicagoCCDTrackingAction();
   virtual ~ChicagoCCDTrackingAction(){};
    
   virtual void PreUserTrackingAction(const G4Track*);
   virtual void PostUserTrackingAction(const G4Track*);
-
-private:
-  ChicagoCCDStackingAction* fStackingAction;
 };
 
 #endif

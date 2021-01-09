@@ -39,9 +39,8 @@
 #include <vector>
 #include <algorithm>
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
-ChicagoCCDTrackingAction::ChicagoCCDTrackingAction(ChicagoCCDStackingAction* stackingAction)
-:G4UserTrackingAction(),
-  fStackingAction(stackingAction)
+ChicagoCCDTrackingAction::ChicagoCCDTrackingAction()
+:G4UserTrackingAction()
 {;}
 
 void ChicagoCCDTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
@@ -50,39 +49,28 @@ void ChicagoCCDTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
 void ChicagoCCDTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
-  G4int parentid = aTrack->GetParentID();
   G4TrackVector* secondaries = fpTrackingManager->GimmeSecondaries();
   size_t nSeco = secondaries->size();
-  std::vector< G4int > trackList = fStackingAction->GetTrackList();
   // If the particle is such that it would have information stored to pass down, then pass it down to secondaries
-  if ((aTrack->GetParticleDefinition()->GetParticleType() != "nucleus"  && std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end()) || std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) != trackList.end())
+  ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
+  if(!info->GetParentStatus() && nSeco>0)
   {
-    ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
-    if(nSeco>0)
-    {
-      for(size_t i=0;i<nSeco;i++)
-      { 
-        ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
-        (*secondaries)[i]->SetUserInformation(infoNew);
-      }
+    for(size_t i=0;i<nSeco;i++)
+    { 
+      ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
+      (*secondaries)[i]->SetUserInformation(infoNew);
     }
   }
-  else {
-    ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
-    if(nSeco>0)
-    {
-      for(size_t i=0;i<nSeco;i++)
-      {
-        if ((*secondaries)[i]->GetParticleDefinition()->GetParticleType() == "nucleus") {
-          if ((*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding() == 1000020040) {
-            (*secondaries)[i]->SetTrackStatus(fStopAndKill);
-          }
-          else {
-            ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
-            (*secondaries)[i]->SetUserInformation(infoNew);
-          }
-        }
-      }
+
+  if(info->GetParentStatus() && nSeco>0)
+  {
+    for(size_t i=0;i<nSeco;i++) {
+      ChicagoCCDTrackInformation* infoNew = new ChicagoCCDTrackInformation(info);
+      (*secondaries)[i]->SetUserInformation(infoNew);
+      G4int pdg = (*secondaries)[i]->GetParticleDefinition()->GetPDGEncoding();
+      //if (pdg == 1000020040 || pdg == 1000932370) {
+      //  (*secondaries)[i]->SetTrackStatus(fStopAndKill);
+      //}
     }
   }
 }

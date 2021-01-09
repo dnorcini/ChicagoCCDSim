@@ -58,35 +58,28 @@ G4ClassificationOfNewTrack ChicagoCCDStackingAction
 ::ClassifyNewTrack(const G4Track * aTrack)
 {
   G4ClassificationOfNewTrack classification = fUrgent;
+  
   if(fStage==0)
   {
-    ChicagoCCDTrackInformation* trackInfo;
-    // Check if there is a particle we want to deem the "primary" for its daughters
-    if(std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) == trackList.end() && aTrack->GetParticleDefinition()->GetParticleType() != "nucleus") {
-      trackList.push_back(aTrack->GetTrackID());
-      parentList.push_back(aTrack->GetTrackID());
-      // If the particle is a primary, collect its information and store it in the track
-      trackInfo = new ChicagoCCDTrackInformation(aTrack);
+    if (aTrack->GetParentID() == 0) {
+      ChicagoCCDTrackInformation* trackInfo = new ChicagoCCDTrackInformation(aTrack);
+      if (aTrack->GetParticleDefinition()->GetParticleType() == "nucleus") {
+        trackInfo->SetParentStatus(true);
+      }
       G4Track* theTrack = (G4Track*)aTrack;
       theTrack->SetUserInformation(trackInfo);
     }
-    else if (aTrack->GetParticleDefinition()->GetParticleType() == "nucleus" && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) == parentList.end()) {
-      // Consider it a non-tracked parent of the primary
-      parentList.push_back(aTrack->GetTrackID());
-      // Give it track information so that it
-      trackInfo = new ChicagoCCDTrackInformation(aTrack);
-      G4Track* theTrack = (G4Track*)aTrack;
-      theTrack->SetUserInformation(trackInfo);
-    }
-    else if (aTrack->GetParticleDefinition()->GetParticleType() == "nucleus" && std::find(parentList.begin(), parentList.end(), aTrack->GetParentID()) != parentList.end()) {
-      // Consider it a non-tracked parent of the primary
-      parentList.push_back(aTrack->GetTrackID());
-    }
-    else if (std::find(trackList.begin(), trackList.end(), aTrack->GetParentID()) != trackList.end()) {
-      // Record that this particle has been tracked and is a descendent of a primary
-      trackList.push_back(aTrack->GetTrackID());
+    else if (aTrack->GetParentID() > 0) {
+      ChicagoCCDTrackInformation* info = (ChicagoCCDTrackInformation*)(aTrack->GetUserInformation());
+      G4bool parentStatus = info->GetParentStatus();
+      if (parentStatus && aTrack->GetParticleDefinition()->GetParticleType() != "nucleus") {
+        info->ResetPrimary(aTrack);
+        G4Track* theTrack = (G4Track*)aTrack;
+        theTrack->SetUserInformation(info);
+      }
     }
   }
+  
   return classification;
 }
 
@@ -111,7 +104,5 @@ void ChicagoCCDStackingAction::NewStage()
 void ChicagoCCDStackingAction::PrepareNewEvent()
 { 
   fStage = 0;
-  trackList.clear();
-  parentList.clear();
 }
 

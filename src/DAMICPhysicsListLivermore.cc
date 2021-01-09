@@ -244,7 +244,7 @@ void DAMICPhysicsListLivermore::ConstructProcess()
     ConstructEM();
 
     G4EmParameters* param = G4EmParameters::Instance();
-    param->SetLowestElectronEnergy(10*eV);
+    param->SetLowestElectronEnergy(1*eV);
 
     ConstructOp();
 
@@ -877,15 +877,20 @@ void DAMICPhysicsListLivermore::SetCuts()
     SetCutValue(cutForPositron, "e+");
     
     G4ProductionCuts* actcut = new G4ProductionCuts;
-    actcut->SetProductionCut(500*nm);
+    actcut->SetProductionCut(100.*nm);
     G4Region* actregion = G4RegionStore::GetInstance()->GetRegion("ActiveRegion");
     actregion->SetProductionCuts(actcut);
     G4UserLimits* activeStepLimit = new G4UserLimits();
     activeStepLimit->SetMaxAllowedStep(15.*um);
     actregion->SetUserLimits(activeStepLimit);
 
+    G4ProductionCuts* nearCCDcut = new G4ProductionCuts;
+    nearCCDcut->SetProductionCut(1.*um);
+    G4Region* nearCCDregion = G4RegionStore::GetInstance()->GetRegion("NearCCDRegion");
+    nearCCDregion->SetProductionCuts(nearCCDcut);
+
     G4ProductionCuts* steelcut = new G4ProductionCuts;
-    steelcut->SetProductionCut(50*um);
+    steelcut->SetProductionCut(50.*um);
     G4Region* steelregion = G4RegionStore::GetInstance()->GetRegion("SteelRegion");
     steelregion->SetProductionCuts(steelcut);
 

@@ -42,6 +42,7 @@ ChicagoCCDSteppingAction::~ChicagoCCDSteppingAction()
 
 void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
 {
+  
   const ChicagoCCDDetectorConstruction* ldetectorConstruction
       = static_cast<const ChicagoCCDDetectorConstruction*>
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
@@ -54,12 +55,10 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
     = step->GetPreStepPoint()->GetTouchableHandle()
       ->GetVolume()->GetLogicalVolume();
   // check if we are in scoring volume
-  if (logVolume != fScoringVolume) return;
-
   G4double edepStep = step->GetTotalEnergyDeposit();  
-  if (edepStep > 0.) {
-    // check if we are looking at the decay particle
+  if (logVolume == fScoringVolume && edepStep > 0.) {
     G4Track *track=step->GetTrack();
+    // check if we are looking at the decay particle
     // This step runs under the assumption that no particle that hits the CCD is not or does not descend from a primary
     // If it's breaking here, check that the primaries defined in StackingAction are not too restrictive
     ChicagoCCDTrackInformation* trackInfo = (ChicagoCCDTrackInformation*)(track->GetUserInformation());
@@ -106,7 +105,7 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
     G4double pixWidth = fDetectorConstruction->GetPixWidth();
 
     G4TouchableHandle theTouchable = step->GetPreStepPoint()->GetTouchableHandle();
-    G4ThreeVector worldPosition = step->GetPreStepPoint()->GetPosition();
+    G4ThreeVector worldPosition = step->GetPostStepPoint()->GetPosition();
     G4ThreeVector localPosition = theTouchable->GetHistory()->GetTopTransform().TransformPoint(worldPosition);
 
     G4double posx = (localPosition.getX() + CCDDim.getX())/mm;
