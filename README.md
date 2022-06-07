@@ -49,7 +49,7 @@ $ cd <path/to/source/directory>
 $ git clone https://github.com/dnorcini/ChicagoCCDSim  //(or fork, or download zip)
 $ mkdir <path/to/build/directory>/ChicagoCCDSim_build
 $ cd $CG4_BUILD
-$ cmake -DCMAKE_BUILD_TYPE=Release -DGEANT4_BUILD_MULTITHREADED=ON -DGeant4_DIR=/usr/local/geant41031/lib64/Geant4-10.3.1 $CG4 
+$ cmake -DCMAKE_BUILD_TYPE=Release -DGEANT4_BUILD_MULTITHREADED=ON -DGEANT4_DIR=$CG4_BUILD/lib/Geant4-10.3.1/ $CG4 
 $ make -j<number of processors on your computer> 
 ```
 
