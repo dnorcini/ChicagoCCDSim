@@ -20,9 +20,9 @@ ADD: details about single vs multi threaded, if using special classes like geome
 - GDML (http://lcgapp.cern.ch/project/simu/framework/GDML/): geometry description format based on XML (cmake flags: -DGEANT4_USE_GDML=ON)
 - xerces-c (https://xerces.apache.org/xerces-c/): new dependency for G4, XML parser
 
-To build Geant4 with the above configurations, use the following cmake flags in the build directory:
+To build Geant4 with the above configurations, use the following cmake flags in the build directory (on MacOSX QT and X11 are not friendly, so just compile against QT):
 ```
-$ cmake -DCMAKE_INSTALL_PREFIX=<absolute/path/to/geant_build_dir> <path/to/geant_source_dir> -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_GDML=ON  -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON 
+$ cmake -DCMAKE_INSTALL_PREFIX=<absolute/path/to/geant_build_dir> <path/to/geant_source_dir> -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_GDML=ON  -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=OFF 
 $ make -j<number of processors on your computer> 
 ```
 
