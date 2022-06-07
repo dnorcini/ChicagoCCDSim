@@ -18,6 +18,7 @@ ADD: details about single vs multi threaded, if using special classes like geome
 - Qt (https://www.qt.io/download-qt-installer): for visualization (cmake flags: -DGEANT4_USE_QT=ON)
 - OpenGL (https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL): for visualization (cmake flags: -DGEANT4_USE_OPENGL_X11=ON)
 - GDML (http://lcgapp.cern.ch/project/simu/framework/GDML/): geometry description format based on XML (cmake flags: -DGEANT4_USE_GDML=ON)
+- xerces-c (https://xerces.apache.org/xerces-c/): new dependency for G4, XML parser
 
 To build Geant4 with the above configurations, use the following cmake flags in the build directory:
 ```
