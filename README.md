@@ -13,7 +13,7 @@ ADD: details about single vs multi threaded, if using special classes like geome
 
 ## Dependencies
 - cmake (http://www.cmake.org/): sufficiently new version for other dependencies (>= 3 recommended)
-- GEANT-4 (http://geant4.cern.ch): known to compile with versions 4.10.03 (cmake flags: -DGEANT4_INSTALL_DATA=ON)
+- GEANT-4 (http://geant4.cern.ch): known to compile with versions 4.10.03 and 4.10.06 (cmake flags: -DGEANT4_INSTALL_DATA=ON)
 - ROOT (http://root.cern.ch): known to work with versions 5.34/18
 - Qt (https://www.qt.io/download-qt-installer): for visualization (cmake flags: -DGEANT4_USE_QT=ON)
 - OpenGL (https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL): for visualization (cmake flags: -DGEANT4_USE_OPENGL_X11=ON)
