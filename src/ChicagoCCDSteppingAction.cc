@@ -9,6 +9,9 @@
 #include "ChicagoCCDTrackInformation.hh"
 
 #include "G4Step.hh"
+
+#include "G4Track.hh"
+
 #include "G4Event.hh"
 #include "G4RunManager.hh"
 #include "G4LogicalVolume.hh"
@@ -51,13 +54,21 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
   }
 
   // get volume of the current step
-  G4LogicalVolume* logVolume 
-    = step->GetPreStepPoint()->GetTouchableHandle()
-      ->GetVolume()->GetLogicalVolume();
+  G4LogicalVolume* logVolume   = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+
   // check if we are in scoring volume
   G4double edepStep = step->GetTotalEnergyDeposit();  
-  if (logVolume == fScoringVolume && edepStep > 0.) {
-    G4Track *track=step->GetTrack();
+   
+  G4Track *track=step->GetTrack();
+  G4double kinEnergy     = track->GetKineticEnergy();
+
+
+  //changing the condition for energy deposition
+//  if (logVolume == fScoringVolume && edepStep > 0.) {
+
+  if (logVolume == fScoringVolume) {
+
+
     // check if we are looking at the decay particle
     // This step runs under the assumption that no particle that hits the CCD is not or does not descend from a primary
     // If it's breaking here, check that the primaries defined in StackingAction are not too restrictive
@@ -70,6 +81,7 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       G4ThreeVector primPosition = trackInfo->GetPrimaryPosition();
       G4ThreeVector primMomentum = trackInfo->GetPrimaryMomentum();
       G4double trigTime = trackInfo->GetPrimaryTime();
+
 
       G4Navigator* navigator = new G4Navigator();
       navigator->SetWorldVolume(fDetectorConstruction->GetPhysWorld());
@@ -92,6 +104,8 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       fRunAction->momyPrim.push_back(primMomentum.getY() / eV);
       fRunAction->momzPrim.push_back(primMomentum.getZ() / eV);
       fRunAction->triggerTime.push_back(trigTime / s);
+     //collecting CCD kinetic energy 
+    //  fRunAction->keCCD.push_back(kinEnergy / eV);  
     }
    
     //
@@ -119,11 +133,14 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
     std::vector< std::vector<G4int> >::iterator it = std::find(fEventAction->usedPix.begin(), fEventAction->usedPix.end(), thisPix);
     if (it == fEventAction->usedPix.end()) {
       fEventAction->usedPix.push_back(thisPix);
-      fRunAction->pdgCCD.push_back(track->GetParticleDefinition()->GetPDGEncoding());
-      fRunAction->trackid.push_back(trackid);
-      fRunAction->parentid.push_back(track->GetParentID());
-      fRunAction->primaryidCCD.push_back(primaryID);
-      fRunAction->CCDid.push_back(CCDNum);
+     // fRunAction->pdgCCD.push_back(track->GetParticleDefinition()->GetPDGEncoding());
+     // fRunAction->trackid.push_back(trackid);
+     // fRunAction->parentid.push_back(track->GetParentID());
+     // fRunAction->primaryidCCD.push_back(primaryID);
+     // fRunAction->CCDid.push_back(CCDNum);
+      fRunAction->keCCD.push_back(kinEnergy / eV);
+     //change here
+     /*
       fRunAction->posxCCD.push_back(posx * edepStep / eV);
       fRunAction->posyCCD.push_back(posy * edepStep / eV);
       fRunAction->poszCCD.push_back(posz * edepStep / eV);
@@ -132,9 +149,20 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       fRunAction->gposzCCD.push_back(worldPosition.getZ() * edepStep / (mm * eV));
       fRunAction->Edep.push_back(edepStep / eV);
       fRunAction->time.push_back(track->GetGlobalTime() * edepStep / (s * eV));
+      
+      fRunAction->momxCCD.push_back(momentum.getX() / eV);
+      fRunAction->momyCCD.push_back(momentum.getY() / eV);
+      fRunAction->momzCCD.push_back(momentum.getZ() / eV);
+
+      */
     }
+//if edep > 0
+    /*
     else {
       G4int ind = std::distance(fEventAction->usedPix.begin(), it);
+     //insert condition 
+     //make use of usedPix to divide when edep =0 
+     
       fRunAction->posxCCD.at(ind) += posx * edepStep / eV;
       fRunAction->posyCCD.at(ind) += posy * edepStep / eV;
       fRunAction->poszCCD.at(ind) += posz * edepStep / eV;
@@ -143,7 +171,9 @@ void ChicagoCCDSteppingAction::UserSteppingAction(const G4Step* step)
       fRunAction->gposzCCD.at(ind) += worldPosition.getZ() * edepStep/(mm * eV);
       fRunAction->Edep.at(ind) += edepStep / eV;
       fRunAction->time.at(ind) += track->GetGlobalTime() * edepStep / (s * eV);
+    
     }
+    */
   }  
 }
 

@@ -1,0 +1,54 @@
+# TEST FILE
+# Has a sizable but not overwhelming number of events to check for low probability errors.
+# 
+# Change the default number of workers (in multi-threading mode) 
+/run/numberOfThreads 1
+#
+# Initialize kernel
+#/cuts/setLowEdge 1 eV
+#/run/setCut 1 nm
+/run/initialize
+#
+/control/verbose 0
+/run/verbose 0
+/event/verbose 1 
+/tracking/verbose 1
+/run/printProgress 1
+/analysis/verbose 1
+
+/ChicagoGeom/deleteGeometry
+/ChicagoGeom/setShield Pb
+
+
+/analysis/setFileName /data/rachana/ChicagoCCDSim_output/photoneutron_SbSource/directgammasource.root
+
+
+
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+
+/gps/pos/centre -8.9 0 357.8 mm
+#/gps/pos/centre 0 0 0 mm
+/gps/pos/radius 1.5875 mm
+/gps/pos/halfz 7.5 mm
+/gps/pos/rot1 0 0 -1
+/gps/pos/rot2 0 -1 0
+
+#/gps/pos/radius 20 mm
+#/gps/pos/halfz 30 mm
+
+#/gps/particle ion
+#/gps/ion 51 124 0 0
+#/gps/energy 0 keV
+#/gps/direction 0 0 -1
+
+/gps/particle gamma
+/gps/energy 1691 keV
+
+#/gps/particle neutron
+#/gps/energy 24 keV
+
+
+/gps/ang/type iso
+
+/run/beamOn 10

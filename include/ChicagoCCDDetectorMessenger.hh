@@ -29,6 +29,8 @@ class ChicagoCCDDetectorMessenger: public G4UImessenger
     G4UIcmdWithoutParameter* DelGeomCmd;
     G4UIcmdWithABool* CCDDeadCmd;
     G4UIcmdWithAString* SetShieldCmd;
+    //G4UIcmdWithAString* LidMatCmd;
+    //G4UIcmdWithADoubleAndUnit* LidCmd;
 };
 
 #endif

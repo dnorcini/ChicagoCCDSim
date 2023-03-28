@@ -62,6 +62,11 @@ void ChicagoCCDEventAction::BeginOfEventAction(const G4Event* event)
   fRunAction->gposzCCD.clear();
   fRunAction->Edep.clear();
   fRunAction->time.clear();
+
+  fRunAction->keCCD.clear();
+//  fRunAction->momxCCD.clear();
+//  fRunAction->momyCCD.clear();
+//  fRunAction->momzCCD.clear();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -71,18 +76,41 @@ void ChicagoCCDEventAction::EndOfEventAction(const G4Event* event)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   G4int EventID = event->GetEventID();
   // If there was energy deposition, seal the deal and record it
+  //
+  // I don't need this condition, I need to record everything that passed through the CCD.
+  //
+ // fRunAction->keCCD.push_back(primPart->GetKineticEnergy() / eV);
+  analysisManager->FillNtupleIColumn(2, 0, EventID);
+  analysisManager->AddNtupleRow(2);
+
+/*
   if (!fRunAction->Edep.empty()) {
-    std::transform(fRunAction->posxCCD.begin(), fRunAction->posxCCD.end(), fRunAction->Edep.begin(), fRunAction->posxCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->posyCCD.begin(), fRunAction->posyCCD.end(), fRunAction->Edep.begin(), fRunAction->posyCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->poszCCD.begin(), fRunAction->poszCCD.end(), fRunAction->Edep.begin(), fRunAction->poszCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->gposxCCD.begin(), fRunAction->gposxCCD.end(), fRunAction->Edep.begin(), fRunAction->gposxCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->gposyCCD.begin(), fRunAction->gposyCCD.end(), fRunAction->Edep.begin(), fRunAction->gposyCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->gposzCCD.begin(), fRunAction->gposzCCD.end(), fRunAction->Edep.begin(), fRunAction->gposzCCD.begin(), std::divides<G4double>());
-    std::transform(fRunAction->time.begin(), fRunAction->time.end(), fRunAction->Edep.begin(), fRunAction->time.begin(), std::divides<G4double>());
+// loop over elemetns of vector and check if edep >0. else use a pix coutner to divide
+    if (fRunAction->Edep.begin()!=0){
+      std::transform(fRunAction->posxCCD.begin(), fRunAction->posxCCD.end(), fRunAction->Edep.begin(), fRunAction->posxCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->posyCCD.begin(), fRunAction->posyCCD.end(), fRunAction->Edep.begin(), fRunAction->posyCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->poszCCD.begin(), fRunAction->poszCCD.end(), fRunAction->Edep.begin(), fRunAction->poszCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->gposxCCD.begin(), fRunAction->gposxCCD.end(), fRunAction->Edep.begin(), fRunAction->gposxCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->gposyCCD.begin(), fRunAction->gposyCCD.end(), fRunAction->Edep.begin(), fRunAction->gposyCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->gposzCCD.begin(), fRunAction->gposzCCD.end(), fRunAction->Edep.begin(), fRunAction->gposzCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->time.begin(), fRunAction->time.end(), fRunAction->Edep.begin(), fRunAction->time.begin(), std::divides<G4double>());
     analysisManager->FillNtupleIColumn(2, 0, EventID);
     analysisManager->AddNtupleRow(2);
+     }
+    else {
+      std::transform(fRunAction->posxCCD.begin(), fRunAction->posxCCD.end(), fRunAction->time.begin() , fRunAction->posxCCD.begin(), std::divides<G4double>());
+      std::transform(fRunAction->posyCCD.begin(), fRunAction->posyCCD.end(), fRunAction->time.begin() , fRunAction->posyCCD.begin(), std::div    ides<G4double>());
+
   }
-  else {
+
+  */
+
+
+
+
+//elseif
+ // else {
+  if (fRunAction->Edep.empty()) {
     primVert = event->GetPrimaryVertex();
     primPart = primVert->GetPrimary();
 
@@ -106,8 +134,15 @@ void ChicagoCCDEventAction::EndOfEventAction(const G4Event* event)
     fRunAction->momzPrim.push_back(primPart->GetPz() / eV); 
     fRunAction->triggerTime.push_back(primVert->GetT0() / s);
   }
+
+
+
+
   analysisManager->FillNtupleIColumn(1, 0, EventID);
   analysisManager->AddNtupleRow(1);
+
+
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

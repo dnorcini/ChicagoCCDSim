@@ -2,7 +2,7 @@
 # Has a sizable but not overwhelming number of events to check for low probability errors.
 # 
 # Change the default number of workers (in multi-threading mode) 
-/run/numberOfThreads 1
+/run/numberOfThreads 35
 #
 # Initialize kernel
 #/cuts/setLowEdge 1 eV
@@ -10,28 +10,55 @@
 /run/initialize
 #
 /control/verbose 0
-/run/verbose 1
+/run/verbose 0
 /event/verbose 0
 /tracking/verbose 0
 /analysis/verbose 0
-/run/printProgress 250
+/run/printProgress 0
 #
-/analysis/setFileName /data/ncorso/Neutron_output/output/output_test/Neutron.root
+/analysis/setFileName /data/rachana/ChicagoCCDSim_output/neutron/Fluence2022/June9FluenceAlFlangeFullGeom1e8.root
 
 /ChicagoGeom/setDeadLayer True
-/ChicagoGeom/deleteGeometry
+#/ChicagoGeom/deleteGeometry
 
-/gps/pos/type Point
-#/gps/pos/centre 0 0 -110 mm
-/gps/pos/centre 0 -6.614 -19.98 mm
+#/gps/pos/type Point
+#/gps/pos/centre 0 0 358. mm
+#/gps/pos/centre 0 -6.614 -19.98 mm
+#/gps/pos/centre 0 0 5. mm
+
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+
+/gps/pos/centre 4.98 -1 335.0 mm
+/gps/pos/radius 22.6 mm
+/gps/pos/halfz 12.5 mm
+/gps/pos/rot1 0 0 -1
+/gps/pos/rot2 0 -1 0
+/gps/pos/confine BeOBottom
+
+/gps/pos/centre -4.27 0 335.0 mm
+/gps/pos/radius 13.0 mm
+/gps/pos/halfz 12.75 mm
+/gps/pos/rot1 0 0 -1
+/gps/pos/rot2 0 -1 0
+/gps/pos/confine BeOTube
+
+
+/gps/pos/centre -25.52 0 335.0 mm
+/gps/pos/radius 13.75 mm
+/gps/pos/halfz 4.5 mm
+/gps/pos/rot1 0 0 -1
+/gps/pos/rot2 0 -1 0
+/gps/pos/confine BeOTop
+
 
 /gps/particle neutron
-/gps/energy 5 keV
+/gps/energy 24 keV
 
-#/gps/ang/type iso
-/gps/ang/type focused
-/gps/ang/focuspoint 0 0 -19.98 mm
+/gps/ang/type iso
+#/gps/ang/type focused
+#/gps/ang/focuspoint 0 0 -19.98 mm
 #/gps/ang/mintheta 0 deg
 #/gps/ang/maxtheta 85 deg
 
-/run/beamOn 25000
+/run/beamOn 100000000

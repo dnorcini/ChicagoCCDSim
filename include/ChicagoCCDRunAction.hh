@@ -74,6 +74,11 @@ class ChicagoCCDRunAction : public G4UserRunAction
     std::vector<G4double> gposzCCD;
     std::vector<G4double> Edep;
     std::vector<G4double> time;
+
+//    std::vector<G4double> momxCCD;
+//    std::vector<G4double> momyCCD;
+//    std::vector<G4double> momzCCD;
+    std::vector<G4double> keCCD;
   private:
     ChicagoCCDDetectorConstruction* fDetectorConstruction;
     ChicagoCCDPrimaryGeneratorAction* fPrimGen;

@@ -51,6 +51,9 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<G4ThreeVector> GetActiveDims() const {return ActiveDims;};
     G4double GetPixWidth() {return pixWidth;};
 
+    void AssembleAlLids(G4double thickness, G4bool isFirst = false);
+    void SetLidMat(G4String mat) {lidMat = mat;};
+
   protected:
     ChicagoCCDDetectorMessenger* skipperDetectorMessenger;
 
@@ -89,6 +92,7 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<G4LogicalVolume*> DeadSideLVs;
 
     std::vector<G4VPhysicalVolume*> flangePhys;
+	std::vector<G4VPhysicalVolume*> gasketPhys;
     std::vector<G4VPhysicalVolume*> leadPhys;
     std::vector<G4VPhysicalVolume*> BeOPhys;
     G4VPhysicalVolume* physChamber;
@@ -99,6 +103,26 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4VPhysicalVolume* physSiBacking;
     G4VPhysicalVolume* physCopperBox;
     G4VPhysicalVolume* physCopperFacePlate;
+
+	G4VPhysicalVolume* physTable1;
+	G4VPhysicalVolume* physTable2;
+	G4VPhysicalVolume* physPumpTube;
+	G4VPhysicalVolume* physRS; //rubber sheet
+	G4VPhysicalVolume* physFloor;
+	G4VPhysicalVolume* physBackWall;
+
+
+    G4bool mylarLid;
+    G4String lidMat;
+    G4VPhysicalVolume* physFrontLidMylar;
+    G4VPhysicalVolume* physBackLidMylar;
+    G4VPhysicalVolume* physFrontLidAlum;
+    G4VPhysicalVolume* physBackLidAlum;
+
+    G4LogicalVolume* logicAluminumLid;
+    G4LogicalVolume* logicMylarLid;
+    
+    G4VPhysicalVolume* SbPhys;
 
     G4bool shieldExist;
     G4Box* solidShield;
@@ -120,6 +144,8 @@ class ChicagoCCDDetectorConstruction : public G4VUserDetectorConstruction
     G4Material *Epoxy;
     G4Material *Steel;
     G4Material *D2O;
+    G4Material *Myl;
+	G4Material *Rubber;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

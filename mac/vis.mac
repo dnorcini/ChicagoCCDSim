@@ -133,6 +133,17 @@
 /vis/geometry/set/colour LeadBrick3      0 0.463  0.533 0.561  0.5
 /vis/geometry/set/colour SbSource        0 0.98   0.87  0.37   1
 /vis/geometry/set/colour Epoxy           0 0.98   1.    0.8353 0.6
+/vis/geometry/set/colour Tabel1  		 0 1 	  1 	0.498039 1
+/vis/geometry/set/colour RubberSheet 	 0 0.333333 1 	0.498039 1
+/vis/geometry/set/color Table2			 0 1	  0 	0		1
+/vis/geometry/set/color LeftGasket2		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color LeftGasket1		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color RightGasket2		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color RightGasket1		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color BottomGasket		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color TopGasket		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color FrontGasket		 0 0.666667 0.333333 0 	1
+/vis/geometry/set/color BackGasket		 0 0.666667 0.333333 0 	1
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true
 /vis/verbose warnings

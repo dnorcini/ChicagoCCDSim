@@ -79,7 +79,7 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
 
   ccdout = analysisManager->CreateNtuple("CCDOut","CCDOut");
   analysisManager->CreateNtupleIColumn(ccdout, "EventID"); // event ID #
-  analysisManager->CreateNtupleIColumn(ccdout, "pdg", pdgCCD); // pdg code for particle hitting CCD
+/*  analysisManager->CreateNtupleIColumn(ccdout, "pdg", pdgCCD); // pdg code for particle hitting CCD
   analysisManager->CreateNtupleIColumn(ccdout, "trackid", trackid); // track ID number
   analysisManager->CreateNtupleIColumn(ccdout, "parentid", parentid); // track ID of mother particle
   analysisManager->CreateNtupleIColumn(ccdout, "primaryid", primaryidCCD); // track ID of primary
@@ -92,6 +92,13 @@ ChicagoCCDRunAction::ChicagoCCDRunAction(ChicagoCCDDetectorConstruction *skipper
   analysisManager->CreateNtupleDColumn(ccdout, "gposz", gposzCCD); //
   analysisManager->CreateNtupleDColumn(ccdout, "Edep", Edep); // total energy deposited
   analysisManager->CreateNtupleDColumn(ccdout, "time", time); // time wrt to event trigger time
+*/
+  analysisManager->CreateNtupleDColumn(ccdout, "keCCD", keCCD); // Kinetic energy
+ // analysisManager->CreateNtupleDColumn(ccdout, "momxCCD", momxCCD); //
+ // analysisManager->CreateNtupleDColumn(ccdout, "momyCCD", momyCCD); // Edep-weighted avg position per pixel
+ // analysisManager->CreateNtupleDColumn(ccdout, "momzCCD", momzCCD); //
+
+
   analysisManager->FinishNtuple(ccdout); 
 }
 
